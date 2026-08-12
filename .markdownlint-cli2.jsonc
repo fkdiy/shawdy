@@ -1,0 +1,7 @@
+{
+  "config": {
+    // Long lines are intentionally allowed because Markdown paragraphs
+    // do not need to be hard-wrapped.
+    "MD013": false
+  }
+}
