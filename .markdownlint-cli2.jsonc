@@ -6,7 +6,7 @@
   },
   "overrides": [
     {
-      "files": [
+      "filter": [
         ".github/ISSUE_TEMPLATE/**",
         ".github/pull_request_template.md"
       ],
@@ -14,7 +14,8 @@
         // GitHub templates intentionally start with section headings
         // because their title is provided by GitHub separately.
         "MD041": false
-      }
+      },
+      "combine": "merge"
     }
   ]
 }
