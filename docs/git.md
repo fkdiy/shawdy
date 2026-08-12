@@ -37,3 +37,16 @@ Shawdy uses a rebase and merge strategy to preserve a linear, easy-to-follow pro
 ## History Rewriting
 
 The commit history of development branches can be freely rewritten before a pull request is submitted for review to create a clean development timeline when they are pulled into the `main` branch. The history of `main` branch itself must not be rewritten.
+
+## Documentation CI
+
+Shawdy uses GitHub Actions to automatically validate its Markdown documentation.
+
+The documentation workflow runs on every pull request and whenever changes are pushed to `main`.
+
+It performs the following checks:
+
+- `markdownlint-cli2` validates Markdown files against the project's Markdown rules.
+- `Lychee` checks links in Markdown files for broken or unreachable targets.
+
+A failed documentation check causes the workflow to fail and must be resolved before the pull request can be merged.
