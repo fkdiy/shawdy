@@ -33,3 +33,4 @@ jobs:
         with:
           args: './**/*.md'
           fail: true
+          failIfEmpty: false
