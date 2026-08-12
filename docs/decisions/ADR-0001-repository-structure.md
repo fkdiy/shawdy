@@ -10,7 +10,7 @@ Shawdy is intended to be a long-term open-source project. Besides the Symfony ap
 
 ## Decision
 
-The Symfony application remains in the repository root to preserve the standard project structure and ensure compatibility with the Symfony ecosystem and tooling. 
+The Symfony application remains in the repository root to preserve the standard project structure and ensure compatibility with the Symfony ecosystem and tooling.
 
 The repository is organized according to the current responsibilities of the project. **Top-level directories are introduced only when they represent a distinct responsibility.** Generic grouping directories are intentionally avoided until they provide a clear benefit.
 

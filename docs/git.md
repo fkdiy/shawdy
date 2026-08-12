@@ -14,7 +14,7 @@ Branch names follow the same type-based naming convention as Conventional Commit
 
 ## Commit Messages
 
-Shawdy uses a simplified subset of the Conventional Commits specification in the format <type>: <description>, for example docs: define project philosophy, feat: implement a visitor counter for every short URL, refactor: speed up database queries.
+Shawdy uses a simplified subset of the Conventional Commits specification in the format `type: description`, for example `docs: define project philosophy`, `feat: implement a visitor counter for every short URL`, `refactor: speed up database queries`.
 
 ## Pull Requests
 
