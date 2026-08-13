@@ -1,0 +1,19 @@
+name: GitHub Actions
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  actionlint:
+    name: Lint GitHub Actions
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Lint GitHub Actions
+        uses: raven-actions/actionlint@v2
