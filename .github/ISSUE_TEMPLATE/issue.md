@@ -1,3 +1,11 @@
+---
+name: Development task
+about: Define a task or change to be implemented.
+title: ""
+labels: ""
+assignees: ""
+---
+
 ## Summary
 
 Briefly describe the work to be done and its scope.
