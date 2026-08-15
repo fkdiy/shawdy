@@ -33,7 +33,7 @@ docker compose up -d
 
 The application is available at:
 
-http://localhost:8080
+[http://localhost:8080](http://localhost:8080)
 
 ### Useful commands
 
