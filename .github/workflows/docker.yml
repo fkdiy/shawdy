@@ -11,12 +11,13 @@ jobs:
     name: Lint Dockerfiles
     runs-on: ubuntu-latest
 
+    container:
+      image: hadolint/hadolint:latest-alpine
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
 
       - name: Lint Dockerfiles
-        uses: hadolint/hadolint-action@v3.4.0
-        with:
-          recursive: true
-          dockerfile: docker/Dockerfile
+        run: |
+          find docker/ -name "Dockerfile" -exec hadolint {} +
