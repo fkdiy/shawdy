@@ -19,10 +19,10 @@ jobs:
       mariadb:
         image: mariadb:12.3
         env:
-          MARIADB_ROOT_PASSWORD: test_only_do_not_use_in_production
+          MARIADB_ROOT_PASSWORD: dev_only_do_not_use_in_production
           MARIADB_DATABASE: shawdy_app_test
           MARIADB_USER: app
-          MARIADB_PASSWORD: test_only_do_not_use_in_production
+          MARIADB_PASSWORD: dev_only_do_not_use_in_production
         ports:
           - 3306:3306
         options: >-
