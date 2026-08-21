@@ -13,7 +13,7 @@ jobs:
 
     env:
       APP_ENV: test
-      DATABASE_HOST: mariadb
+      DATABASE_HOST: 127.0.0.1
 
     services:
       mariadb:
