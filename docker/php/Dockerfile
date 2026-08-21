@@ -8,9 +8,9 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         libicu-dev=76.1-4 \
         libicu76=76.1-4 \
-        libzip-dev \
-        unzip \
-        zip \
+        libzip-dev=1.11.3-2 \
+        unzip=6.0-29+deb13u1 \
+        zip=3.0-15+deb13u1 \
     && docker-php-ext-install intl \
     && apt-get purge -y libicu-dev \
     && apt-get purge -y --auto-remove libzip-dev \
