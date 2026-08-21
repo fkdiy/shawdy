@@ -16,6 +16,8 @@ RUN apt-get update \
     && apt-get purge -y --auto-remove libzip-dev \
     && rm -rf /var/lib/apt/lists/*
 
+COPY docker/php/php.ini /usr/local/etc/php/conf.d/99-shawdy.ini
+
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 COPY docker/php/entrypoint.sh /usr/local/bin/entrypoint.sh
