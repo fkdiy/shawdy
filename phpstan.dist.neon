@@ -1,4 +1,5 @@
 includes:
+    - vendor/phpstan/phpstan-symfony/extension.neon
     - vendor/phpstan/phpstan-doctrine/extension.neon
 
 parameters:
@@ -9,3 +10,19 @@ parameters:
         - public/
         - src/
         - tests/
+    symfony:
+        containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml
+    scanFiles:
+        - vendor/symfony/dependency-injection/Loader/Configurator/ContainerConfigurator.php
+    ignoreErrors:
+        # EDGE CASE: Symfony 8.1+ triggers getAllowedEnvs() via trait aliases in the vendor folder.
+        # PHPStan's dead-code detector cannot see this vendor-level execution and flags it as unused.
+        -
+            identifier: method.unused
+            path: src/Kernel.php
+
+        # EDGE CASE: Symfony's public/index.php or tests/bootstrap.php uses method_exists() defensively.
+        # PHPStan evaluates this against the current vendor state where the method always exists.
+        -
+            identifier: function.alreadyNarrowedType
+            message: '#method_exists.*Dotenv.*bootEnv.*always evaluate to true#'
