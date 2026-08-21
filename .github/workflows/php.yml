@@ -8,7 +8,7 @@ on:
 
 jobs:
   tests:
-    name: PHPUnit
+    name: PHP Checks
     runs-on: ubuntu-latest
 
     env:
@@ -52,6 +52,11 @@ jobs:
 
       - name: Execute Tests via PHPUnit
         run: vendor/bin/phpunit
+
+      - name: Build Symfony container
+        env:
+            APP_ENV: dev
+        run: php bin/console cache:warmup
 
       - name: Static Analysis via PHPStan
         run: vendor/bin/phpstan analyse
