@@ -17,7 +17,7 @@ class ShortUrlTest extends KernelTestCase
         /** @var EntityManagerInterface $entityManager */
         $entityManager = static::getContainer()->get(EntityManagerInterface::class);
 
-        $shortCode = "abc123";
+        $shortCode = 'abc123';
 
         $shortUrl = new ShortUrl();
         $shortUrl
