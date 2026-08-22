@@ -58,24 +58,46 @@ jobs:
           extensions: mbstring, intl, pdo_mysql, zip
           tools: composer
 
+      - name: Cache Composer packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache/files
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
       - name: Install dependencies
         run: composer install --no-interaction --no-progress --prefer-dist
 
-      - name: Prepare Database Schema
-        run: |
-          php bin/console doctrine:database:create --if-not-exists
-          php bin/console doctrine:schema:update --force
+      - name: Scan dependencies for security vulnerabilities
+        run: composer audit
 
-      - name: Execute Tests via PHPUnit
-        run: vendor/bin/phpunit
+      # --- CODE STYLE & STATIC ANALYSIS (Using Dev Container) ---
+      - name: Coding standards analysis via PHP CS Fixer
+        run: vendor/bin/php-cs-fixer fix --dry-run --diff
 
-      - name: Build Symfony container
+      - name: Build Symfony container for PHPStan
         env:
             APP_ENV: dev
         run: php bin/console cache:warmup
 
+      - name: Lint Symfony container
+        env:
+          APP_ENV: dev
+        run: php bin/console lint:container
+
       - name: Static Analysis via PHPStan
         run: vendor/bin/phpstan analyse
 
-      - name: Coding standards analysis via PHP CS Fixer
-        run: vendor/bin/php-cs-fixer fix --dry-run --diff
+      # --- DATABASE DEPENDENT CHECKS (Using Test Container) ---
+      - name: Create test database
+        run: php bin/console doctrine:database:create --if-not-exists
+
+      - name: Validate Doctrine schema mapping
+        run: php bin/console doctrine:schema:validate --skip-sync
+
+      - name: Prepare Database Schema
+        run: php bin/console doctrine:schema:update --force
+
+      - name: Execute Tests via PHPUnit
+        run: vendor/bin/phpunit
