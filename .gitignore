@@ -1,3 +1,7 @@
+# VSCode
+/.vscode/*
+!/.vscode/launch.json
+
 # Symfony
 /.env.local
 /.env.local.php
