@@ -1,4 +1,4 @@
-FROM node:26.7.0
+FROM node:26.7.0-alpine3.24
 
 RUN npm install -g npm@latest
 
