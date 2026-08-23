@@ -10,8 +10,6 @@ class ShortUrlTest extends KernelTestCase
 {
     public function testShortUrlCanBePersisted(): void
     {
-        var_dump($_SERVER['APP_ENV'] ?? null);
-
         self::bootKernel();
 
         /** @var EntityManagerInterface $entityManager */
@@ -34,6 +32,7 @@ class ShortUrlTest extends KernelTestCase
             ->findOneBy(['shortCode' => $shortCode]);
 
         self::assertNotNull($stored);
+        self::assertNotNull($stored->getId());
         self::assertSame('https://example.com', $stored->getTargetUrl());
         self::assertSame($shortCode, $stored->getShortCode());
     }
