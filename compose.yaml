@@ -44,6 +44,17 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+  node:
+    image: shawdy-node
+    build:
+        context: .
+        dockerfile: docker/node/Dockerfile
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "127.0.0.1:5173:5173"
+    command: npm run dev -- --host 0.0.0.0
 
 volumes:
   mariadb_data:
