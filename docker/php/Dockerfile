@@ -6,7 +6,7 @@ FROM php:8.5-fpm-alpine3.24 AS php-base
 
 # Install runtime libraries and build dependencies, compile PHP extensions,
 # and remove the build dependencies afterwards.
-# hadolint ignore=DL3018
+# hadolint ignore=DL3018,SC2086
 RUN apk add --no-cache \
         icu \
         libzip \
@@ -40,6 +40,7 @@ RUN composer install \
         --prefer-dist \
         --optimize-autoloader
 
+# hadolint ignore=DL3059
 RUN php bin/console asset-map:compile
 
 
@@ -48,7 +49,7 @@ RUN php bin/console asset-map:compile
 FROM php-base AS development
 
 # Xdebug needs the PHP build toolchain and Linux headers to compile.
-# hadolint ignore=DL3018
+# hadolint ignore=DL3018,SC2086
 RUN apk add --no-cache --virtual .xdebug-build-deps \
         $PHPIZE_DEPS \
         linux-headers \
