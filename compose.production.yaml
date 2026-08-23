@@ -1,16 +1,16 @@
 services:
+
   nginx:
     image: nginx-shawdy
     build:
       context: .
       dockerfile: docker/nginx/Dockerfile
+      target: production
     environment:
       NGINX_HOST: localhost
       PHP_UPSTREAM: php:9000
     ports:
-      - "8080:80"
-    volumes:
-      - .:/var/www/html
+      - "80:80"
     depends_on:
       php:
         condition: service_healthy
@@ -20,11 +20,9 @@ services:
     build:
       context: .
       dockerfile: docker/php/Dockerfile
-      target: development
+      target: production
     environment:
-      APP_ENV: dev
-    volumes:
-    - .:/var/www/html
+      APP_ENV: prod
     healthcheck:
       test: ["CMD-SHELL", "php-fpm -t"]
       interval: 5s
@@ -44,23 +42,11 @@ services:
       DATABASE_NAME: ${DATABASE_NAME}
     volumes:
       - mariadb_data:/var/lib/mysql
-      - ./docker/mariadb/init:/docker-entrypoint-initdb.d:ro
     healthcheck:
       test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       interval: 5s
       timeout: 5s
       retries: 10
-  node:
-    image: shawdy-node
-    build:
-        context: .
-        dockerfile: docker/node/Dockerfile
-    working_dir: /app
-    volumes:
-      - ./frontend:/app
-    ports:
-      - "127.0.0.1:5173:5173"
-    command: npm run dev -- --host 0.0.0.0
 
 volumes:
   mariadb_data:
