@@ -1,1 +1,64 @@
 @import "tailwindcss";
+
+@font-face {
+    font-family: "Plus Jakarta Sans";
+    src: url("/fonts/PlusJakartaSans-VariableFont_wght.ttf") format("truetype");
+    font-weight: 200 800;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Plus Jakarta Sans";
+    src: url("/fonts/PlusJakartaSans-Italic-VariableFont_wght.ttf") format("truetype");
+    font-weight: 200 800;
+    font-style: italic;
+    font-display: swap;
+}
+
+@theme {
+    /* Brand */
+    --color-brand: #4361ee;
+    --color-ink: #0a0f1a;
+    --color-paper: #f5f7fa;
+
+    /* Semantic colors */
+    --color-background: var(--color-paper);
+    --color-surface: color-mix(in srgb, var(--color-paper), #ffffff 50%);
+
+    --color-primary: var(--color-brand);
+    --color-primary-hover: color-mix(in srgb, var(--color-brand), var(--color-ink) 20%);
+
+    --color-text: color-mix(in srgb, var(--color-ink), var(--color-paper) 50%);
+    --color-text-muted: color-mix(in srgb, var(--color-ink), var(--color-paper) 60%);
+    --color-text-primary: var(--color-ink);
+    --color-text-inverse: var(--color-paper);
+
+    --color-border: color-mix(in srgb, var(--color-ink), var(--color-paper) 90%);
+
+    --color-input: var(--color-paper);
+    --color-input-placeholder: color-mix(in srgb, var(--color-ink), var(--color-paper) 60%);
+
+    /* Typography */
+    --font-sans: "Plus Jakarta Sans", sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-background: var(--color-ink);
+        --color-surface: color-mix(in srgb, var(--color-brand), var(--color-ink) 85%);
+
+        --color-primary: var(--color-brand);
+        --color-primary-hover: color-mix(in srgb, var(--color-brand), var(--color-ink) 35%);
+
+        --color-text: color-mix(in srgb, var(--color-brand), var(--color-paper) 75%);
+        --color-text-muted: color-mix(in srgb, var(--color-brand), var(--color-ink) 50%);
+        --color-text-primary: var(--color-paper);
+        --color-text-inverse: var(--color-ink);
+
+        --color-border: color-mix(in srgb, var(--color-brand), var(--color-ink) 50%);
+
+        --color-input: var(--color-ink);
+        --color-input-placeholder: color-mix(in srgb, var(--color-brand), var(--color-ink) 50%);
+    }
+}
