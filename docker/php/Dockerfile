@@ -4,6 +4,9 @@ FROM composer:2.10.2 AS composer
 # Common PHP base image shared by development and production.
 FROM php:8.5-fpm-alpine3.24 AS php-base
 
+# Tell Composer it is safe to run plugins as root
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
 # Install runtime libraries and build dependencies, compile PHP extensions,
 # and remove the build dependencies afterwards.
 # hadolint ignore=DL3018,SC2086
