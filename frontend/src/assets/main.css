@@ -22,6 +22,12 @@
     --color-ink: #0a0f1a;
     --color-paper: #f5f7fa;
 
+    /* Status colors */
+    --color-info: #0ea5e9;
+    --color-error: #f43f5e;
+    --color-success: #10b981;
+    --color-warning: #eab308;
+
     /* Semantic colors */
     --color-background: var(--color-paper);
     --color-surface: color-mix(in srgb, var(--color-paper), #ffffff 50%);
@@ -34,6 +40,15 @@
     --color-text-primary: var(--color-ink);
     --color-text-inverse: var(--color-paper);
 
+    --color-badge-info: var(--color-info);
+    --color-badge-info-muted: color-mix(in srgb, var(--color-info), var(--color-paper) 85%);
+    --color-badge-error: var(--color-error);
+    --color-badge-error-muted: color-mix(in srgb, var(--color-error), var(--color-paper) 75%);
+    --color-badge-success: var(--color-success);
+    --color-badge-success-muted: color-mix(in srgb, var(--color-success), var(--color-paper) 85%);
+    --color-badge-warning: var(--color-warning);
+    --color-badge-warning-muted: color-mix(in srgb, var(--color-warning), var(--color-paper) 90%);
+
     --color-border: color-mix(in srgb, var(--color-ink), var(--color-paper) 90%);
 
     --color-input: var(--color-paper);
@@ -41,6 +56,9 @@
 
     /* Typography */
     --font-sans: "Plus Jakarta Sans", sans-serif;
+
+    /* Effects */
+    --drop-shadow-glow: 0 0 5px var(--color-brand);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -56,9 +74,18 @@
         --color-text-primary: var(--color-paper);
         --color-text-inverse: var(--color-ink);
 
+        --color-badge-info-muted: color-mix(in srgb, var(--color-info), var(--color-ink) 75%);
+        --color-badge-error-muted: color-mix(in srgb, var(--color-error), var(--color-ink) 75%);
+        --color-badge-success-muted: color-mix(in srgb, var(--color-success), var(--color-ink) 75%);
+        --color-badge-warning-muted: color-mix(in srgb, var(--color-warning), var(--color-ink) 75%);
+
         --color-border: color-mix(in srgb, var(--color-brand), var(--color-ink) 50%);
 
         --color-input: var(--color-ink);
         --color-input-placeholder: color-mix(in srgb, var(--color-brand), var(--color-ink) 50%);
     }
+}
+
+body {
+    background-color: var(--color-background);
 }
