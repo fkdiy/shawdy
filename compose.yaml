@@ -62,5 +62,14 @@ services:
       - "127.0.0.1:5173:5173"
     command: npm run dev -- --host 0.0.0.0
 
+  playwright:
+    image: mcr.microsoft.com/playwright:v1.62.1-noble
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+    depends_on:
+      nginx:
+        condition: service_started
+
 volumes:
   mariadb_data:
