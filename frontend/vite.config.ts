@@ -17,6 +17,14 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  server: {
+    allowedHosts: ['node'],
+    proxy: {
+      '/api': {
+        target: 'http://nginx',
+      },
+    },
+  },
   build: {
     assetsDir: 'build',
   },
