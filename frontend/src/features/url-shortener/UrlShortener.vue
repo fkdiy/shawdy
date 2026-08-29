@@ -12,81 +12,68 @@ const isLoading = ref(false)
 const error = ref('')
 
 function isValidUrl(urlInput: string): boolean {
-    try {
-        const parsedUrl = new URL(urlInput)
+  try {
+    const parsedUrl = new URL(urlInput)
 
-        return ['http:', 'https:'].includes(parsedUrl.protocol)
-    } catch {
-        return false
-    }
+    return ['http:', 'https:'].includes(parsedUrl.protocol)
+  } catch {
+    return false
+  }
 }
 
 async function shortenUrl() {
-    const url = targetUrl.value.trim()
+  const url = targetUrl.value.trim()
 
-    if (!isValidUrl(url)) {
-        error.value = 'Please enter a valid URL.'
-        return
-    }
+  if (!isValidUrl(url)) {
+    error.value = 'Please enter a valid URL.'
+    return
+  }
 
-    isLoading.value = true
-    error.value = ''
-    shortCode.value = ''
+  isLoading.value = true
+  error.value = ''
+  shortCode.value = ''
 
-    try {
-        const response = await createShortUrl(targetUrl.value.trim())
-        shortCode.value = response.shortCode
-    } catch {
-        error.value = 'Something went wrong. Please try again.'
-    } finally {
-        isLoading.value = false
-    }
+  try {
+    const response = await createShortUrl(targetUrl.value.trim())
+    shortCode.value = response.shortCode
+  } catch {
+    error.value = 'Something went wrong. Please try again.'
+  } finally {
+    isLoading.value = false
+  }
 }
 </script>
 
 <template>
-    <AppCard>
-        <div class="mb-6 flex items-center gap-3">
-            <img src="/icon-link.svg" alt="" class="h-6">
+  <AppCard>
+    <div class="mb-6 flex items-center gap-3">
+      <img src="/icon-link.svg" alt="" class="h-6" />
 
-            <h2 class="text-xl font-semibold leading-none text-text-primary">
-                Shorten your link
-            </h2>
-        </div>
+      <h2 class="text-xl font-semibold leading-none text-text-primary">Shorten your link</h2>
+    </div>
 
-        <div class="flex flex-col sm:flex-row sm:items-end w-full gap-4">
-            <AppInputText 
-                v-model="targetUrl" 
-                type="text" 
-                id="targetUrl"
-                placeholder="Paste your long URL here..." 
-                :error="error"
-                @keyup.enter="shortenUrl"
-            />
-            
-            <AppButton
-                variant="primary"
-                @click="shortenUrl"
-                :loading="isLoading"
-            >
-                Shorten
-            </AppButton>
-        </div>
-    </AppCard>
+    <div class="flex flex-col sm:flex-row sm:items-end w-full gap-4">
+      <AppInputText
+        v-model="targetUrl"
+        type="text"
+        id="targetUrl"
+        placeholder="Paste your long URL here..."
+        :error="error"
+        @keyup.enter="shortenUrl"
+      />
 
-    <AppCard 
-        v-if="shortCode && !error" 
-        variant="contrast"
+      <AppButton variant="primary" @click="shortenUrl" :loading="isLoading"> Shorten </AppButton>
+    </div>
+  </AppCard>
+
+  <AppCard v-if="shortCode && !error" variant="contrast">
+    <p class="text-m text-text-primary mb-4">Your short URL:</p>
+    <a
+      :href="`http://localhost:8080/${shortCode}`"
+      target="_blank"
+      class="text-primary text-xl font-semibold hover:text-text"
     >
-        <p class="text-m text-text-primary mb-4">
-            Your short URL:
-        </p>
-        <a
-            :href="`http://localhost:8080/${shortCode}`"
-            target="_blank"
-            class="text-primary text-xl font-semibold hover:text-text"
-        >
-            http://localhost:8080/{{ shortCode }}
-        </a>
-    </AppCard>
+      http://localhost:8080/{{ shortCode }}
+    </a>
+  </AppCard>
 </template>
