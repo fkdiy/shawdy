@@ -5,21 +5,12 @@ import AppButton from '../../components/AppButton.vue'
 
 import { ref } from 'vue'
 import { createShortUrl } from '../../api/shortUrls'
+import { isValidUrl } from './urlValidation'
 
 const targetUrl = ref('')
 const shortCode = ref('')
 const isLoading = ref(false)
 const error = ref('')
-
-function isValidUrl(urlInput: string): boolean {
-  try {
-    const parsedUrl = new URL(urlInput)
-
-    return ['http:', 'https:'].includes(parsedUrl.protocol)
-  } catch {
-    return false
-  }
-}
 
 async function shortenUrl() {
   const url = targetUrl.value.trim()
