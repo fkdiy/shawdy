@@ -8,7 +8,7 @@ export const apiClient = axios.create({
     Accept: 'application/ld+json',
     'Content-Type': 'application/ld+json',
   },
-});
+})
 
 // Response Interceptor: Global error handling
 /*
