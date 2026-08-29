@@ -20,7 +20,7 @@ import UrlShortener from './features/url-shortener/UrlShortener.vue';
                     <section class="mb-28 lg:mb-0">
                       <TheHero
                           title="I built yet another"
-                          titleAccent="URL shortener"
+                          title-accent="URL shortener"
                           subtitle="Shawdy is my learning project for exploring Git, Docker, CI/CD, Symfony, API Platform, Vue.js and modern web development with a hint of Python."
                           :primary-button="{
                               text: 'See how it works',
