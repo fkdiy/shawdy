@@ -5,5 +5,10 @@ export default defineConfig({
     plugins: [vue()],
     test: {
         environment: 'jsdom',
+        exclude: [
+            '**/node_modules/**',
+            '**/dist/**',
+            '**/tests/e2e/**',
+        ],
     },
 })
