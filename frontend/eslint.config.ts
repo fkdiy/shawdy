@@ -2,12 +2,15 @@ import eslint from '@eslint/js'
 import vue from 'eslint-plugin-vue'
 import tseslint from 'typescript-eslint'
 import globals from 'globals'
+import { defineConfig } from 'eslint/config'
 
-export default tseslint.config(
+export default defineConfig([
+    // 1. Core recommended shareable configs
     eslint.configs.recommended,
     ...tseslint.configs.recommended,
     ...vue.configs['flat/recommended'],
 
+    // 2. Vue file specific language options
     {
         files: ['**/*.vue'],
         languageOptions: {
@@ -18,6 +21,7 @@ export default tseslint.config(
         },
     },
 
+    // 3. Custom project rules override
     {
         rules: {
             '@typescript-eslint/no-unused-vars': [
@@ -34,4 +38,4 @@ export default tseslint.config(
             'vue/singleline-html-element-content-newline': 'off',
         },
     },
-)
+])
