@@ -38,15 +38,7 @@ jobs:
       - name: Audit dependencies
         run: npm audit
 
-      # Save node_modules for downstream parallel jobs
-      - name: Save node_modules workspace
-        uses: actions/upload-artifact@v7
-        with:
-          name: frontend-node-modules
-          path: frontend/node_modules/
-          retention-days: 1
-
-  # Run tests with pre-built node_modules
+  # Static code analysis
   eslint:
     name: Lint JS & TS
     runs-on: ubuntu-latest
@@ -60,11 +52,8 @@ jobs:
         with:
           node-version: 26
 
-      - name: Restore node_modules workspace
-        uses: actions/download-artifact@v8
-        with:
-          name: frontend-node-modules
-          path: frontend/node_modules/
+      - name: Install dependencies
+        run: npm ci
 
       - name: Run ESLint
         run: npm run lint
@@ -82,11 +71,8 @@ jobs:
         with:
           node-version: 26
 
-      - name: Restore node_modules workspace
-        uses: actions/download-artifact@v8
-        with:
-          name: frontend-node-modules
-          path: frontend/node_modules/
+      - name: Install dependencies
+        run: npm ci
 
       - name: Run vue-tsc
         run: npm run type-check --force
@@ -104,15 +90,13 @@ jobs:
         with:
           node-version: 26
 
-      - name: Restore node_modules workspace
-        uses: actions/download-artifact@v8
-        with:
-          name: frontend-node-modules
-          path: frontend/node_modules/
+      - name: Install dependencies
+        run: npm ci
 
       - name: Run oxfmt
         run: npm run format:check
 
+  # Unit tests
   vitest:
     name: Unit Tests via Vitest
     runs-on: ubuntu-latest
@@ -126,11 +110,8 @@ jobs:
         with:
           node-version: 26
 
-      - name: Restore node_modules workspace
-        uses: actions/download-artifact@v8
-        with:
-          name: frontend-node-modules
-          path: frontend/node_modules/
+      - name: Install dependencies
+        run: npm ci
 
       - name: Run vitest
         run: npm run test:run
@@ -145,11 +126,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v7
 
-      - name: Restore node_modules workspace
-        uses: actions/download-artifact@v8
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
         with:
-            name: frontend-node-modules
-            path: frontend/node_modules/
+          node-version: 26
+  
+      - name: Install dependencies
+        run: npm ci
 
       - name: Start application stack
         working-directory: .
@@ -177,7 +160,7 @@ jobs:
         working-directory: .
         run: docker compose down -v
 
-  # Final build test
+  # Build test
   build:
     name: Try to build frontend
     runs-on: ubuntu-latest
@@ -191,11 +174,8 @@ jobs:
         with:
           node-version: 26
 
-      - name: Restore node_modules workspace
-        uses: actions/download-artifact@v8
-        with:
-          name: frontend-node-modules
-          path: frontend/node_modules/
+      - name: Install dependencies
+        run: npm ci
 
       - name: Run npm run build
         run: npm run build
