@@ -8,4 +8,5 @@ export default defineConfig({
 
     outputDir: './tests/e2e/test-results',
     preserveOutput: 'failures-only',
+    reporter: [['html', { outputFolder: './tests/e2e/playwright-report' }], ['github']],
 })

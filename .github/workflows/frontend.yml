@@ -1,0 +1,201 @@
+name: Frontend
+
+on:
+  pull_request:
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/frontend.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/frontend.yml'
+
+defaults:
+  run:
+    working-directory: ./frontend
+
+jobs:
+  # Prepare and audit
+  install-and-audit:
+    name: Install, Audit & Cache Workspace
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 26
+          cache-dependency-path: './frontend/package-lock.json'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Audit dependencies
+        run: npm audit
+
+      # Save node_modules for downstream parallel jobs
+      - name: Save node_modules workspace
+        uses: actions/upload-artifact@v7
+        with:
+          name: frontend-node-modules
+          path: frontend/node_modules/
+          retention-days: 1
+
+  # Run tests with pre-built node_modules
+  eslint:
+    name: Lint JS & TS
+    runs-on: ubuntu-latest
+    needs: install-and-audit
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 26
+
+      - name: Restore node_modules workspace
+        uses: actions/download-artifact@v8
+        with:
+          name: frontend-node-modules
+          path: frontend/node_modules/
+
+      - name: Run ESLint
+        run: npm run lint
+
+  vue-tsc:
+    name: Type Check (Vue & TS)
+    runs-on: ubuntu-latest
+    needs: install-and-audit
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 26
+
+      - name: Restore node_modules workspace
+        uses: actions/download-artifact@v8
+        with:
+          name: frontend-node-modules
+          path: frontend/node_modules/
+
+      - name: Run vue-tsc
+        run: npm run type-check --force
+
+  oxfmt:
+    name: Check formatting
+    runs-on: ubuntu-latest
+    needs: install-and-audit
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 26
+
+      - name: Restore node_modules workspace
+        uses: actions/download-artifact@v8
+        with:
+          name: frontend-node-modules
+          path: frontend/node_modules/
+
+      - name: Run oxfmt
+        run: npm run format:check
+
+  vitest:
+    name: Unit Tests via Vitest
+    runs-on: ubuntu-latest
+    needs: install-and-audit
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 26
+
+      - name: Restore node_modules workspace
+        uses: actions/download-artifact@v8
+        with:
+          name: frontend-node-modules
+          path: frontend/node_modules/
+
+      - name: Run vitest
+        run: npm run test:run
+
+  # E2E Tests
+  playwright:
+    name: Execute E2E tests via Playwright
+    runs-on: ubuntu-latest
+    needs: install-and-audit
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Restore node_modules workspace
+        uses: actions/download-artifact@v8
+        with:
+            name: frontend-node-modules
+            path: frontend/node_modules/
+
+      - name: Start application stack
+        working-directory: .
+        run: docker compose up -d --build
+
+      - name: Run Playwright
+        working-directory: .
+        run: docker compose run --rm playwright npm run test:e2e
+
+      - name: Upload Playwright Report
+        uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+            name: playwright-report
+            path: frontend/tests/e2e/playwright-report/
+            retention-days: 30
+
+      - name: Show Docker logs on failure
+        if: ${{ failure() }}
+        working-directory: .
+        run: docker compose logs
+
+      - name: Stop application stack
+        if: ${{ always() }}
+        working-directory: .
+        run: docker compose down -v
+
+  # Final build test
+  build:
+    name: Try to build frontend
+    runs-on: ubuntu-latest
+    needs: install-and-audit
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 26
+
+      - name: Restore node_modules workspace
+        uses: actions/download-artifact@v8
+        with:
+          name: frontend-node-modules
+          path: frontend/node_modules/
+
+      - name: Run npm run build
+        run: npm run build
