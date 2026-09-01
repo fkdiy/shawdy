@@ -21,7 +21,8 @@ export default defineConfig({
     allowedHosts: ['node'],
     proxy: {
       '/api': {
-        target: 'http://nginx',
+        target: 'http://frankenphp:8080',
+        changeOrigin: true,
       },
     },
   },
