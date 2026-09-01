@@ -1,38 +1,67 @@
 services:
-  nginx:
-    image: nginx-shawdy
+  frankenphp:
+    image: frankenphp-shawdy
     build:
       context: .
-      dockerfile: docker/nginx/Dockerfile
-    environment:
-      NGINX_HOST: localhost
-      PHP_UPSTREAM: php:9000
-    ports:
-      - "8080:80"
-    volumes:
-      - .:/var/www/html
-    depends_on:
-      php:
-        condition: service_healthy
-
-  php:
-    image: shawdy-php
-    build:
-      context: .
-      dockerfile: docker/php/Dockerfile
+      dockerfile: docker/frankenphp/Dockerfile
       target: development
     environment:
+      SERVER_NAME: localhost
       APP_ENV: dev
+    ports: 
+      - "80:80"       # HTTP
+      - "443:443"     # HTTPS
+      - "443:443/udp" # HTTP/3
     volumes:
-    - .:/var/www/html
+      - ./:/app
+      - caddy_data:/data
+      - caddy_config:/config
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     healthcheck:
-      test: ["CMD-SHELL", "php-fpm -t"]
+      test: ["CMD", "curl", "-f", "http://localhost/api/"]
       interval: 5s
       timeout: 5s
       retries: 10
+      start_period: 10s
     depends_on:
       db:
         condition: service_healthy
+
+  # nginx:
+  #   image: nginx-shawdy
+  #   build:
+  #     context: .
+  #     dockerfile: docker/nginx/Dockerfile
+  #   environment:
+  #     NGINX_HOST: localhost
+  #     PHP_UPSTREAM: php:9000
+  #   ports:
+  #     - "8080:80"
+  #   volumes:
+  #     - .:/var/www/html
+  #   depends_on:
+  #     php:
+  #       condition: service_healthy
+
+  # php:
+  #   image: shawdy-php
+  #   build:
+  #     context: .
+  #     dockerfile: docker/php/Dockerfile
+  #     target: development
+  #   environment:
+  #     APP_ENV: dev
+  #   volumes:
+  #   - .:/var/www/html
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "php-fpm -t"]
+  #     interval: 5s
+  #     timeout: 5s
+  #     retries: 10
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
 
   db:
     image: mariadb:12.3
@@ -68,8 +97,10 @@ services:
     volumes:
       - ./frontend:/app
     depends_on:
-      nginx:
-        condition: service_started
+      frankenphp:
+        condition: service_healthy
 
 volumes:
   mariadb_data:
+  caddy_data:
+  caddy_config:
