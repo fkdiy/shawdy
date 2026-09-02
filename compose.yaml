@@ -28,41 +28,6 @@ services:
       db:
         condition: service_healthy
 
-  # nginx:
-  #   image: nginx-shawdy
-  #   build:
-  #     context: .
-  #     dockerfile: docker/nginx/Dockerfile
-  #   environment:
-  #     NGINX_HOST: localhost
-  #     PHP_UPSTREAM: php:9000
-  #   ports:
-  #     - "8080:80"
-  #   volumes:
-  #     - .:/var/www/html
-  #   depends_on:
-  #     php:
-  #       condition: service_healthy
-
-  # php:
-  #   image: shawdy-php
-  #   build:
-  #     context: .
-  #     dockerfile: docker/php/Dockerfile
-  #     target: development
-  #   environment:
-  #     APP_ENV: dev
-  #   volumes:
-  #   - .:/var/www/html
-  #   healthcheck:
-  #     test: ["CMD-SHELL", "php-fpm -t"]
-  #     interval: 5s
-  #     timeout: 5s
-  #     retries: 10
-  #   depends_on:
-  #     db:
-  #       condition: service_healthy
-
   db:
     image: mariadb:12.3
     environment:
@@ -79,6 +44,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+      
   node:
     image: shawdy-node
     build:
