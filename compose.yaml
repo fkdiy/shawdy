@@ -6,12 +6,14 @@ services:
       dockerfile: docker/frankenphp/Dockerfile
       target: development
     environment:
-      SERVER_NAME: localhost
-      APP_ENV: dev
+      SERVER_NAME: "http://localhost"
+      APP_ENV: "dev"
     ports: 
       - "80:80"       # HTTP
       - "443:443"     # HTTPS
       - "443:443/udp" # HTTP/3
+    expose:
+      - "8080"
     volumes:
       - ./:/app
       - caddy_data:/data
@@ -19,7 +21,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/api/"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/healthz"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -51,21 +53,34 @@ services:
         context: .
         dockerfile: docker/node/Dockerfile
     working_dir: /app
+    environment:
+      NODE_ENV: "development"
+      NUXT_API_BASE_INTERNAL: "http://frankenphp:8080/api"
+      NUXT_PUBLIC_API_BASE: "/api"
+    expose:
+      - "3000"
     volumes:
       - ./frontend:/app
-    ports:
-      - "127.0.0.1:5173:5173"
-    command: npm run dev -- --host 0.0.0.0
+      - /app/node_modules
+    command: npm run dev -- --host 0.0.0.0 --port 3000
 
   playwright:
+    profiles:
+      - test
     image: mcr.microsoft.com/playwright:v1.62.1-noble
     working_dir: /app
+    environment:
+      PLAYWRIGHT_BASE_URL: "http://frankenphp:8080"
     volumes:
       - ./frontend:/app
+      - /app/node_modules
+    command: sh -c "npm ci && npm run test:e2e"
     depends_on:
+      node:
+        condition: service_started
       frankenphp:
         condition: service_healthy
-
+        
 volumes:
   mariadb_data:
   caddy_data:
