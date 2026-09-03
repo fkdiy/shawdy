@@ -4,60 +4,64 @@
     frankenphp
 }
 
-{$SERVER_NAME:localhost} {
-    root * /app/public
-
-    @apiProd {
-        path /api/*
-        expression {env.APP_ENV} == "prod"
-    }
-
-    @apiDev {
-        path /api/*
-        expression {env.APP_ENV} == "dev"
-    }
-
-    @isDev expression {env.APP_ENV} == "dev"
-    @isProd expression {env.APP_ENV} == "prod"
-
+(app_routes) {
     encode zstd br gzip
 
-    # Use worker mode in production
-    handle @apiProd {
+    @health {
+        path /healthz
+    }
+
+    handle @health {
+        respond "OK" 200
+    }
+
+    @backend {
+        path \ 
+            /api \
+            /api/* \
+            /_wdt \
+            /_wdt/* \
+            /_profiler \
+            /_profiler/*
+    }
+
+    handle @backend {
+        root * /app/public
+
         php_server {
             worker /app/public/index.php
         }
     }
 
-    # Use standard mode in development
-    handle @apiDev {
-        php_server
+    @static {
+        path \
+            /assets \
+            /assets/*
     }
 
-    # Serve Symfony static files
-    handle /assets/* {
+    handle @static {
+        root * /app/public
+
         file_server
     }
 
-    # Re-route to Vite in development
-    handle @isDev {
-        reverse_proxy node:5173
-    }
-
-    # Serve Vue.js static files in production
-    handle @isProd {
-        root * /app/dist
-        try_files {path} /index.html
-        file_server
+    # Route everything but the backend and static files to Nuxt
+    
+    handle {
+        reverse_proxy node:3000
     }
 }
+# Public Endpoint
+# Dev:  SERVER_NAME=http://localhost
+# Prod: SERVER_NAME=https://shawdy.de
 
-# Internal HTTPS-Endpoint for Vite-reverse_proxy
-http://frankenphp:8080 {
-    tls internal
+{$SERVER_NAME:http:localhost} {
+    import app_routes
+}
 
-    root * /app/public
-    encode zstd br gzip
+# Endpoint for communication inside the Docker network
+# HTTP only
 
-    php_server
+:8080 {
+    import app_routes
 }
