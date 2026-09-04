@@ -1,25 +1,35 @@
 services:
-
   frankenphp:
-    image: frankenphp-shawdy
+    image: frankenphp-shawdy:production
+    pull_policy: build
     build:
       context: .
       dockerfile: docker/frankenphp/Dockerfile
       target: production
     environment:
-      SERVER_NAME: localhost
-      APP_ENV: prod
+      SERVER_NAME: "http://localhost"
+      APP_ENV: "prod"
+      APP_DEBUG: "0"
     ports: 
       - "80:80"       # HTTP
       - "443:443"     # HTTPS
       - "443:443/udp" # HTTP/3
+    expose:
+      - "8080"
     volumes:
       - caddy_data:/data
       - caddy_config:/config
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/healthz"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
     depends_on:
       db:
+        condition: service_healthy
+      node:
         condition: service_healthy
 
   db:
@@ -32,12 +42,37 @@ services:
       DATABASE_NAME: ${DATABASE_NAME}
     volumes:
       - mariadb_data:/var/lib/mysql
+      - ./docker/mariadb/init:/docker-entrypoint-initdb.d:ro
     healthcheck:
       test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       interval: 5s
       timeout: 5s
       retries: 10
-
+      start_period: 10s
+      
+  node:
+    image: shawdy-node:production
+    pull_policy: build
+    build:
+        context: .
+        dockerfile: docker/node/Dockerfile
+        target: production
+    environment:
+      NODE_ENV: "production"
+      NITRO_HOST: "0.0.0.0"
+      NITRO_PORT: "3000"
+      NUXT_API_BASE_INTERNAL: "http://frankenphp:8080/api"
+      NUXT_PUBLIC_API_BASE: "/api"
+    expose:
+      - "3000"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "nc", "-z", "127.0.0.1", "3000"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+            
 volumes:
   mariadb_data:
   caddy_data:

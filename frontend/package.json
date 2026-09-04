@@ -13,6 +13,7 @@
     "lint": "npm run lint:fast && npm run lint:vue-only",
     "format": "oxfmt .",
     "format:check": "oxfmt --check .",
+    "format:list": "oxfmt --list-different .",
     "type-check": "nuxt typecheck",
     "test": "vitest",
     "test:e2e": "playwright test"
