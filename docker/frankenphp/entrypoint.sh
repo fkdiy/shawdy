@@ -12,6 +12,9 @@ if [ "$APP_ENV" = "dev" ] || [ -z "$APP_ENV" ]; then
         composer install --no-interaction --prefer-dist
     fi
 
+    # Download packages referenced by importmap.php
+    php bin/console importmap:install
+
     # Compile Symfony's asset map so that mapped assets are available under public/assets.
     php bin/console asset-map:compile
 fi

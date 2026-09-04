@@ -136,11 +136,30 @@ jobs:
 
       - name: Start application stack
         working-directory: .
-        run: docker compose up -d --build
+        run: docker compose up -d --build --wait --wait-timeout 300
+
+      - name: Show application status
+        run: docker compose ps
+
+      - name: Verify application
+        run: |
+          docker compose exec -T frankenphp \
+            curl --fail --show-error http://localhost:8080/healthz
+
+          docker compose exec -T frankenphp \
+            curl --fail --show-error http://node:3000/ > /dev/null
 
       - name: Run Playwright
+        env:
+          CI: "true"
         working-directory: .
-        run: docker compose run --rm playwright npm run test:e2e
+        run: docker compose run --rm --no-deps playwright
+
+      - name: Show Docker logs on failure
+        if: ${{ failure() }}
+        run: |
+          docker compose ps -a
+          docker compose logs --no-color --timestamps
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v7

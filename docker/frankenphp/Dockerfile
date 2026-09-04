@@ -1,8 +1,10 @@
-# Load Composer image to install dependencies
+# Composer
+
 FROM composer:2.10.2 AS composer
 
 
-# Build a common base image for FrankenPHP
+# Shared FrankenPHP base
+
 FROM dunglas/frankenphp:1.12.7-php8.5 AS base
 
 RUN install-php-extensions \
@@ -23,38 +25,26 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 FROM base AS development
 
 ENV APP_ENV=dev
-
-# Composer is allowed to run as root in the development container.
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
-# Install Xdebug for local development
 RUN install-php-extensions xdebug
 
-# Copy Xdebug configuration
 COPY docker/frankenphp/xdebug.ini /usr/local/etc/php/conf.d/99-xdebug.ini
 
 ENTRYPOINT ["entrypoint.sh"]
+
 CMD ["frankenphp", "run", "--config", "/etc/frankenphp/Caddyfile"]
-
-
-# Build the Vue.js frontend for production
-FROM node:26.7.0-alpine3.24 AS frontend
-
-WORKDIR /app
-
-COPY frontend/package*.json ./
-RUN npm ci
-
-COPY frontend/ ./
-RUN npm run build
 
 
 # Production
 FROM base AS production
 
 ENV APP_ENV=prod
+ENV APP_DEBUG=0
 
 WORKDIR /app
+
+RUN cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
 COPY . .
 
@@ -64,10 +54,10 @@ RUN composer install \
     --no-progress \
     --prefer-dist \
     --optimize-autoloader \
+    --classmap-authoritative \
+    && php bin/console importmap:install \
     && php bin/console asset-map:compile
 
-# Vue production build
-COPY --from=frontend /app/dist ./dist
-
 ENTRYPOINT ["entrypoint.sh"]
+
 CMD ["frankenphp", "run", "--config", "/etc/frankenphp/Caddyfile"]

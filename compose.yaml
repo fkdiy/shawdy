@@ -29,6 +29,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      node:
+        condition: service_healthy
 
   db:
     image: mariadb:12.3
@@ -52,6 +54,7 @@ services:
     build:
         context: .
         dockerfile: docker/node/Dockerfile
+        target: development
     working_dir: /app
     environment:
       NODE_ENV: "development"
@@ -62,6 +65,12 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
+    healthcheck:
+      test: ["CMD", "nc", "-z", "127.0.0.1", "3000"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
     command: npm run dev -- --host 0.0.0.0 --port 3000
 
   playwright:

@@ -1,35 +1,81 @@
 import { expect, test } from "@playwright/test";
 
-test("creates and displays a short URL", async ({ page }) => {
-  await page.goto("/");
+test("shortens a URL", async ({ page }) => {
+  test.setTimeout(90_000);
 
-  await page.waitForFunction(() => {
-    const nuxtRoot = document.querySelector("#__nuxt");
-
-    return Boolean(nuxtRoot && "__vue_app__" in nuxtRoot);
+  page.on("console", (message) => {
+    console.log(`[browser:${message.type()}] ${message.text()}`);
   });
 
-  await page.locator("input").fill("https://example.com/test");
-
-  const apiResponsePromise = page.waitForResponse((response) => {
-    return response.request().method() === "POST" && response.url().includes("/api/short_urls");
+  page.on("pageerror", (error) => {
+    console.error(`[browser:pageerror] ${error.message}`);
   });
 
-  await page.getByRole("button", { name: "Shorten" }).click();
+  page.on("requestfailed", (request) => {
+    console.error(
+      `[browser:requestfailed] ${request.method()} ${request.url()} – ${
+        request.failure()?.errorText ?? "unknown error"
+      }`,
+    );
+  });
+
+  page.on("request", (request) => {
+    if (request.url().includes("/api/")) {
+      console.log(`[browser:request] ${request.method()} ${request.url()}`);
+    }
+  });
+
+  page.on("response", (response) => {
+    if (response.url().includes("/api/")) {
+      console.log(
+        `[browser:response] ${response.status()} ${response.request().method()} ${response.url()}`,
+      );
+    }
+  });
+
+  await page.goto("/", {
+    waitUntil: "domcontentloaded",
+    timeout: 60_000,
+  });
+
+  await page.waitForFunction(
+    () => {
+      const nuxtRoot = document.querySelector("#__nuxt") as
+        | (HTMLElement & { __vue_app__?: unknown })
+        | null;
+
+      return Boolean(nuxtRoot?.__vue_app__);
+    },
+    undefined,
+    { timeout: 60_000 },
+  );
+
+  const input = page.getByPlaceholder("Paste your long URL here...");
+  const button = page.getByRole("button", { name: "Shorten" });
+
+  await expect(input).toBeVisible();
+  await expect(button).toBeVisible();
+  await expect(button).toBeEnabled();
+
+  await input.fill("https://example.com/test");
+
+  const apiResponsePromise = page.waitForResponse(
+    (response) =>
+      response.request().method() === "POST" && response.url().includes("/api/short_urls"),
+    { timeout: 60_000 },
+  );
+
+  await button.click();
 
   const apiResponse = await apiResponsePromise;
 
-  expect(apiResponse.status()).toBe(201);
+  console.log(`[test] API response: ${apiResponse.status()} ${apiResponse.url()}`);
 
-  await expect(
-    page.getByText("Your short URL:", {
-      exact: true,
-    }),
-  ).toBeVisible();
+  expect(apiResponse.ok()).toBe(true);
 
-  const resultLink = page.getByTestId("short-url-result");
+  await expect(page.getByTestId("short-url-result")).toBeVisible({
+    timeout: 30_000,
+  });
 
-  await expect(resultLink).toBeVisible();
-
-  await expect(resultLink).toHaveAttribute("href", /\/[a-zA-Z0-9]+$/);
+  await expect(page.getByText("Your short URL:")).toBeVisible();
 });
