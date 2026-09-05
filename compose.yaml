@@ -6,8 +6,13 @@ services:
       dockerfile: docker/frankenphp/Dockerfile
       target: development
     environment:
-      SERVER_NAME: "http://localhost"
       APP_ENV: "dev"
+      SERVER_NAME: "http://localhost"
+      DATABASE_HOST: ${DATABASE_HOST:-db}
+      DATABASE_PORT: ${DATABASE_PORT:-3306}
+      DATABASE_NAME: ${DATABASE_NAME:-shawdy_app}
+      DATABASE_USER: ${DATABASE_USER:-app}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD:-dev_only_password}
     ports: 
       - "80:80"       # HTTP
       - "443:443"     # HTTPS
@@ -15,7 +20,7 @@ services:
     expose:
       - "8080"
     volumes:
-      - ./:/app
+      - ./apps/backend:/app
       - caddy_data:/data
       - caddy_config:/config
     extra_hosts:
@@ -35,11 +40,10 @@ services:
   db:
     image: mariadb:12.3
     environment:
-      MYSQL_ROOT_PASSWORD: ${DATABASE_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${DATABASE_NAME}
-      MYSQL_USER: ${DATABASE_USER}
-      MYSQL_PASSWORD: ${DATABASE_PASSWORD}
-      DATABASE_NAME: ${DATABASE_NAME}
+      MYSQL_DATABASE: ${DATABASE_NAME:-shawdy_app}
+      MYSQL_USER: ${DATABASE_USER:-app}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD:-dev_only_password}
+      MYSQL_ROOT_PASSWORD: ${DATABASE_ROOT_PASSWORD:-dev_only_root_password}
     volumes:
       - mariadb_data:/var/lib/mysql
       - ./docker/mariadb/init:/docker-entrypoint-initdb.d:ro
@@ -63,7 +67,7 @@ services:
     expose:
       - "3000"
     volumes:
-      - ./frontend:/app
+      - ./apps/frontend:/app
       - /app/node_modules
     healthcheck:
       test: ["CMD", "nc", "-z", "127.0.0.1", "3000"]
@@ -81,7 +85,7 @@ services:
     environment:
       PLAYWRIGHT_BASE_URL: "http://frankenphp:8080"
     volumes:
-      - ./frontend:/app
+      - ./apps/frontend:/app
       - /app/node_modules
     command: sh -c "npm ci && npm run test:e2e"
     depends_on:

@@ -18,11 +18,11 @@ ENTRYPOINT ["entrypoint.sh"]
 
 FROM base AS builder
 
-COPY frontend/package.json frontend/package-lock.json ./
+COPY apps/frontend/package.json apps/frontend/package-lock.json ./
 
 RUN npm ci
 
-COPY frontend/ ./
+COPY apps/frontend/ ./
 
 RUN npm run build
 
