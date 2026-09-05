@@ -54,9 +54,9 @@ services:
     image: shawdy-node:production
     pull_policy: build
     build:
-        context: .
-        dockerfile: docker/node/Dockerfile
-        target: production
+      context: .
+      dockerfile: docker/node/Dockerfile
+      target: production
     environment:
       NODE_ENV: "production"
       NITRO_HOST: "0.0.0.0"

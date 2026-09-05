@@ -3,18 +3,18 @@ name: Frontend
 on:
   pull_request:
     paths:
-      - 'frontend/**'
+      - 'apps/frontend/**'
       - '.github/workflows/frontend.yml'
   push:
     branches:
       - main
     paths:
-      - 'frontend/**'
+      - 'apps/frontend/**'
       - '.github/workflows/frontend.yml'
 
 defaults:
   run:
-    working-directory: ./frontend
+    working-directory: ./apps/frontend
 
 jobs:
   # Prepare and audit
@@ -29,7 +29,7 @@ jobs:
         uses: actions/setup-node@v7
         with:
           node-version: 26
-          cache-dependency-path: './frontend/package-lock.json'
+          cache-dependency-path: './apps/frontend/package-lock.json'
           cache: 'npm'
 
       - name: Install dependencies
@@ -130,7 +130,7 @@ jobs:
         uses: actions/setup-node@v7
         with:
           node-version: 26
-  
+
       - name: Install dependencies
         run: npm ci
 
@@ -139,9 +139,11 @@ jobs:
         run: docker compose up -d --build --wait --wait-timeout 300
 
       - name: Show application status
+        working-directory: .
         run: docker compose ps
 
       - name: Verify application
+        working-directory: .
         run: |
           docker compose exec -T frankenphp \
             curl --fail --show-error http://localhost:8080/healthz
@@ -157,6 +159,7 @@ jobs:
 
       - name: Show Docker logs on failure
         if: ${{ failure() }}
+        working-directory: .
         run: |
           docker compose ps -a
           docker compose logs --no-color --timestamps
@@ -165,14 +168,9 @@ jobs:
         uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
-            name: playwright-report
-            path: frontend/tests/e2e/playwright-report/
-            retention-days: 30
-
-      - name: Show Docker logs on failure
-        if: ${{ failure() }}
-        working-directory: .
-        run: docker compose logs
+          name: playwright-report
+          path: apps/frontend/tests/e2e/playwright-report/
+          retention-days: 30
 
       - name: Stop application stack
         if: ${{ always() }}

@@ -46,7 +46,7 @@ WORKDIR /app
 
 RUN cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
-COPY . .
+COPY apps/backend/ .
 
 RUN composer install \
     --no-dev \
