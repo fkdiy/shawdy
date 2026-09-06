@@ -38,6 +38,8 @@ jobs:
       DATABASE_NAME: shawdy_app
       DATABASE_USER: app
       DATABASE_PASSWORD: dev_only_password
+      REDIS_HOST: 127.0.0.1
+      REDIS_PORT: 6379
 
     services:
       mariadb:
@@ -55,6 +57,16 @@ jobs:
           --health-timeout=5s
           --health-retries=5
 
+      redis:
+        image: redis:8.10.1-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd="redis-cli ping"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=10
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -63,7 +75,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.5'
-          extensions: mbstring, intl, pdo_mysql, zip
+          extensions: mbstring, intl, pdo_mysql, zip, redis
           tools: composer
 
       - name: Cache Composer packages
@@ -80,13 +92,13 @@ jobs:
       - name: Scan dependencies for security vulnerabilities
         run: composer audit
 
-      # --- CODE STYLE & STATIC ANALYSIS (Using Dev Container) ---
+      # --- CODE STYLE & STATIC ANALYSIS ---
       - name: Coding standards analysis via PHP CS Fixer
         run: vendor/bin/php-cs-fixer fix --dry-run --diff
 
       - name: Build Symfony container for PHPStan
         env:
-            APP_ENV: dev
+          APP_ENV: dev
         run: php bin/console cache:warmup
 
       - name: Lint Symfony container
@@ -97,7 +109,7 @@ jobs:
       - name: Static Analysis via PHPStan
         run: vendor/bin/phpstan analyse
 
-      # --- DATABASE DEPENDENT CHECKS (Using Test Container) ---
+      # --- DATABASE DEPENDENT CHECKS ---
       - name: Create test database
         run: php bin/console doctrine:database:create --if-not-exists
 
