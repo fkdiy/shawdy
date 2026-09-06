@@ -7,6 +7,7 @@ use ApiPlatform\State\ProcessorInterface;
 use App\Entity\ShortUrl;
 use App\Service\ShortCodeGenerator;
 use App\Message\ShortUrlCreated;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -23,6 +24,7 @@ class ShortUrlProcessor implements ProcessorInterface
         private ProcessorInterface $processor,
         private ShortCodeGenerator $shortCodeGenerator,
         private MessageBusInterface $messageBus,
+        private EntityManagerInterface $entityManager,
     ) {
     }
 
@@ -32,36 +34,42 @@ class ShortUrlProcessor implements ProcessorInterface
         array $uriVariables = [],
         array $context = [],
     ): ShortUrl {
-        // Persist the entity first so Doctrine can generate its ID.
-        // The generated ID is required to create the short code.
-        $data = $this->processor->process(
-            $data,
-            $operation,
-            $uriVariables,
-            $context
+        // Wrap MariaDB persistance and Redis synchronization message in the same transaction
+        return $this->entityManager->wrapInTransaction(
+            function () use ($data, $operation, $uriVariables, $context): ShortUrl {
+                // Persist the entity first so Doctrine can generate its ID.
+                // The generated ID is required to create the short code.
+                $data = $this->processor->process(
+                    $data,
+                    $operation,
+                    $uriVariables,
+                    $context
+                );
+
+                // The entity now has its database-generated ID.
+
+                $shortCode = $this->shortCodeGenerator->generate($data->getId());
+
+                $data->setShortCode($shortCode);
+
+                // Persists the generated short code.
+                $data = $this->processor->process(
+                    $data,
+                    $operation,
+                    $uriVariables,
+                    $context
+                );
+
+                // Persist the synchronization message in the same database transaction.
+                $this->messageBus->dispatch(
+                    new ShortUrlCreated(
+                        $data->getShortCode(),
+                        $data->getTargetUrl(),
+                    )
+                );
+
+                return $data;
+            }
         );
-
-        // The entity now has its database-generated ID.
-
-        $shortCode = $this->shortCodeGenerator->generate($data->getId());
-
-        $data->setShortCode($shortCode);
-
-        // Persists the generated short code.
-        $data = $this->processor->process(
-            $data,
-            $operation,
-            $uriVariables,
-            $context
-        );
-
-        $this->messageBus->dispatch(
-            new ShortUrlCreated(
-                $data->getShortCode(),
-                $data->getTargetUrl(),
-            )
-        );
-
-        return $data;
     }
 }
