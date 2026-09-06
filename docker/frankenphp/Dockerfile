@@ -11,6 +11,7 @@ RUN install-php-extensions \
     pdo_mysql \
     intl \
     zip \
+    redis \
     opcache
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
