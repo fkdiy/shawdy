@@ -6,7 +6,9 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\Entity\ShortUrl;
 use App\Service\ShortCodeGenerator;
+use App\Message\ShortUrlCreated;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 /**
  * @implements ProcessorInterface<ShortUrl, ShortUrl>
@@ -20,6 +22,7 @@ class ShortUrlProcessor implements ProcessorInterface
         #[Autowire(service: 'api_platform.doctrine.orm.state.persist_processor')]
         private ProcessorInterface $processor,
         private ShortCodeGenerator $shortCodeGenerator,
+        private MessageBusInterface $messageBus,
     ) {
     }
 
@@ -45,11 +48,18 @@ class ShortUrlProcessor implements ProcessorInterface
         $data->setShortCode($shortCode);
 
         // Persists the generated short code.
-        $this->processor->process(
+        $data = $this->processor->process(
             $data,
             $operation,
             $uriVariables,
             $context
+        );
+
+        $this->messageBus->dispatch(
+            new ShortUrlCreated(
+                $data->getShortCode(),
+                $data->getTargetUrl(),
+            )
         );
 
         return $data;
