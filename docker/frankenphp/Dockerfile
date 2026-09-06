@@ -30,7 +30,7 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 
 RUN install-php-extensions xdebug
 
-COPY docker/frankenphp/xdebug.ini /usr/local/etc/php/conf.d/99-xdebug.ini
+COPY docker/frankenphp/php.development.ini /usr/local/etc/php/conf.d/99-shawdy.ini
 
 ENTRYPOINT ["entrypoint.sh"]
 
@@ -58,6 +58,8 @@ RUN composer install \
     --classmap-authoritative \
     && php bin/console importmap:install \
     && php bin/console asset-map:compile
+
+COPY docker/frankenphp/php.production.ini /usr/local/etc/php/conf.d/99-shawdy.ini
 
 ENTRYPOINT ["entrypoint.sh"]
 
