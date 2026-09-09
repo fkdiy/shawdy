@@ -1,18 +1,25 @@
 package handler
 
 import (
+	"context"
 	"errors"
 	"net/http"
 
-	"github.com/fkdiy/shawdy/apps/redirector/internal/resolver"
 	"github.com/redis/go-redis/v9"
 )
 
-type RedirectHandler struct {
-	resolver *resolver.Resolver
+type Resolver interface {
+	Resolve(
+		ctx context.Context,
+		shortCode string,
+	) (string, error)
 }
 
-func NewRedirectHandler(r *resolver.Resolver) *RedirectHandler {
+type RedirectHandler struct {
+	resolver Resolver
+}
+
+func NewRedirectHandler(r Resolver) *RedirectHandler {
 	return &RedirectHandler{
 		resolver: r,
 	}
