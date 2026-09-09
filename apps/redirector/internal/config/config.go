@@ -18,7 +18,7 @@ type RedisConfig struct {
 
 const (
 	defaultRedirectorAddr = ":8081"
-	defaultRedisHost      = "redis"
+	defaultRedisHost      = "localhost"
 	defaultRedisPort      = "6379"
 )
 

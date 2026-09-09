@@ -24,13 +24,30 @@ func main() {
 	redirectResolver := resolver.New(redisClient)
 	redirectHandler := handler.NewRedirectHandler(redirectResolver)
 
-	http.Handle("GET /{shortCode}", redirectHandler)
-	http.HandleFunc("GET /healthz", handler.Health)
+	mux := newMux(redirectHandler)
 
 	log.Fatal(
 		http.ListenAndServe(
 			cfg.Redirector.Address,
-			nil,
+			mux,
 		),
 	)
+}
+
+func newMux(
+	redirectHandler http.Handler,
+) *http.ServeMux {
+	mux := http.NewServeMux()
+
+	mux.Handle(
+		"GET /{shortCode}",
+		redirectHandler,
+	)
+
+	mux.HandleFunc(
+		"GET /healthz",
+		handler.Health,
+	)
+
+	return mux
 }
