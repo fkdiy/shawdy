@@ -48,25 +48,21 @@
         file_server
     }
 
-    # Public landing page
-    @home {
-        path /
-    }
-
-    handle @home {
-        reverse_proxy node:3000
-    }
-
     # Nuxt application routes
-    @app {
+    @frontend {
         path \
+            / \
             /_nuxt \
             /_nuxt/* \
             /app \
-            /app/*
+            /app/* \
+            /app-assets \
+            /app-assets/* \
+            /favicon.ico \
+            /robots.txt
     }
 
-    handle @app {
+    handle @frontend {
         reverse_proxy node:3000
     }
 
