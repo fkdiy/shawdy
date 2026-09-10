@@ -43,7 +43,7 @@ async function shortenUrl() {
 <template>
   <AppCard>
     <div class="mb-6 flex items-center gap-3">
-      <img src="/icon-link.svg" alt="" class="h-6" />
+      <img src="/app-assets/icon-link.svg" alt="" class="h-6" />
 
       <h2 class="text-xl font-semibold leading-none text-text-primary">Shorten your link</h2>
     </div>
