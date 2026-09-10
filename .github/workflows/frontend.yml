@@ -136,7 +136,11 @@ jobs:
 
       - name: Start application stack
         working-directory: .
-        run: docker compose up -d --build --wait --wait-timeout 300
+        run: |
+          docker compose build
+          docker compose up -d messenger-worker
+          docker compose up -d --wait --wait-timeout 300 \
+            db redis node redirector frankenphp
 
       - name: Show application status
         working-directory: .
