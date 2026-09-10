@@ -1,0 +1,57 @@
+name: Redirector
+
+on:
+  pull_request:
+    paths:
+      - 'apps/redirector/**'
+      - '.github/workflows/redirector.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps/redirector/**'
+      - '.github/workflows/redirector.yml'
+
+defaults:
+  run:
+    working-directory: ./apps/redirector
+
+jobs:
+  tests:
+    name: Redirector Checks
+    runs-on: ubuntu-latest
+
+    env:
+      REDIS_HOST: localhost
+      REDIS_PORT: 6379
+
+    services:
+      redis:
+        image: redis:8.10.1-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd="redis-cli ping"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Go
+        uses: actions/setup-go@v7
+        with:
+          go-version-file: 'apps/redirector/go.mod'
+          cache-dependency-path: 'apps/redirector/go.sum'
+
+      - name: Format check via gofmt
+        run: |
+          test -z "$(gofmt -l .)"
+
+      - name: Static code analysis via go vet
+        run: go vet ./...
+
+      - name: Unit tests via Go testing package
+        run: go test ./...
