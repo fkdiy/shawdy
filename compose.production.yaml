@@ -48,6 +48,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+      redirector:
+        condition: service_healthy
     volumes:
       - ./apps/backend:/app
     environment:
@@ -83,6 +85,28 @@ services:
       timeout: 5s
       retries: 10
       start_period: 20s
+    pull_policy: build
+
+  redirector:
+    image: shawdy-redirector:production
+    build:
+      context: ./apps/redirector
+      dockerfile: ../../docker/redirector/Dockerfile
+      target: production
+    restart: unless-stopped
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      REDIRECTOR_ADDR: ":8081"
+      REDIS_HOST: "redis"
+      REDIS_PORT: "6379"
+    healthcheck:
+      test: [ "CMD", "wget", "-q", "--spider", "http://127.0.0.1:8081/healthz" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
     pull_policy: build
 
   db:

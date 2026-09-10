@@ -11,6 +11,8 @@ services:
         condition: service_healthy
       node:
         condition: service_healthy
+      redirector:
+        condition: service_healthy
     ports:
       - "80:80" # HTTP
       - "443:443" # HTTPS
@@ -49,6 +51,8 @@ services:
       target: development
     restart: unless-stopped
     depends_on:
+      frankenphp:
+        condition: service_healthy
       db:
         condition: service_healthy
       redis:
@@ -91,9 +95,34 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
-      start_period: 20s
+      start_period: 60s
     command: npm run dev -- --host 0.0.0.0 --port 3000
     working_dir: /app
+
+  redirector:
+    container_name: shawdy-redirector
+    image: shawdy-redirector:development
+    build:
+      context: ./apps/redirector
+      dockerfile: ../../docker/redirector/Dockerfile
+      target: development
+    depends_on:
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./apps/redirector:/app
+    environment:
+      REDIRECTOR_ADDR: ":8081"
+      REDIS_HOST: "redis"
+      REDIS_PORT: "6379"
+    networks:
+      - shawdy-net
+    healthcheck:
+      test: [ "CMD", "wget", "-q", "--spider", "http://127.0.0.1:8081/healthz" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
 
   db:
     container_name: shawdy-db
