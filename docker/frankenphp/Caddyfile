@@ -7,6 +7,7 @@
 (app_routes) {
     encode zstd br gzip
 
+    # Health check
     @health {
         path /healthz
     }
@@ -15,8 +16,9 @@
         respond "OK" 200
     }
 
+    # Symfony backend
     @backend {
-        path \ 
+        path \
             /api \
             /api/* \
             /_wdt \
@@ -33,6 +35,7 @@
         }
     }
 
+    # Symfony static assets
     @static {
         path \
             /assets \
@@ -45,13 +48,44 @@
         file_server
     }
 
-    # Route everything but the backend and static files to Nuxt
-    
-    handle {
+    # Public landing page
+    @home {
+        path /
+    }
+
+    handle @home {
         reverse_proxy node:3000
     }
+
+    # Nuxt application routes
+    @app {
+        path \
+            /_nuxt \
+            /_nuxt/* \
+            /app \
+            /app/*
+    }
+
+    handle @app {
+        reverse_proxy node:3000
+    }
+
+    # A single root-level path segment represents a Short Code.
+    @redirect {
+        path_regexp shortcode ^/[^/]+$
+    }
+
+    handle @redirect {
+        reverse_proxy redirector:8081
+    }
+
+    # Reject all unknown nested paths.
+    handle {
+        respond "Not Found" 404
+    }
 }
-# Public Endpoint
+
+# Public endpoint
 # Dev:  SERVER_NAME=http://localhost
 # Prod: SERVER_NAME=https://shawdy.de
 
