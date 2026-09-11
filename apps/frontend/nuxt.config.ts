@@ -1,27 +1,38 @@
-import tailwindcss from "@tailwindcss/vite";
-
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: "2025-07-15",
-  devtools: { enabled: true },
-  css: ["~/assets/css/main.css"],
+  modules: [
+    '@nuxt/eslint',
+    '@nuxt/ui'
+  ],
+
+  devtools: {
+    enabled: true
+  },
+
+  css: ['~/assets/css/main.css'],
 
   runtimeConfig: {
-    // Only accessible on the server-side
-    apiBaseInternal: "http://frankenphp:8080/api",
+    apiBaseInternal: 'http://frankenphp:8080/api',
 
     public: {
-      // Also accessible on the client-side
-      apiBase: "/api",
-    },
+      apiBase: '/api'
+    }
   },
+
+  compatibilityDate: '2026-06-30',
 
   vite: {
     server: {
-      allowedHosts: ["node", "frankenphp"],
-    },
-    plugins: [tailwindcss()],
+      allowedHosts: ['node', 'frankenphp']
+    }
   },
 
-  modules: ["@nuxt/eslint"],
-});
+  eslint: {
+    config: {
+      stylistic: {
+        commaDangle: 'never',
+        braceStyle: '1tbs'
+      }
+    }
+  }
+})

@@ -2,6 +2,6 @@
 
 set -e
 
-npm install
+pnpm install --frozen-lockfile
 
 exec "$@"

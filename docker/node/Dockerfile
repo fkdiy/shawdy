@@ -2,6 +2,8 @@ FROM node:26.7.0-alpine3.24 AS base
 
 WORKDIR /app
 
+RUN npm install --global pnpm@12.3.4
+
 
 # Devlopment
 
@@ -18,13 +20,13 @@ ENTRYPOINT ["entrypoint.sh"]
 
 FROM base AS builder
 
-COPY apps/frontend/package.json apps/frontend/package-lock.json ./
+COPY apps/frontend/package.json apps/frontend/pnpm-lock.yaml ./
 
-RUN npm ci
+RUN pnpm install --frozen-lockfile
 
 COPY apps/frontend/ ./
 
-RUN npm run build
+RUN pnpm build
 
 
 # Run the compiled Nuxt/Nitro application

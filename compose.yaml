@@ -96,7 +96,7 @@ services:
       timeout: 5s
       retries: 10
       start_period: 60s
-    command: npm run dev -- --host 0.0.0.0 --port 3000
+    command: pnpm dev --host 0.0.0.0 --port 3000
     working_dir: /app
 
   redirector:
