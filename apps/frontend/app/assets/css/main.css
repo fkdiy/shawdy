@@ -1,18 +1,94 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 
-@theme static {
-  --font-sans: "Public Sans", sans-serif;
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src: url("/app-assets/fonts/PlusJakartaSans-VariableFont_wght.ttf") format("truetype");
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
 
-  --color-green-50: #effdf5;
-  --color-green-100: #d9fbe8;
-  --color-green-200: #b3f5d1;
-  --color-green-300: #75edae;
-  --color-green-400: #00dc82;
-  --color-green-500: #00c16a;
-  --color-green-600: #00a155;
-  --color-green-700: #007f45;
-  --color-green-800: #016538;
-  --color-green-900: #0a5331;
-  --color-green-950: #052e16;
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src: url("/app-assets/fonts/PlusJakartaSans-Italic-VariableFont_wght.ttf") format("truetype");
+  font-weight: 200 800;
+  font-style: italic;
+  font-display: swap;
+}
+
+@theme static {
+  --font-sans: "Plus Jakarta Sans", sans-serif;
+
+  --color-shawdy-brand-50: #e8eafd;
+  --color-shawdy-brand-100: #d4d8fb;
+  --color-shawdy-brand-200: #a6aef7;
+  --color-shawdy-brand-300: #7988f4;
+  --color-shawdy-brand-400: #4361ee;
+  --color-shawdy-brand-500: #274dd8;
+  --color-shawdy-brand-600: #1d3caf;
+  --color-shawdy-brand-700: #142d88;
+  --color-shawdy-brand-800: #0d2067;
+  --color-shawdy-brand-900: #061244;
+  --color-shawdy-brand-950: #030a2f;
+
+  --color-shawdy-success-50: #cdffe5;
+  --color-shawdy-success-100: #88ffc8;
+  --color-shawdy-success-200: #18eba5;
+  --color-shawdy-success-300: #14d293;
+  --color-shawdy-success-400: #10b981;
+  --color-shawdy-success-500: #0b996a;
+  --color-shawdy-success-600: #077a54;
+  --color-shawdy-success-700: #04593c;
+  --color-shawdy-success-800: #023d28;
+  --color-shawdy-success-900: #012315;
+  --color-shawdy-success-950: #00180d;
+
+  --color-shawdy-info-50: #ebf5ff;
+  --color-shawdy-info-100: #d2e8ff;
+  --color-shawdy-info-200: #9ed2fe;
+  --color-shawdy-info-300: #55bcfe;
+  --color-shawdy-info-400: #0ea5e9;
+  --color-shawdy-info-500: #0987bf;
+  --color-shawdy-info-600: #066c9b;
+  --color-shawdy-info-700: #035074;
+  --color-shawdy-info-800: #013650;
+  --color-shawdy-info-900: #012031;
+  --color-shawdy-info-950: #00131f;
+
+  --color-shawdy-warning-50: #fff8f0;
+  --color-shawdy-warning-100: #ffeed8;
+  --color-shawdy-warning-200: #ffdeaa;
+  --color-shawdy-warning-300: #ffd07a;
+  --color-shawdy-warning-400: #fbc009;
+  --color-shawdy-warning-500: #eab308;
+  --color-shawdy-warning-600: #b98d05;
+  --color-shawdy-warning-700: #8a6802;
+  --color-shawdy-warning-800: #5a4301;
+  --color-shawdy-warning-900: #322400;
+  --color-shawdy-warning-950: #201600;
+
+  --color-shawdy-error-50: #fde9eb;
+  --color-shawdy-error-100: #fbd7da;
+  --color-shawdy-error-200: #f8adb4;
+  --color-shawdy-error-300: #f67f8c;
+  --color-shawdy-error-400: #f43f5e;
+  --color-shawdy-error-500: #d02647;
+  --color-shawdy-error-600: #a91c38;
+  --color-shawdy-error-700: #83142a;
+  --color-shawdy-error-800: #5f0b1c;
+  --color-shawdy-error-900: #39040d;
+  --color-shawdy-error-950: #2a0208;
+
+  --color-shawdy-neutral-50: #f9f9fa;
+  --color-shawdy-neutral-100: #eaebee;
+  --color-shawdy-neutral-200: #c8ccd6;
+  --color-shawdy-neutral-300: #a6aec2;
+  --color-shawdy-neutral-400: #8490b1;
+  --color-shawdy-neutral-500: #667497;
+  --color-shawdy-neutral-600: #4c5978;
+  --color-shawdy-neutral-700: #333d56;
+  --color-shawdy-neutral-800: #1e2637;
+  --color-shawdy-neutral-900: #0a0f1a;
+  --color-shawdy-neutral-950: #05070e;
 }

@@ -1,8 +1,12 @@
 export default defineAppConfig({
   ui: {
     colors: {
-      primary: 'green',
-      neutral: 'slate'
+      primary: 'shawdy-brand',
+      success: 'shawdy-success',
+      info: 'shawdy-info',
+      warning: 'shawdy-warning',
+      error: 'shawdy-error',
+      neutral: 'shawdy-neutral'
     }
   }
 })
