@@ -11,6 +11,10 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/main.css'],
 
+  icon: {
+    localApiEndpoint: '/app-assets/_nuxt_icon'
+  },
+
   runtimeConfig: {
     apiBaseInternal: 'http://frankenphp:8080/api',
 
