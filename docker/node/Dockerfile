@@ -9,6 +9,8 @@ RUN npm install --global pnpm@12.3.4
 
 FROM base AS development
 
+RUN apk add --no-cache su-exec
+
 COPY docker/node/entrypoint.sh /usr/local/bin/entrypoint.sh
 
 RUN chmod +x /usr/local/bin/entrypoint.sh
