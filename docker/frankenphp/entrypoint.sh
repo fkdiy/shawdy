@@ -4,33 +4,33 @@ set -e
 
 cd /app
 
-# Only execute dependency checks during local development
-if [ "$APP_ENV" = "dev" ] || [ -z "$APP_ENV" ]; then
+# Prepare dependencies and assets only for local development.
+if [ "$APP_ENV" = "dev" ] && [ "${SKIP_DEV_SETUP:-0}" != "1" ]; then
 
-    # If composer.json exists but the vendor folder is missing, install dependencies
+    # Install dependencies when vendor is missing.
     if [ -f "composer.json" ] && [ ! -d "vendor" ]; then
         composer install --no-interaction --prefer-dist
     fi
 
-    # Download packages referenced by importmap.php
+    # Install and compile Symfony assets.
     php bin/console importmap:install
-
-    # Compile Symfony's asset map so that mapped assets are available under public/assets.
     php bin/console asset-map:compile
 fi
 
-# Ensure the DB engine is actually accepting traffic
+# Ensure the database is accepting connections.
 until php bin/console doctrine:migrations:status; do
     echo "Waiting for database..."
     sleep 1
 done
 
-# Run migrations to ensure the database schema is up to date
+# Ensure the database schema is up to date.
 php bin/console doctrine:migrations:migrate --no-interaction
 
-# If the application is running in development mode, also run migrations for the test environment
+# Prepare the test database during development.
 if [ "$APP_ENV" = "dev" ]; then
-    php bin/console doctrine:migrations:migrate --env=test --no-interaction
+    php bin/console doctrine:migrations:migrate \
+        --env=test \
+        --no-interaction
 fi
 
 exec "$@"
