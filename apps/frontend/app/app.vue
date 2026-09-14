@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const colorMode = useColorMode()
 
-const color = computed(() => colorMode.value === 'dark' ? '#09090b' : 'white')
+const color = computed(() => colorMode.value === 'dark' ? '#111712' : 'white')
 
 useHead({
   meta: [
@@ -22,11 +22,6 @@ useHead({
   htmlAttrs: {
     lang: 'en'
   }
-})
-
-useSeoMeta({
-  ogImage: 'https://ui.nuxt.com/assets/templates/nuxt/landing-light.png',
-  twitterCard: 'summary_large_image'
 })
 </script>
 
