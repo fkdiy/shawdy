@@ -59,6 +59,7 @@
             /app-assets \
             /app-assets/* \
             /favicon.ico \
+            /favicon.svg \
             /robots.txt
     }
 
