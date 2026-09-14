@@ -2,7 +2,10 @@
 export default defineNuxtConfig({
   modules: [
     '@nuxt/eslint',
-    '@nuxt/ui'
+    '@nuxt/content',
+    '@nuxt/ui',
+    '@vueuse/nuxt',
+    'motion-v/nuxt'
   ],
 
   devtools: {
@@ -11,8 +14,10 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/main.css'],
 
-  icon: {
-    localApiEndpoint: '/app-assets/_nuxt_icon'
+  content: {
+    experimental: {
+      sqliteConnector: 'native'
+    }
   },
 
   runtimeConfig: {
@@ -38,5 +43,9 @@ export default defineNuxtConfig({
         braceStyle: '1tbs'
       }
     }
+  },
+
+  icon: {
+    localApiEndpoint: '/app-assets/_nuxt_icon'
   }
 })
