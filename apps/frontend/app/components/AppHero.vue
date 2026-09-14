@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { enterMotion, scrollMotion, staggerMotion } from '~/utils/motion'
+import { enterMotion } from '~/utils/motion'
 
 const { page } = await usePageContent()
 

@@ -2,19 +2,8 @@
   <UFooter>
     <template #left>
       <p class="text-sm text-muted">
-        Built with code and coffee by Fabian König · © {{ new Date().getFullYear() }}
+        Made with code and coffee by Fabian König · © {{ new Date().getFullYear() }}
       </p>
-    </template>
-
-    <template #right>
-      <UButton
-        to="https://github.com/nuxt-ui-templates/starter"
-        target="_blank"
-        icon="i-simple-icons-github"
-        aria-label="GitHub"
-        color="neutral"
-        variant="ghost"
-      />
     </template>
   </UFooter>
 </template>
