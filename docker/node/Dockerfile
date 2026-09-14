@@ -2,14 +2,14 @@ FROM node:26.7.0-alpine3.24 AS base
 
 WORKDIR /app
 
-RUN npm install --global pnpm@12.3.4
+RUN npm install --global pnpm@12.4.1
 
 
 # Devlopment
 
 FROM base AS development
 
-RUN apk add --no-cache su-exec
+RUN apk add --no-cache su-exec=0.3-r0
 
 COPY docker/node/entrypoint.sh /usr/local/bin/entrypoint.sh
 
