@@ -1,0 +1,184 @@
+services:
+  frankenphp:
+    container_name: shawdy-frankenphp
+    image: frankenphp-shawdy:ci
+    build:
+      context: .
+      dockerfile: docker/frankenphp/Dockerfile
+      target: ci
+    depends_on:
+      db:
+        condition: service_healthy
+      node:
+        condition: service_healthy
+      redirector:
+        condition: service_healthy
+    expose:
+      - "8080"
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+    environment:
+      APP_ENV: "dev"
+      SKIP_DEV_SETUP: "1"
+      SERVER_NAME: "http://localhost"
+      DATABASE_HOST: ${DATABASE_HOST:-db}
+      DATABASE_PORT: ${DATABASE_PORT:-3306}
+      DATABASE_NAME: ${DATABASE_NAME:-shawdy_app}
+      DATABASE_USER: ${DATABASE_USER:-app}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD:-dev_only_password}
+    networks:
+      - shawdy-net
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/healthz" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  messenger-worker:
+    container_name: shawdy-messenger-worker
+    image: frankenphp-shawdy:ci
+    depends_on:
+      frankenphp:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      APP_ENV: "dev"
+      SERVER_NAME: "http://localhost"
+      DATABASE_HOST: ${DATABASE_HOST:-db}
+      DATABASE_PORT: ${DATABASE_PORT:-3306}
+      DATABASE_NAME: ${DATABASE_NAME:-shawdy_app}
+      DATABASE_USER: ${DATABASE_USER:-app}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD:-dev_only_password}
+    networks:
+      - shawdy-net
+    healthcheck:
+      disable: true
+    command: php bin/console messenger:consume async --time-limit=3600
+    entrypoint: []
+
+  node:
+    container_name: shawdy-node
+    image: shawdy-node:development
+    build:
+      context: .
+      dockerfile: docker/node/Dockerfile
+      target: development
+    expose:
+      - "3000"
+    volumes:
+      - ./apps/frontend:/app
+      - node_modules:/app/node_modules
+    environment:
+      NODE_ENV: "development"
+      NUXT_API_BASE_INTERNAL: "http://frankenphp:8080/api"
+      NUXT_PUBLIC_API_BASE: "/api"
+    networks:
+      - shawdy-net
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "127.0.0.1", "3000" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
+    command: pnpm dev --host 0.0.0.0 --port 3000
+    working_dir: /app
+
+  redirector:
+    container_name: shawdy-redirector
+    image: shawdy-redirector:development
+    build:
+      context: ./apps/redirector
+      dockerfile: ../../docker/redirector/Dockerfile
+      target: development
+    depends_on:
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./apps/redirector:/app
+    environment:
+      REDIRECTOR_ADDR: ":8081"
+      REDIS_HOST: "redis"
+      REDIS_PORT: "6379"
+    networks:
+      - shawdy-net
+    healthcheck:
+      test: [ "CMD", "wget", "-q", "--spider", "http://127.0.0.1:8081/healthz" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
+
+  db:
+    container_name: shawdy-db
+    image: mariadb:12.3
+    volumes:
+      - mariadb_data:/var/lib/mysql
+      - ./docker/mariadb/init:/docker-entrypoint-initdb.d:ro
+    environment:
+      MYSQL_DATABASE: ${DATABASE_NAME:-shawdy_app}
+      MYSQL_USER: ${DATABASE_USER:-app}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD:-dev_only_password}
+      MYSQL_ROOT_PASSWORD: ${DATABASE_ROOT_PASSWORD:-dev_only_root_password}
+    networks:
+      - shawdy-net
+    healthcheck:
+      test: [ "CMD", "healthcheck.sh", "--connect", "--innodb_initialized" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    container_name: shawdy-redis
+    image: redis:8.10.1-alpine
+    networks:
+      - shawdy-net
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+
+  playwright:
+    container_name: shawdy-playwright
+    image: mcr.microsoft.com/playwright:v1.63.0-noble
+    depends_on:
+      node:
+        condition: service_started
+      frankenphp:
+        condition: service_healthy
+    volumes:
+      - ./apps/frontend:/app
+      - playwright_node_modules:/app/node_modules
+    environment:
+      CI: "true"
+      PLAYWRIGHT_BASE_URL: "http://frankenphp:8080"
+    networks:
+      - shawdy-net
+    command: >
+      sh -c "
+        corepack enable &&
+        corepack prepare pnpm@12.4.1 --activate &&
+        pnpm install --frozen-lockfile --ignore-scripts &&
+        pnpm run test:e2e
+      "
+    profiles:
+      - test
+    working_dir: /app
+
+volumes:
+  node_modules:
+  playwright_node_modules:
+  mariadb_data:
+  caddy_data:
+  caddy_config:
+
+
+networks:
+  shawdy-net:
+    name: shawdy-network

@@ -30,7 +30,36 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 
 RUN install-php-extensions xdebug
 
-COPY docker/frankenphp/php.development.ini /usr/local/etc/php/conf.d/99-shawdy.ini
+COPY docker/frankenphp/php.development.ini \
+    /usr/local/etc/php/conf.d/99-shawdy.ini
+
+ENTRYPOINT ["entrypoint.sh"]
+
+CMD ["frankenphp", "run", "--config", "/etc/frankenphp/Caddyfile"]
+
+
+# CI
+FROM base AS ci
+
+ENV APP_ENV=dev
+ENV COMPOSER_ALLOW_SUPERUSER=1
+ENV SKIP_DEV_SETUP=1
+
+WORKDIR /app
+
+COPY apps/backend/composer.json apps/backend/composer.lock ./
+
+RUN composer install \
+    --no-interaction \
+    --no-progress \
+    --prefer-dist \
+    --no-scripts
+
+COPY apps/backend/ .
+
+RUN composer dump-autoload --optimize \
+    && php bin/console importmap:install \
+    && php bin/console asset-map:compile
 
 ENTRYPOINT ["entrypoint.sh"]
 
@@ -59,7 +88,8 @@ RUN composer install \
     && php bin/console importmap:install \
     && php bin/console asset-map:compile
 
-COPY docker/frankenphp/php.production.ini /usr/local/etc/php/conf.d/99-shawdy.ini
+COPY docker/frankenphp/php.production.ini \
+    /usr/local/etc/php/conf.d/99-shawdy.ini
 
 ENTRYPOINT ["entrypoint.sh"]
 

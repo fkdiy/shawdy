@@ -6,10 +6,7 @@ ensure_owned() {
   directory="$1"
 
   mkdir -p "$directory"
-
-  if [ "$(stat -c '%u:%g' "$directory")" != "1000:1000" ]; then
-    chown -R 1000:1000 "$directory"
-  fi
+  chown -R 1000:1000 "$directory"
 }
 
 ensure_owned /app/node_modules
