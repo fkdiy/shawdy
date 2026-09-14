@@ -157,7 +157,7 @@ services:
 
   playwright:
     container_name: shawdy-playwright
-    image: mcr.microsoft.com/playwright:v1.62.1-noble
+    image: mcr.microsoft.com/playwright:v1.63.0-noble
     depends_on:
       node:
         condition: service_started
@@ -165,18 +165,26 @@ services:
         condition: service_healthy
     volumes:
       - ./apps/frontend:/app
-      - /app/node_modules
+      - playwright_node_modules:/app/node_modules
     environment:
+      CI: "true"
       PLAYWRIGHT_BASE_URL: "http://frankenphp:8080"
     networks:
       - shawdy-net
-    command: sh -c "npm ci && npm run test:e2e"
+    command: >
+      sh -c "
+        corepack enable &&
+        corepack prepare pnpm@12.3.4 --activate &&
+        pnpm install --frozen-lockfile &&
+        pnpm run test:e2e
+      "
     profiles:
       - test
     working_dir: /app
 
 volumes:
   node_modules:
+  playwright_node_modules:
   mariadb_data:
   caddy_data:
   caddy_config:
