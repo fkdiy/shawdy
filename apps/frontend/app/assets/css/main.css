@@ -17,20 +17,48 @@
   font-display: swap;
 }
 
+:root {
+  --ui-primary: var(--ui-color-primary-600);
+  --ui-text-highlighted: var(--ui-color-neutral-900);
+  --ui-text-muted: var(--ui-color-neutral-500);
+  --ui-bg-elevated: var(--ui-color-neutral-50);
+  --ui-border: var(--ui-color-neutral-100);
+}
+
+.dark {
+  --ui-primary: var(--ui-color-primary-500);
+  --ui-text-highlighted:var(--ui-color-neutral-50);
+  --ui-text-muted: var(--ui-color-neutral-400);
+  --ui-bg-elevated: var(--ui-color-neutral-800);
+  --ui-border: color-mix(in oklab, var(--ui-color-neutral-700) 50%, transparent);
+}
+
 @theme static {
   --font-sans: "Plus Jakarta Sans", sans-serif;
 
-  --color-shawdy-brand-50: #e8eafd;
-  --color-shawdy-brand-100: #d4d8fb;
-  --color-shawdy-brand-200: #a6aef7;
-  --color-shawdy-brand-300: #7988f4;
-  --color-shawdy-brand-400: #4361ee;
-  --color-shawdy-brand-500: #274dd8;
-  --color-shawdy-brand-600: #1d3caf;
-  --color-shawdy-brand-700: #142d88;
-  --color-shawdy-brand-800: #0d2067;
-  --color-shawdy-brand-900: #061244;
-  --color-shawdy-brand-950: #030a2f;
+  --color-shawdy-brand-50: #f7ffeb;
+  --color-shawdy-brand-100: #f0ffd6;
+  --color-shawdy-brand-200: #e0ffad;
+  --color-shawdy-brand-300: #d3ff8a;
+  --color-shawdy-brand-400: #c3ff61;
+  --color-shawdy-brand-500: #b4ff39;
+  --color-shawdy-brand-600: #88dc00;
+  --color-shawdy-brand-700: #75bd00;
+  --color-shawdy-brand-800: #4c7a00;
+  --color-shawdy-brand-900: #263d00;
+  --color-shawdy-brand-950: #131f00;
+
+  --color-shawdy-neutral-50: #f0f4f1;
+  --color-shawdy-neutral-100: #e2e9e3;
+  --color-shawdy-neutral-200: #c4d4c7;
+  --color-shawdy-neutral-300: #a4bca8;
+  --color-shawdy-neutral-400: #87a68c;
+  --color-shawdy-neutral-500: #6a9070;
+  --color-shawdy-neutral-600: #55725a;
+  --color-shawdy-neutral-700: #3d5240;
+  --color-shawdy-neutral-800: #273529;
+  --color-shawdy-neutral-900: #111712;
+  --color-shawdy-neutral-950: #090c09;
 
   --color-shawdy-success-50: #cdffe5;
   --color-shawdy-success-100: #88ffc8;
@@ -79,16 +107,4 @@
   --color-shawdy-error-800: #5f0b1c;
   --color-shawdy-error-900: #39040d;
   --color-shawdy-error-950: #2a0208;
-
-  --color-shawdy-neutral-50: #f9f9fa;
-  --color-shawdy-neutral-100: #eaebee;
-  --color-shawdy-neutral-200: #c8ccd6;
-  --color-shawdy-neutral-300: #a6aec2;
-  --color-shawdy-neutral-400: #8490b1;
-  --color-shawdy-neutral-500: #667497;
-  --color-shawdy-neutral-600: #4c5978;
-  --color-shawdy-neutral-700: #333d56;
-  --color-shawdy-neutral-800: #1e2637;
-  --color-shawdy-neutral-900: #0a0f1a;
-  --color-shawdy-neutral-950: #05070e;
 }

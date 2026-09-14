@@ -11,23 +11,30 @@
     "format": "eslint . --fix",
     "typecheck": "nuxt typecheck",
     "test": "vitest",
+    "test:run": "vitest run",
     "test:e2e": "playwright test"
   },
   "dependencies": {
     "@iconify-json/lucide": "^1.2.129",
     "@iconify-json/simple-icons": "^1.2.94",
+    "@nuxt/content": "^3.16.0",
     "@nuxt/ui": "^4.11.0",
+    "@vueuse/nuxt": "^14.4.0",
+    "motion-v": "^2.4.2",
     "nuxt": "^4.5.2",
+    "shaders": "^3.2.470",
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
     "@nuxt/eslint": "^1.17.0",
-    "@playwright/test": "^1.62.1",
+    "@nuxt/test-utils": "^4.3.2",
+    "@playwright/test": "1.63.0",
+    "@vue/test-utils": "^2.5.0",
     "eslint": "^10.10.0",
     "happy-dom": "^20.13.2",
     "typescript": "^6.0.3",
     "vitest": "^4.1.11",
     "vue-tsc": "^3.3.11"
   },
-  "packageManager": "pnpm@12.3.4"
+  "packageManager": "pnpm@12.4.1"
 }
