@@ -2,6 +2,13 @@ import { defineCollection, z } from '@nuxt/content'
 
 const createEnum = (options: [string, ...string[]]) => z.enum(options)
 
+const createHeroSchema = () => z.object({
+  headline: z.string().nonempty(),
+  title: z.string().nonempty(),
+  description: z.string().nonempty(),
+  links: z.array(createLinkSchema())
+})
+
 const createLinkSchema = () => z.object({
   label: z.string().nonempty(),
   to: z.string().nonempty(),
@@ -19,10 +26,17 @@ export const collections = {
     source: 'index.yml',
     type: 'page',
     schema: z.object({
-      hero: z.object({
+      hero: createHeroSchema(),
+      features: z.object({
         headline: z.string().optional(),
-        links: z.array(createLinkSchema())
-      })
+        title: z.string().nonempty(),
+        description: z.string().nonempty(),
+        items: z.array(z.object({
+          icon: z.string(),
+          title: z.string().nonempty(),
+          description: z.string().nonempty()
+        }))
+      }),
     })
   })
 }
