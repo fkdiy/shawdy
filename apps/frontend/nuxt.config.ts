@@ -20,6 +20,11 @@ export default defineNuxtConfig({
     }
   },
 
+  colorMode: {
+    preference: 'dark',
+    fallback: 'dark'
+  },
+
   runtimeConfig: {
     apiBaseInternal: 'http://frankenphp:8080/api',
 
