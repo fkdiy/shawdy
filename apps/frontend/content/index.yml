@@ -2,5 +2,43 @@ seo:
   title: Shawdy URL shortener
   description: A learning project for exploring modern web development. Also shortens URL.
 
-title: "I built yet another\nURL shortener"
-description: Shawdy is my learning project for exploring Git, Docker, CI/CD, Symfony, API Platform, Vue.js and Nuxt, and modern web development with a hint of Go.
+hero:
+  headline: Go shawdy, it's your birthday
+  title: "I built yet another\nURL shortener"
+  description: Shawdy is my learning project for exploring Git, Docker, CI/CD, Symfony, API Platform, Vue.js and Nuxt, and modern web development with a hint of Go.
+  links:
+  - label: Find out more
+    to: "#ecosystem"
+    target: _self
+    size: xl
+  - label: View on GitHub
+    icon: i-simple-icons-github
+    size: xl
+    color: neutral
+    variant: subtle
+    to: https://github.com/fkdiy/shawdy
+    target: _blank
+
+features:
+  headline: The ecosystem
+  title: "Fueled by a modern stack"
+  description: Shawdy combines specialized, fully containerized services to keep each part of the application focused on what it does best.
+  items:
+    - icon: i-lucide-globe-code
+      title: FrankenPHP Edge Server
+      description: Powered by Caddy, handling TLS and routing requests to the frontend, backend and Go redirector.
+    - icon: i-lucide-brain-circuit
+      title: Symfony Backend
+      description: Handles the application's business logic and exposes its API through API Platform.
+    - icon: i-lucide-monitor-smartphone
+      title: Nuxt Frontend
+      description: Provides the server-rendered user interface and communicates with the Symfony API.
+    - icon: i-lucide-database
+      title: MariaDB Storage
+      description: Acts as Shawdy's reliable and persistent data store and single source of truth.
+    - icon: i-lucide-database-zap
+      title: Redis Read Model
+      description: Provides a low-latency read model for redirects, synced with MariaDB through Symfony Messenger.
+    - icon: i-lucide-rabbit
+      title: Go Redirector
+      description: Resolves short codes through Redis and performs redirects on a minimal, latency-sensitive request path.
