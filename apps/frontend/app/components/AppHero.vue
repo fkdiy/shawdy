@@ -3,10 +3,8 @@ import { enterMotion } from '~/utils/motion'
 
 const { page } = await usePageContent()
 
-console.log(page)
-
 const heroTitle = computed(() => {
-  const [primary = '', ...secondaryParts] = (page.value?.title ?? '').split('\n')
+  const [primary = '', ...secondaryParts] = (page.value?.hero.title ?? '').split('\n')
 
   return {
     primary,
@@ -17,8 +15,9 @@ const heroTitle = computed(() => {
 
 <template>
   <UPageHero
+    v-if="page"
     :ui="{
-      container: 'gap-y-10 sm:gap-y-10 lg:gap-y-10 py-24 sm:py-24 lg:py-24'
+      headline: 'font-mono font-medium text-xs text-primary uppercase tracking-[0.12em] text-center'
     }"
   >
     <template #top>
@@ -27,11 +26,17 @@ const heroTitle = computed(() => {
       />
     </template>
 
+    <template #headline>
+      <Motion v-bind="enterMotion(0.2)">
+          {{ page.hero.headline }}
+      </Motion>
+    </template>
+
     <template #title>
       <Motion
         as="span"
         v-bind="enterMotion(0.35)"
-        class="inline-block text-6xl leading-18"
+        class="inline-block leading-14 sm:leading-20"
       >
         {{ heroTitle.primary }}
         <br
@@ -48,21 +53,33 @@ const heroTitle = computed(() => {
 
     <template #description>
       <Motion
-        v-if="page"
         as="span"
         v-bind="enterMotion(0.5)"
         class="inline-block"
       >
-        {{ page.description }}
+        {{ page.hero.description }}
+      </Motion>
+    </template>
+
+    <template #links>
+      <Motion
+        class="flex flex-wrap justify-center gap-6"
+        v-bind="enterMotion(0.65)"
+      >
+        <UButton
+          v-for="link in page.hero.links"
+          :key="link.label"
+          v-bind="link"
+        />
       </Motion>
     </template>
 
     <Motion
       as="span"
-      v-bind="enterMotion(0.65)"
+      v-bind="enterMotion(0.8)"
       class="inline-block"
     >
-      <UrlShortener />
+      <HeroUrlShortener />
     </Motion>
   </UPageHero>
 </template>
