@@ -1,7 +1,7 @@
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import UrlShortener from '~/components/UrlShortener.vue'
+import UrlShortener from '~/components/HeroUrlShortener.vue'
 
 const { createShortUrlMock } = vi.hoisted(() => ({
   createShortUrlMock: vi.fn()
