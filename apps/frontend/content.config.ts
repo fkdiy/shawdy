@@ -36,7 +36,7 @@ export const collections = {
           title: z.string().nonempty(),
           description: z.string().nonempty()
         }))
-      }),
+      })
     })
   })
 }
