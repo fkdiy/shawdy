@@ -28,7 +28,7 @@ const heroTitle = computed(() => {
 
     <template #headline>
       <Motion v-bind="enterMotion(0.2)">
-          {{ page.hero.headline }}
+        {{ page.hero.headline }}
       </Motion>
     </template>
 
