@@ -4,7 +4,7 @@ import { enterMotion } from '~/utils/motion'
 const { page } = await usePageContent()
 
 const heroTitle = computed(() => {
-  const [primary = '', ...secondaryParts] = (page.value?.hero.title ?? '').split('\n')
+  const [primary = '', ...secondaryParts] = (page?.value?.hero?.title ?? '').split('\n')
 
   return {
     primary,
@@ -15,7 +15,7 @@ const heroTitle = computed(() => {
 
 <template>
   <UPageHero
-    v-if="page"
+    v-if="page.hero"
     :ui="{
       headline: 'font-mono font-medium text-xs text-primary uppercase tracking-[0.12em] text-center'
     }"
