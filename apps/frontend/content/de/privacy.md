@@ -25,7 +25,7 @@ denen Sie persönlich identifiziert werden können. Ausführliche
 Informationen zum Thema Datenschutz entnehmen Sie der unter
 diesem Text aufgeführten Datenschutzerklärung.
 
-### Datenerfassung auf dieser Website
+### Datenerfassung
 
 #### Wer ist verantwortlich für die Datenerfassung auf dieser Website?
 
@@ -88,7 +88,7 @@ erfolgt die Verarbeitung ausschließlich auf Grundlage von Art. 6
 Abs. 1 lit. a DSGVO und § 25 Abs. 1 TDDDG, soweit die
 Einwilligung die Speicherung von Cookies oder den Zugriff auf
 Informationen im Endgerät des Nutzers (z. B. Device-
-Fingerprinting) im Sinne des TDDDG umfasst. Die Einwilligung 
+Fingerprinting) im Sinne des TDDDG umfasst. Die Einwilligung
 ist jederzeit widerrufbar.
 
 Mein Hoster wird Ihre Daten nur insoweit verarbeiten, wie dies zur
@@ -116,7 +116,7 @@ Einhaltung der DSGVO verarbeitet.
 
 Der Betreiber dieser Seite nimmt den Schutz Ihrer persönlichen
 Daten sehr ernst. Ihre personenbezogenen Daten werden vertraulich
-und entsprechend den gesetzlichen Datenschutzvorschriften sowie 
+und entsprechend den gesetzlichen Datenschutzvorschriften sowie
 dieser Datenschutzerklärung behandelt.
 
 Wenn Sie diese Website benutzen, werden verschiedene
@@ -145,8 +145,8 @@ Telefon: +49 15679 311106
 E-Mail: [contact@shawdy.de](mailto:contact@shawdy.de)
 
 Verantwortliche Stelle ist die natürliche oder juristische
-Person, die allein oder gemeinsam mit anderen über die Zwecke und 
-Mittel der Verarbeitung von personenbezogenen Daten (z. B. Namen, 
+Person, die allein oder gemeinsam mit anderen über die Zwecke und
+Mittel der Verarbeitung von personenbezogenen Daten (z. B. Namen,
 E-Mail-Adressen o. Ä.) entscheidet.
 
 ### Speicherdauer
