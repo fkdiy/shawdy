@@ -13,6 +13,29 @@ mockNuxtImport('useShortUrlsApi', () => {
   })
 })
 
+mockNuxtImport('usePageContent', () => {
+  return async () => {
+    const { ref } = await import('vue')
+
+    return {
+      page: ref({
+        hero: {
+          urlShortener: {
+            icon: 'i-lucide-link',
+            cta: 'Shorten a URL',
+            placeholder: 'Enter your URL',
+            buttonLabel: 'Shorten',
+            validationError: 'Please enter a valid URL.',
+            generalError: 'Something went wrong. Please try again.',
+            resultTitle: 'Your short URL',
+            copyToClipboardAria: 'Copy short URL'
+          }
+        }
+      })
+    }
+  }
+})
+
 describe('UrlShortener', () => {
   beforeEach(() => {
     createShortUrlMock.mockReset()
@@ -23,8 +46,8 @@ describe('UrlShortener', () => {
 
     return {
       wrapper,
-      input: wrapper.find('#targetUrl'),
-      form: wrapper.find('form')
+      input: wrapper.get<HTMLInputElement>('#targetUrl'),
+      form: wrapper.get('form')
     }
   }
 
