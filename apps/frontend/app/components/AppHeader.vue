@@ -1,10 +1,14 @@
+<script setup lang="ts">
+const localePath = useLocalePath()
+</script>
+
 <template>
   <UHeader
     :toggle="false"
   >
     <template #left>
       <NuxtLink
-        to="/"
+        :to="localePath('/')"
         class="focus-visible:outline-3 outline-primary/25 rounded-md p-1 -ms-1"
       >
         <AppLogo class="w-auto h-6 shrink-0" />
