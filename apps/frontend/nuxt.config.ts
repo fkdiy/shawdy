@@ -4,6 +4,7 @@ export default defineNuxtConfig({
     '@nuxt/eslint',
     '@nuxt/content',
     '@nuxt/ui',
+    '@nuxtjs/i18n',
     '@vueuse/nuxt',
     'motion-v/nuxt'
   ],
@@ -22,6 +23,9 @@ export default defineNuxtConfig({
   content: {
     experimental: {
       sqliteConnector: 'native'
+    },
+    renderer: {
+      anchorLinks: false
     }
   },
 
@@ -48,6 +52,15 @@ export default defineNuxtConfig({
         braceStyle: '1tbs'
       }
     }
+  },
+
+  i18n: {
+    locales: [
+      { code: 'de', name: 'German', language: 'de-DE', dir: 'ltr', file: 'de.json' },
+      { code: 'en', name: 'English', language: 'en-US', dir: 'ltr', file: 'en.json' }
+    ],
+    strategy: 'prefix_except_default',
+    defaultLocale: 'de'
   },
 
   icon: {
