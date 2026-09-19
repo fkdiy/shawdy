@@ -23,7 +23,7 @@ any data that can be used to personally identify you. Detailed
 information on data protection can be found in the Privacy Policy
 provided below this text.
 
-### Data collection on this website
+### Data collection
 
 #### Who is responsible for data collection on this website?
 
