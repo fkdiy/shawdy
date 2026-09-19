@@ -54,10 +54,18 @@
             / \
             /_nuxt \
             /_nuxt/* \
+            /__nuxt_content/ \
+            /__nuxt_content/* \
             /app \
             /app/* \
             /app-assets \
             /app-assets/* \
+            /legal \
+            /privacy \
+            /de \
+            /de/* \
+            /en \
+            /en/* \
             /favicon.ico \
             /favicon.svg \
             /robots.txt
