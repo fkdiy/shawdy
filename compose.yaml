@@ -41,6 +41,11 @@ services:
       start_period: 10s
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   messenger-worker:
     container_name: shawdy-messenger-worker
@@ -71,6 +76,11 @@ services:
       - shawdy-net
     command: php bin/console messenger:consume async --time-limit=3600
     entrypoint: []
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   node:
     container_name: shawdy-node
@@ -98,6 +108,11 @@ services:
       start_period: 60s
     command: pnpm dev --host 0.0.0.0 --port 3000
     working_dir: /app
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   redirector:
     container_name: shawdy-redirector
@@ -123,6 +138,11 @@ services:
       timeout: 5s
       retries: 10
       start_period: 60s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   db:
     container_name: shawdy-db
@@ -142,6 +162,11 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   redis:
     container_name: shawdy-redis
@@ -154,6 +179,11 @@ services:
       timeout: 5s
       retries: 10
       start_period: 5s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   playwright:
     container_name: shawdy-playwright
@@ -188,7 +218,6 @@ volumes:
   mariadb_data:
   caddy_data:
   caddy_config:
-
 
 networks:
   shawdy-net:
