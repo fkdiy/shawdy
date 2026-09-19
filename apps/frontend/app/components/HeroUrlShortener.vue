@@ -2,6 +2,8 @@
 import type { FormError, FormSubmitEvent } from '@nuxt/ui'
 import { isValidUrl } from '~/utils/urlValidation'
 
+const { page } = await usePageContent()
+
 type Schema = {
   url: string
 }
@@ -38,7 +40,7 @@ function validate(state: Partial<Schema>): FormError[] {
   if (!state.url || !isValidUrl(state.url)) {
     return [{
       name: 'url',
-      message: 'Please enter a valid URL.'
+      message: page.value?.hero?.urlShortener.validationError ?? ''
     }]
   }
 
@@ -62,7 +64,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     form.value?.setErrors([
       {
         name: 'url',
-        message: 'Something went wrong. Please try again.'
+        message: page.value?.hero?.urlShortener.generalError ?? ''
       }
     ])
   } finally {
@@ -73,16 +75,17 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
 <template>
   <UPageCard
+    v-if="page.hero?.urlShortener"
     variant="subtle"
     class="mx-auto max-w-2xl dark:bg-[color-mix(in_oklab,var(--ui-color-neutral-800),var(--ui-bg))]"
   >
     <template #title>
       <div class="flex items-center gap-3">
         <UIcon
-          name="i-lucide-link"
-          class="text-primary size-5"
+          :name="page.hero.urlShortener.icon"
+          class="text-primary size-4.5"
         />
-        <span class="text-xl">Shorten your URL</span>
+        <span class="text-xl">{{ page.hero.urlShortener.cta }}</span>
       </div>
     </template>
 
@@ -103,7 +106,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
             id="targetUrl"
             v-model="state.url"
             size="xl"
-            placeholder="Paste your long URL here ..."
+            :placeholder="page.hero.urlShortener.placeholder"
             class="w-full"
           />
         </UFormField>
@@ -112,7 +115,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
           :loading="isLoading"
           type="submit"
           size="xl"
-          label="Shorten"
+          :label="page.hero.urlShortener.buttonLabel"
           class="shrink-0 w-30 justify-center"
         />
       </div>
@@ -120,7 +123,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
     <UCard
       v-if="hasResult"
-      title="Your short code"
+      :title="page.hero.urlShortener.resultTitle"
       class="w-full"
       :ui="{
         root: 'divide-none',
@@ -140,7 +143,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
           :icon="copied ? 'i-lucide-copy-check' : 'i-lucide-copy'"
           :color="copied ? 'primary' : 'neutral'"
           variant="link"
-          aria-label="Copy to clipboard"
+          :aria-label="page.hero.urlShortener.copyToClipboardAria"
           class="-translate-y-1"
           @click="copy(shortUrl)"
         />

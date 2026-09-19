@@ -1,12 +1,10 @@
-import { defineCollection, z } from '@nuxt/content'
+import { defineCollection, defineContentConfig, z } from '@nuxt/content'
 
 const createEnum = (options: [string, ...string[]]) => z.enum(options)
 
-const createHeroSchema = () => z.object({
-  headline: z.string().nonempty(),
+const createSeoSchema = () => z.object({
   title: z.string().nonempty(),
-  description: z.string().nonempty(),
-  links: z.array(createLinkSchema())
+  description: z.string().nonempty()
 })
 
 const createLinkSchema = () => z.object({
@@ -21,22 +19,67 @@ const createLinkSchema = () => z.object({
   variant: createEnum(['solid', 'outline', 'subtle', 'soft', 'ghost', 'link']).optional()
 })
 
-export const collections = {
-  content: defineCollection({
-    source: 'index.yml',
-    type: 'page',
-    schema: z.object({
-      hero: createHeroSchema(),
-      features: z.object({
-        headline: z.string().optional(),
-        title: z.string().nonempty(),
-        description: z.string().nonempty(),
-        items: z.array(z.object({
-          icon: z.string(),
-          title: z.string().nonempty(),
-          description: z.string().nonempty()
-        }))
-      })
+const createUrlShortenerSchema = () => z.object({
+  icon: z.string(),
+  cta: z.string(),
+  placeholder: z.string(),
+  buttonLabel: z.string(),
+  resultTitle: z.string(),
+  validationError: z.string(),
+  generalError: z.string(),
+  copyToClipboardAria: z.string()
+})
+
+const createHeroSchema = () => z.object({
+  headline: z.string().nonempty(),
+  title: z.string().nonempty(),
+  description: z.string().nonempty(),
+  links: z.array(createLinkSchema()),
+  urlShortener: createUrlShortenerSchema()
+})
+
+const createPageHeaderSchema = () => z.object({
+  headline: z.string().optional(),
+  title: z.string().nonempty(),
+  description: z.string().nonempty()
+})
+
+const createPageSectionSchema = () => z.object({
+  headline: z.string().optional(),
+  title: z.string().nonempty(),
+  description: z.string().nonempty(),
+  items: z.array(z.object({
+    icon: z.string(),
+    title: z.string().nonempty(),
+    description: z.string().nonempty()
+  })).optional()
+})
+
+const commonSchema = z.object({
+  seo: createSeoSchema(),
+  hero: createHeroSchema().optional(),
+  pageHeader: createPageHeaderSchema(),
+  pageSection: createPageSectionSchema().optional()
+})
+
+export default defineContentConfig({
+  collections: {
+    content_de: defineCollection({
+      type: 'page',
+      source: {
+        include: 'de/**',
+        prefix: '/'
+      },
+      schema: commonSchema
+    }),
+
+    content_en: defineCollection({
+      type: 'page',
+      source: {
+        include: 'en/**',
+        prefix: '/'
+      },
+      schema: commonSchema
     })
-  })
-}
+  }
+})

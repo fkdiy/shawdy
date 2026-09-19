@@ -1,4 +1,4 @@
 <template>
   <AppHero />
-  <AppEcosystem />
+  <AppPageSection />
 </template>

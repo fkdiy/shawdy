@@ -6,10 +6,9 @@ const { page } = await usePageContent()
 
 <template>
   <UPageSection
-    v-if="page"
     id="ecosystem"
     :ui="{
-      root: 'py-24 sm:py-32 scroll-mt-(--ui-header-height)',
+      root: 'pb-6 sm:pb-12 scroll-mt-(--ui-header-height)',
       container: 'max-w-5xl',
       headline: 'font-mono font-medium text-xs text-primary uppercase tracking-[0.12em] text-center',
       title: 'max-w-xl mx-auto',
@@ -18,44 +17,50 @@ const { page } = await usePageContent()
   >
     <template #headline>
       <Motion
+        v-if="page.pageSection"
         as="span"
         v-bind="scrollMotion()"
         class="inline-block"
       >
-        {{ page.features.headline }}
+        {{ page.pageSection.headline }}
       </Motion>
     </template>
 
     <template #title>
       <Motion
+        v-if="page.pageSection"
         as="span"
         v-bind="scrollMotion(0.1)"
         class="inline-block"
       >
-        {{ page.features.title }}
+        {{ page.pageSection.title }}
       </Motion>
     </template>
 
     <template #description>
       <Motion
+        v-if="page.pageSection"
         as="span"
         v-bind="scrollMotion(0.2)"
         class="inline-block"
       >
-        {{ page.features.description }}
+        {{ page.pageSection.description }}
       </Motion>
     </template>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div
+      v-if="page.pageSection"
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+    >
       <Motion
-        v-for="(feature, index) in page.features.items"
-        :key="feature.title"
+        v-for="(service, index) in page.pageSection.items"
+        :key="service.title"
         v-bind="staggerMotion(index)"
       >
         <UPageFeature
-          :icon="feature.icon"
-          :title="feature.title"
-          :description="feature.description"
+          :icon="service.icon"
+          :title="service.title"
+          :description="service.description"
         />
       </Motion>
     </div>
