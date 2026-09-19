@@ -1,27 +1,36 @@
 seo:
   title: Shawdy URL shortener
-  description: A learning project for exploring modern web development. Also shortens URL.
+  description: A WIP learning project for exploring modern web development. Also shortens URL.
 
 hero:
   headline: Go shawdy, it's your birthday
-  title: "I built yet another\nURL shortener"
-  description: Shawdy is my learning project for exploring Git, Docker, CI/CD, Symfony, API Platform, Vue.js and Nuxt, and modern web development with a hint of Go.
+  title: "I build yet another\nURL shortener"
+  description: Shawdy is my WIP learning project for exploring Git, Docker, CI/CD, Symfony, API Platform, Vue.js and Nuxt, and modern web development with a hint of Go.
   links:
-  - label: Find out more
-    to: "#ecosystem"
-    target: _self
-    size: xl
-  - label: View on GitHub
-    icon: i-simple-icons-github
-    size: xl
-    color: neutral
-    variant: subtle
-    to: https://github.com/fkdiy/shawdy
-    target: _blank
+    - label: Find out more
+      to: "#ecosystem"
+      target: _self
+      size: xl
+    - label: View on GitHub
+      icon: i-simple-icons-github
+      size: xl
+      color: neutral
+      variant: subtle
+      to: https://github.com/fkdiy/shawdy
+      target: _blank
+  urlShortener:
+    icon: i-lucide-link
+    cta: Shorten your URL
+    placeholder: Paste your long URL here ...
+    buttonLabel: Shorten
+    resultTitle: Your short code
+    copyToClipboardAria: Copy to clipboard
+    validationError: Please enter a valid URL.
+    generalError: Something went wrong. Please try again.
 
-features:
+pageSection:
   headline: The ecosystem
-  title: "Fueled by a modern stack"
+  title: "Based on a modern stack"
   description: Shawdy combines specialized, fully containerized services to keep each part of the application focused on what it does best.
   items:
     - icon: i-lucide-globe-code

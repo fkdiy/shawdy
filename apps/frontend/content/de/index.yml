@@ -1,0 +1,53 @@
+seo:
+  title: Shawdy URL shortener
+  description: Ein WIP Lernprojekt für moderne Webentwicklung. Kürzt auch URLs.
+
+hero:
+  headline: Go shawdy, it's your birthday
+  title: "Ich baue noch einen\nURL shortener"
+  description: Shawdy ist mein WIP Lernprojekt für Git, Docker, CI/CD, Symfony, API Platform, Vue.js und Nuxt, und moderne Webentwicklung mit einer Prise Go.
+  links:
+    - label: Erfahre mehr
+      to: "#ecosystem"
+      target: _self
+      size: xl
+    - label: Auf GitHub ansehen
+      icon: i-simple-icons-github
+      size: xl
+      color: neutral
+      variant: subtle
+      to: https://github.com/fkdiy/shawdy
+      target: _blank
+  urlShortener:
+    icon: i-lucide-link
+    cta: Kürze deine URL
+    placeholder: Füge deine lange URL hier ein ...
+    buttonLabel: Kürzen
+    resultTitle: Dein Shortcode
+    copyToClipboardAria: In die Zwischenablage kopieren
+    validationError: Bitte gib eine gültige URL ein.
+    generalError: Etwas ist schief gegangen. Bitte versuche es erneut.
+
+pageSection:
+  headline: Das Ökosystem
+  title: "Basierend auf einem modernen Stack"
+  description: Shawdy kombiniert spezialisierte, komplett containerisierte Dienste, damit jeder Teil der App das genau das macht, was er am Besten kann.
+  items:
+    - icon: i-lucide-globe-code
+      title: FrankenPHP Edge Server
+      description: Basierend auf Caddy, erledigt TLS und Routing zum Frontend, Backend und dem Go Redirector.
+    - icon: i-lucide-brain-circuit
+      title: Symfony Backend
+      description: Kümmert sich um die Geschäftslogik der App und stellt seine API über API Platform bereit.
+    - icon: i-lucide-monitor-smartphone
+      title: Nuxt Frontend
+      description: Stellt die serverseitig gerenderte UI zur Verfügung und kommuniziert mit der Symfony API.
+    - icon: i-lucide-database
+      title: MariaDB Storage
+      description: Agiert als Shawdys zuverlässige und persistente Datenquelle und Single Source of Truth.
+    - icon: i-lucide-database-zap
+      title: Redis Read Model
+      description: Bietet ein latenzarmes Read Model für Weiterleitungen, synchronisiert mit MariaDB via Symfony Messenger.
+    - icon: i-lucide-rabbit
+      title: Go Redirector
+      description: Löst Shortcodes über Redis auf und führt Weitrleitungen auf einem latenzarmen Request-Path aus.
