@@ -23,4 +23,8 @@ framework:
             Symfony\Component\Notifier\Message\SmsMessage: async
 
             # Route your messages to the transports
-            App\Message\ShortUrlCreated: async
+            App\Message\Event\ShortUrlCreated: async
+            App\Message\Event\AbuseReportReceived: async
+
+            App\Message\Command\SendAbuseReportConfirmation: async
+            App\Message\Command\SendAbuseReportNotification: async
