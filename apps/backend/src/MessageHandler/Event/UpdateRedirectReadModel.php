@@ -1,9 +1,9 @@
 <?php
 
-namespace App\MessageHandler;
+namespace App\MessageHandler\Event;
 
 use App\Contract\RedirectReadModel;
-use App\Message\ShortUrlCreated;
+use App\Message\Event\ShortUrlCreated;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]

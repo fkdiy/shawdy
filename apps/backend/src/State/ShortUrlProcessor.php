@@ -5,7 +5,7 @@ namespace App\State;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\Entity\ShortUrl;
-use App\Message\ShortUrlCreated;
+use App\Message\Event\ShortUrlCreated;
 use App\Service\ShortCodeGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
