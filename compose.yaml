@@ -13,6 +13,8 @@ services:
         condition: service_healthy
       redirector:
         condition: service_healthy
+      mailpit:
+        condition: service_healthy
     ports:
       - "80:80" # HTTP
       - "443:443" # HTTPS
@@ -31,6 +33,7 @@ services:
       DATABASE_NAME: ${DATABASE_NAME:-shawdy_app}
       DATABASE_USER: ${DATABASE_USER:-app}
       DATABASE_PASSWORD: ${DATABASE_PASSWORD:-dev_only_password}
+      MAILER_DSN: "smtp://mailpit:1025"
     networks:
       - shawdy-net
     healthcheck:
@@ -62,6 +65,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+      mailpit:
+        condition: service_healthy
     volumes:
       - ./apps/backend:/app
     environment:
@@ -72,6 +77,7 @@ services:
       DATABASE_NAME: ${DATABASE_NAME:-shawdy_app}
       DATABASE_USER: ${DATABASE_USER:-app}
       DATABASE_PASSWORD: ${DATABASE_PASSWORD:-dev_only_password}
+      MAILER_DSN: "smtp://mailpit:1025"
     networks:
       - shawdy-net
     command: php bin/console messenger:consume async --time-limit=3600
@@ -175,6 +181,25 @@ services:
       - shawdy-net
     healthcheck:
       test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  mailpit:
+    container_name: shawdy-mailpit
+    image: axllent/mailpit:v1.31.2
+    ports:
+      - "8025:8025"
+    networks:
+      - shawdy-net
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8025/readyz"]
       interval: 5s
       timeout: 5s
       retries: 10
