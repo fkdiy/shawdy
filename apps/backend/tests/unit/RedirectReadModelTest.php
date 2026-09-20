@@ -3,8 +3,8 @@
 namespace App\Tests\Unit;
 
 use App\Contract\RedirectReadModel;
-use App\Message\ShortUrlCreated;
-use App\MessageHandler\UpdateRedirectReadModel;
+use App\Message\Event\ShortUrlCreated;
+use App\MessageHandler\Event\UpdateRedirectReadModel;
 use PHPUnit\Framework\TestCase;
 
 class RedirectReadModelTest extends TestCase
