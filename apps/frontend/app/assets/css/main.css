@@ -19,20 +19,32 @@
 
 :root {
   --ui-primary: var(--ui-color-primary-600);
+  --ui-bg: color-mix(in oklab, var(--ui-color-neutral-50) 40%, #FFFFFF);
   --ui-text-highlighted: var(--ui-color-neutral-900);
   --ui-text-dimmed: color-mix(in oklab, var(--ui-color-neutral-400) 40%, #808080);
   --ui-text-muted: color-mix(in oklab, var(--ui-color-neutral-500) 40%, #808080);
-  --ui-bg-elevated: var(--ui-color-neutral-50);
-  --ui-border: var(--ui-color-neutral-100);
+  --ui-bg-elevated: var(--ui-color-neutral-100);
+  --ui-border: var(--ui-color-neutral-200);
 }
 
 .dark {
   --ui-primary: var(--ui-color-primary-500);
+  --ui-bg: var(--ui-color-neutral-950);
   --ui-text-highlighted:var(--ui-color-neutral-50);
   --ui-text-muted: var(--ui-color-neutral-400);
   --ui-text-dimmed: var(--ui-color-neutral-500);
   --ui-bg-elevated: var(--ui-color-neutral-800);
   --ui-border: color-mix(in oklab, var(--ui-color-neutral-700) 50%, transparent);
+}
+
+@layer utilities {
+  .text-primary {
+    color: var(--color-shawdy-brand-650);
+  }
+
+  .dark .text-primary {
+    color: var(--color-shawdy-brand-500);
+  }
 }
 
 @layer base {
@@ -51,6 +63,7 @@
   --color-shawdy-brand-400: #c3ff61;
   --color-shawdy-brand-500: #b4ff39;
   --color-shawdy-brand-600: #88dc00;
+  --color-shawdy-brand-650: #7fcd00;
   --color-shawdy-brand-700: #75bd00;
   --color-shawdy-brand-800: #4c7a00;
   --color-shawdy-brand-900: #263d00;

@@ -27,6 +27,7 @@ useHead({
 
 <template>
   <UApp>
+    <NuxtLoadingIndicator color="var(--ui-primary)" />
     <AppHeader />
 
     <UMain>

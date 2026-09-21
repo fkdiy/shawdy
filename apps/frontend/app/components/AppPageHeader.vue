@@ -19,33 +19,15 @@ const { page } = await usePageContent()
       <LazyBackgroundStars
         class="hidden dark:block"
       />
-      <Motion
-        as="span"
-        v-bind="enterMotion(0.2)"
-        class="inline-block"
-      >
-        {{ page.pageHeader.headline }}
-      </Motion>
+      {{ page.pageHeader.headline }}
     </template>
 
     <template #title>
-      <Motion
-        as="span"
-        v-bind="enterMotion(0.35)"
-        class="inline-block"
-      >
-        {{ page.pageHeader.title }}
-      </Motion>
+      {{ page.pageHeader.title }}
     </template>
 
     <template #description>
-      <Motion
-        as="span"
-        v-bind="enterMotion(0.5)"
-        class="inline-block"
-      >
-        {{ page.pageHeader.description }}
-      </Motion>
+      {{ page.pageHeader.description }}
     </template>
   </UPageHeader>
 </template>

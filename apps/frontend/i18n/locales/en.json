@@ -3,5 +3,9 @@
     "landing": "Landing Page",
     "legal": "Legal Notice",
     "privacy": "Privacy"
+  },
+
+  "content": {
+    "toc": "Table of contents"
   }
 }

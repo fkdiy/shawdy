@@ -3,5 +3,9 @@
     "landing": "Startseite",
     "legal": "Impressum",
     "privacy": "Datenschutz"
+  },
+
+  "content": {
+    "toc": "Inhaltsverzeichnis"
   }
 }
