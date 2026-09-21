@@ -55,13 +55,12 @@ service enquiries.
 You have the right at any time to receive information free of charge
 about the origin, recipients and purpose of your stored personal data.
 You also have the right to request the correction or deletion of this
-data.
-
-If you have given your consent to data processing, you may withdraw
-this consent at any time with effect for the future. You also have the
-right, under certain circumstances, to request that the processing of
-your personal data be restricted. Furthermore, you have the right to
-lodge a complaint with the competent supervisory authority.
+data. If you have given your consent to data processing, you may
+withdraw this consent at any time with effect for the future. You also
+have the right, under certain circumstances, to request that the
+processing of your personal data be restricted. Furthermore, you have
+the right to lodge a complaint with the competent supervisory
+authority.
 
 You may contact me at any time regarding this or any other questions
 about data protection.
@@ -142,55 +141,43 @@ data (e.g. names, email addresses or similar data).
 
 Unless a more specific storage period has been stated in this Privacy
 Policy, your personal data will remain with me until the purpose for
-processing the data no longer applies.
-
-If you submit a legitimate request for deletion or withdraw your
-consent to data processing, your data will be deleted unless I have
-other legally permissible grounds for storing your personal data
-(e.g. retention periods under tax or commercial law); in the latter
-case, the data will be deleted once these grounds no longer apply.
+processing the data no longer applies. If you submit a legitimate
+request for deletion or withdraw your consent to data processing, your
+data will be deleted unless I have other legally permissible grounds
+for storing your personal data (e.g. retention periods under tax or
+commercial law); in the latter case, the data will be deleted once
+these grounds no longer apply.
 
 ### General information on the legal bases for data processing on this website
 
 If you have consented to data processing, I process your personal data
 on the basis of Art. 6(1)(a) GDPR or Art. 9(2)(a) GDPR where special
 categories of personal data pursuant to Art. 9(1) GDPR are processed.
-
 In the case of explicit consent to the transfer of personal data to
 third countries, data processing is also carried out on the basis of
-Art. 49(1)(a) GDPR.
-
-If you have consented to the storage of cookies or to access to
-information on your device (e.g. via device fingerprinting), data
-processing is additionally carried out on the basis of Section 25(1)
-TDDDG. Consent may be withdrawn at any time.
-
+Art. 49(1)(a) GDPR. If you have consented to the storage of cookies or
+to access to information on your device (e.g. via device
+fingerprinting), data processing is additionally carried out on the
+basis of Section 25(1) TDDDG. Consent may be withdrawn at any time.
 If your data is required for the performance of a contract or for
 taking steps prior to entering into a contract, I process your data on
-the basis of Art. 6(1)(b) GDPR.
-
-Furthermore, I process your data where this is necessary to comply
-with a legal obligation on the basis of Art. 6(1)(c) GDPR.
-
-Data processing may also be carried out on the basis of my legitimate
-interest pursuant to Art. 6(1)(f) GDPR. Information about the relevant
-legal basis in each individual case is provided in the following
-sections of this Privacy Policy.
+the basis of Art. 6(1)(b) GDPR. Furthermore, I process your data where
+this is necessary to comply with a legal obligation on the basis of
+Art. 6(1)(c) GDPR. Data processing may also be carried out on the basis
+of my legitimate interest pursuant to Art. 6(1)(f) GDPR. Information
+about the relevant legal basis in each individual case is provided in
+the following sections of this Privacy Policy.
 
 ### Recipients of personal data
 
 As part of my activities, I work with various external parties. In
 some cases, this also requires personal data to be transferred to these
-external parties.
-
-I only disclose personal data to external parties where this is
-necessary for the performance of a contract, where I am legally
-required to do so (e.g. disclosure of data to tax authorities), where
-I have a legitimate interest in the disclosure pursuant to
-Art. 6(1)(f) GDPR, or where another legal basis permits the disclosure
-of data.
-
-When using processors, I only disclose the personal data of my
+external parties. I only disclose personal data to external parties
+where this is necessary for the performance of a contract, where I am
+legally required to do so (e.g. disclosure of data to tax authorities),
+where I have a legitimate interest in the disclosure pursuant to Art.
+6(1)(f) GDPR, or where another legal basis permits the disclosure of
+data. When using processors, I only disclose the personal data of my
 visitors on the basis of a valid data processing agreement. In the
 case of joint processing, an agreement governing joint processing is
 concluded.
@@ -199,9 +186,7 @@ concluded.
 
 Many data processing operations are only possible with your explicit
 consent. You may withdraw consent that you have already given at any
-time.
-
-The lawfulness of the data processing carried out before the
+time. The lawfulness of the data processing carried out before the
 withdrawal remains unaffected by the withdrawal.
 
 ### Right to object to data collection in special cases and to direct marketing (Art. 21 GDPR)
@@ -209,45 +194,37 @@ withdrawal remains unaffected by the withdrawal.
 Where data processing is carried out on the basis of Art. 6(1)(e) or
 (f) GDPR, you have the right at any time, on grounds relating to your
 particular situation, to object to the processing of your personal
-data.
-
-This also applies to profiling based on these provisions. The
+data.This also applies to profiling based on these provisions. The
 respective legal basis on which processing is based can be found in
-this Privacy Policy.
-
-If you object, I will no longer process the personal data concerned
-unless I can demonstrate compelling legitimate grounds for the
-processing which override your interests, rights and freedoms, or
-unless the processing serves the establishment, exercise or defence
-of legal claims (objection pursuant to Art. 21(1) GDPR).
+this Privacy Policy. If you object, I will no longer process the
+personal data concerned unless I can demonstrate compelling legitimate
+grounds for the processing which override your interests, rights and
+freedoms, or unless the processing serves the establishment, exercise
+or defence of legal claims (objection pursuant to Art. 21(1) GDPR).
 
 Where your personal data is processed for direct marketing purposes,
 you have the right to object at any time to the processing of personal
-data concerning you for the purpose of such marketing.
-
-This also applies to profiling to the extent that it is related to
-such direct marketing. If you object, your personal data will
-subsequently no longer be used for direct marketing purposes
-(objection pursuant to Art. 21(2) GDPR).
+data concerning you for the purpose of such marketing. This also
+applies to profiling to the extent that it is related to such direct
+marketing. If you object, your personal data will subsequently no
+longer be used for direct marketing purposes (objection pursuant to
+Art. 21(2) GDPR).
 
 ### Right to lodge a complaint with the competent supervisory authority
 
 In the event of infringements of the GDPR, data subjects have the
 right to lodge a complaint with a supervisory authority, in particular
 in the Member State of their habitual residence, their place of work
-or the place of the alleged infringement.
-
-The right to lodge a complaint is without prejudice to any other
-administrative or judicial remedies.
+or the place of the alleged infringement. The right to lodge a complaint
+is without prejudice to any other administrative or judicial remedies.
 
 ### Right to data portability
 
 You have the right to have data that I process automatically on the
 basis of your consent or in fulfilment of a contract provided to you
-or to a third party in a commonly used, machine-readable format.
-
-If you request the direct transfer of the data to another controller,
-this will only be carried out where technically feasible.
+or to a third party in a commonly used, machine-readable format. If you
+request the direct transfer of the data to another controller, this will
+only be carried out where technically feasible.
 
 ### Access, rectification and erasure
 
@@ -255,17 +232,14 @@ Within the framework of the applicable legal provisions, you have the
 right at any time to receive information free of charge about your
 stored personal data, its origin and recipients, and the purpose of
 the data processing, and, where applicable, the right to rectification
-or erasure of this data.
-
-You may contact me at any time regarding this or any other questions
-about personal data.
+or erasure of this data. You may contact me at any time regarding this
+or any other questions about personal data.
 
 ### Right to restriction of processing
 
 You have the right to request the restriction of the processing of
-your personal data. You may contact me at any time for this purpose.
-
-The right to restriction of processing applies in the following cases:
+your personal data. You may contact me at any time for this purpose. The
+right to restriction of processing applies in the following cases:
 
 - If you dispute the accuracy of the personal data stored by me, I
   generally need time to verify this. For the duration of the
@@ -297,11 +271,10 @@ State.
 
 For security reasons and to protect the transmission of confidential
 content, such as orders or enquiries that you send to me as the website
-operator, this website uses SSL or TLS encryption.
-
-You can recognise an encrypted connection by the fact that the address
-line of the browser changes from "http://" to "https://" and by the
-lock symbol in your browser's address bar.
+operator, this website uses SSL or TLS encryption. You can recognise an
+encrypted connection by the fact that the address line of the browser
+changes from "http://" to "https://" and by the lock symbol in your 
+browser's address bar.
 
 When SSL or TLS encryption is enabled, the data you transmit to me
 cannot be read by third parties.

@@ -7,6 +7,15 @@ export default defineAppConfig({
       warning: 'shawdy-warning',
       error: 'shawdy-error',
       neutral: 'shawdy-neutral'
+    },
+
+    prose: {
+      p: {
+        base: 'text-muted'
+      },
+      li: {
+        base: 'text-muted'
+      }
     }
   }
 })
