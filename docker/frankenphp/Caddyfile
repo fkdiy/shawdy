@@ -60,12 +60,14 @@
             /app/* \
             /app-assets \
             /app-assets/* \
-            /legal \
-            /privacy \
             /de \
             /de/* \
             /en \
             /en/* \
+            /legal \
+            /privacy \
+            /legal \
+            /report-abuse \
             /favicon.ico \
             /favicon.svg \
             /robots.txt
