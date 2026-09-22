@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { FormError, FormSubmitEvent } from '@nuxt/ui'
+import type { FormSubmitEvent } from '@nuxt/ui'
+import { z } from 'zod'
 import { useShortUrlsApi } from '~/composables/api/useShortUrlsApi'
 import { isValidUrl } from '~/utils/urlValidation'
 
@@ -47,18 +48,6 @@ const shortUrl = computed(() => {
   ).toString()
 })
 
-// Form validation
-function validate(state: Partial<Schema>): FormError[] {
-  if (!state.url || !isValidUrl(state.url)) {
-    return [{
-      name: 'url',
-      message: page.value?.hero?.urlShortener.validationError ?? ''
-    }]
-  }
-
-  return []
-}
-
 // Form submission
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   isLoading.value = true
@@ -103,8 +92,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
     <UForm
       ref="form"
-      :validate="validate"
-      :validate-on="[]"
+      :schema="schema"
       :state="state"
       :validate-on="[]"
       @submit="onSubmit"
@@ -151,6 +139,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         >
           {{ shortUrl }}
         </span>
+
         <UButton
           size="xs"
           :icon="copied ? 'i-lucide-copy-check' : 'i-lucide-copy'"
