@@ -55,11 +55,25 @@ const createPageSectionSchema = () => z.object({
   })).optional()
 })
 
+const createReportAbuseFormSchema = () => z.object({
+  requiredFieldsInfo: z.string().nonempty(),
+  shortUrlLabel: z.string().nonempty(),
+  shortUrlPlaceholder: z.string().nonempty(),
+  contactEmailLabel: z.string().nonempty(),
+  contactEmailPlaceholder: z.string().nonempty(),
+  descriptionLabel: z.string().nonempty(),
+  descriptionPlaceholder: z.string().nonempty(),
+  submitLabel: z.string().nonempty(),
+  personalDiscretionInfoTitle: z.string().nonempty(),
+  personalDiscretionInfoText: z.string().nonempty()
+})
+
 const commonSchema = z.object({
   seo: createSeoSchema(),
   hero: createHeroSchema().optional(),
   pageHeader: createPageHeaderSchema(),
-  pageSection: createPageSectionSchema().optional()
+  pageSection: createPageSectionSchema().optional(),
+  reportAbuseForm: createReportAbuseFormSchema().optional()
 })
 
 export default defineContentConfig({
