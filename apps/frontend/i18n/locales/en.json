@@ -6,7 +6,19 @@
     "reportAbuse": "Report abuse"
   },
 
-  "content": {
+  "common": {
+    "copyToClipboard": "Copy to clipboard",
     "toc": "Table of contents"
+  },
+
+  "errors": {
+    "generic": "Something went wrong. Please try again.",
+
+    "validation": {
+      "url": "Please enter a valid URL.",
+      "shawdyUrl": "Please enter a valid Shawdy short URL.",
+      "email": "Please enter a vaild email address.",
+      "required": "This field is required."
+    }
   }
 }

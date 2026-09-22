@@ -7,11 +7,11 @@ const { createShortUrlMock } = vi.hoisted(() => ({
   createShortUrlMock: vi.fn()
 }))
 
-mockNuxtImport('useShortUrlsApi', () => {
-  return () => ({
+vi.mock('~/composables/api/useShortUrlsApi', () => ({
+  useShortUrlsApi: () => ({
     createShortUrl: createShortUrlMock
   })
-})
+}))
 
 mockNuxtImport('usePageContent', () => {
   return async () => {

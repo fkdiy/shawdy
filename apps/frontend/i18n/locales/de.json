@@ -6,7 +6,19 @@
     "reportAbuse": "Missbrauch melden"
   },
 
-  "content": {
+  "common": {
+    "copyToClipboard": "In die Zwischenablage kopieren",
     "toc": "Inhaltsverzeichnis"
+  },
+
+  "errors": {
+    "generic": "Etwas ist schief gegangen. Bitte versuche es erneut.",
+
+    "validation": {
+      "url": "Bitte gib eine gültige URL ein.",
+      "shawdyUrl": "Bitte gib eine gültige Shawdy Short-URL ein.",
+      "email": "Bitte gib eine gültige E-Mail-Adresse ein.",
+      "required": "Dies ist ein Pflichtfeld."
+    }
   }
 }

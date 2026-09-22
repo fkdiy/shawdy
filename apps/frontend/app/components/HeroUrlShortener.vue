@@ -1,12 +1,24 @@
 <script setup lang="ts">
 import type { FormError, FormSubmitEvent } from '@nuxt/ui'
+import { useShortUrlsApi } from '~/composables/api/useShortUrlsApi'
 import { isValidUrl } from '~/utils/urlValidation'
 
 const { page } = await usePageContent()
 
-type Schema = {
-  url: string
-}
+const { t } = useI18n()
+
+// Form validation
+const schema = z.object({
+  url: z
+    .string()
+    .min(1, t('errors.validation.url'))
+    .refine(
+      value => isValidUrl(value),
+      t('errors.validation.url')
+    )
+})
+
+type Schema = z.output<typeof schema>
 
 // Form and request state
 const state = reactive<Schema>({
@@ -64,7 +76,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     form.value?.setErrors([
       {
         name: 'url',
-        message: page.value?.hero?.urlShortener.generalError ?? ''
+        message: t('errors.generic') ?? ''
       }
     ])
   } finally {
@@ -94,6 +106,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       :validate="validate"
       :validate-on="[]"
       :state="state"
+      :validate-on="[]"
       @submit="onSubmit"
     >
       <div class="flex w-full items-start gap-x-6">
@@ -143,7 +156,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
           :icon="copied ? 'i-lucide-copy-check' : 'i-lucide-copy'"
           :color="copied ? 'primary' : 'neutral'"
           variant="link"
-          :aria-label="page.hero.urlShortener.copyToClipboardAria"
+          :aria-label="t('common.copyToClipboard')"
           class="-translate-y-1"
           @click="copy(shortUrl)"
         />

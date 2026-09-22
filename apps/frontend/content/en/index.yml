@@ -23,10 +23,7 @@ hero:
     cta: Shorten your URL
     placeholder: Paste your long URL here ...
     buttonLabel: Shorten
-    resultTitle: Your short code
-    copyToClipboardAria: Copy to clipboard
-    validationError: Please enter a valid URL.
-    generalError: Something went wrong. Please try again.
+    resultTitle: Your short URL
 
 pageSection:
   headline: The ecosystem

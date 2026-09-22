@@ -23,10 +23,7 @@ hero:
     cta: Kürze deine URL
     placeholder: Füge deine lange URL hier ein ...
     buttonLabel: Kürzen
-    resultTitle: Dein Shortcode
-    copyToClipboardAria: In die Zwischenablage kopieren
-    validationError: Bitte gib eine gültige URL ein.
-    generalError: Etwas ist schief gegangen. Bitte versuche es erneut.
+    resultTitle: Deine Short-URL
 
 pageSection:
   headline: Das Ökosystem

@@ -15,7 +15,7 @@ console.log(page)
       }"
     >
       <template #right>
-        <AppReportAbuseForm />
+        <ReportAbuseForm />
       </template>
 
       <ContentRenderer
