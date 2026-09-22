@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraint;
 #[\Attribute]
 class ValidShortUrl extends Constraint
 {
-    public string $message = 'error.abuseReport.invalidShortUrl';
+    public string $message = 'errors.validation.shawdyUrl';
 
     public function __construct(
         ?array $groups = null,
