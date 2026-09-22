@@ -14,9 +14,9 @@ async function onLocaleChange(value: string): Promise<void> {
 const localePath = useLocalePath()
 
 const links = computed(() => [
-  { label: t('navigation.landing'), to: localePath('/') },
   { label: t('navigation.legal'), to: localePath('/legal') },
-  { label: t('navigation.privacy'), to: localePath('/privacy') }
+  { label: t('navigation.privacy'), to: localePath('/privacy') },
+  { label: t('navigation.reportAbuse'), to: localePath('/report-abuse') }
 ])
 </script>
 
@@ -25,7 +25,7 @@ const links = computed(() => [
 
   <UFooter
     :ui="{
-      container: 'border-t border-default lg:py-8',
+      container: 'lg:py-8',
       right: 'gap-x-0 flex-wrap'
     }
     "
