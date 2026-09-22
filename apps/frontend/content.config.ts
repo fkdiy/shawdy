@@ -24,10 +24,7 @@ const createUrlShortenerSchema = () => z.object({
   cta: z.string(),
   placeholder: z.string(),
   buttonLabel: z.string(),
-  resultTitle: z.string(),
-  validationError: z.string(),
-  generalError: z.string(),
-  copyToClipboardAria: z.string()
+  resultTitle: z.string()
 })
 
 const createHeroSchema = () => z.object({

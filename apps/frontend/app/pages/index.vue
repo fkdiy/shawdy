@@ -1,4 +1,4 @@
 <template>
-  <AppHero />
-  <AppPageSection />
+  <LandingHero />
+  <PageSection />
 </template>

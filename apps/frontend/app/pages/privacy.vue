@@ -1,4 +1,4 @@
 <template>
-  <AppPageHeader />
-  <AppContent />
+  <PageHeader />
+  <LegalContent />
 </template>

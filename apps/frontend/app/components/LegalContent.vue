@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { TocLink } from '@nuxt/content'
+
 const { page } = await usePageContent()
 
 const { t } = useI18n()
@@ -6,7 +8,7 @@ const { t } = useI18n()
 const topLevelLinks = computed(() => {
   if (!page.value?.body?.toc?.links) return []
 
-  return page.value.body.toc.links.map(link => ({
+  return page.value.body.toc.links.map((link: TocLink) => ({
     ...link,
     children: []
   }))
@@ -33,7 +35,7 @@ const topLevelLinks = computed(() => {
               linkText: 'overflow-auto whitespace-normal'
             }"
             :links="topLevelLinks"
-            :title="t('content.toc')"
+            :title="t('common.toc')"
             highlight-color="primary"
           />
         </UPageAside>
