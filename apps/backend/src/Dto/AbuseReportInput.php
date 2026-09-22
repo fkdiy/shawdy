@@ -22,7 +22,10 @@ class AbuseReportInput
     private ?string $message = null;
 
     #[Assert\NotBlank]
-    #[Assert\Choice(choices: ['de', 'en'])]
+    #[Assert\Regex(
+        pattern: '/^(de|en)$/',
+        message: 'error.validation.locale'
+    )]
     private ?string $locale = null;
 
     public function getShortUrl(): ?string
