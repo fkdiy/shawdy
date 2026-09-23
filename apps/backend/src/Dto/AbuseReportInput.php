@@ -17,7 +17,6 @@ class AbuseReportInput
     #[Assert\Length(max: 255)]
     private ?string $email = null;
 
-    #[Assert\NotBlank]
     #[Assert\Length(max: 5000)]
     private ?string $message = null;
 
