@@ -8,4 +8,6 @@ interface RedirectReadModel
         string $shortCode,
         string $targetUrl,
     ): void;
+
+    public function delete(string $shortCode): void;
 }
