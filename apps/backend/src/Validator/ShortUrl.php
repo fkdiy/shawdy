@@ -5,11 +5,12 @@ namespace App\Validator;
 use Symfony\Component\Validator\Constraint;
 
 #[\Attribute]
-class ValidShortUrl extends Constraint
+class ShortUrl extends Constraint
 {
     public string $message = 'errors.validation.shawdyUrl';
 
     public function __construct(
+        ?string $message = null,
         ?array $groups = null,
         mixed $payload = null,
     ) {

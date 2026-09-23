@@ -4,8 +4,8 @@ namespace App\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
-use App\Entity\AbuseReport;
 use App\Dto\AbuseReportInput;
+use App\Entity\AbuseReport;
 use App\Message\Event\AbuseReportReceived;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;

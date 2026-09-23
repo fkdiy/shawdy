@@ -61,7 +61,7 @@ final class DeleteShortUrlCommand extends Command
             'shortCode' => $shortCode,
         ]);
 
-        if ($shortUrl !== null) {
+        if (null !== $shortUrl) {
             $io->section('Short URL');
 
             $io->definitionList(
