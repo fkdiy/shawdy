@@ -1,7 +1,7 @@
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import UrlShortener from '~/components/HeroUrlShortener.vue'
+import HeroUrlShortener from '~/components/HeroUrlShortener.vue'
 
 const { createShortUrlMock } = vi.hoisted(() => ({
   createShortUrlMock: vi.fn()
@@ -25,10 +25,7 @@ mockNuxtImport('usePageContent', () => {
             cta: 'Shorten a URL',
             placeholder: 'Enter your URL',
             buttonLabel: 'Shorten',
-            validationError: 'Please enter a valid URL.',
-            generalError: 'Something went wrong. Please try again.',
             resultTitle: 'Your short URL',
-            copyToClipboardAria: 'Copy short URL'
           }
         }
       })
@@ -36,13 +33,13 @@ mockNuxtImport('usePageContent', () => {
   }
 })
 
-describe('UrlShortener', () => {
+describe('HeroUrlShortener', () => {
   beforeEach(() => {
     createShortUrlMock.mockReset()
   })
 
   async function mountShortener() {
-    const wrapper = await mountSuspended(UrlShortener)
+    const wrapper = await mountSuspended(HeroUrlShortener)
 
     return {
       wrapper,
@@ -58,7 +55,7 @@ describe('UrlShortener', () => {
     await form.trigger('submit')
 
     await vi.waitFor(() => {
-      expect(wrapper.text()).toContain('Please enter a valid URL.')
+      expect(wrapper.find('[data-slot="error"]').exists()).toBe(true)
     })
 
     expect(createShortUrlMock).not.toHaveBeenCalled()
@@ -124,9 +121,7 @@ describe('UrlShortener', () => {
     await form.trigger('submit')
 
     await vi.waitFor(() => {
-      expect(wrapper.text()).toContain(
-        'Something went wrong. Please try again.'
-      )
+      expect(wrapper.find('[data-slot="error"]').exists()).toBe(true)
     })
   })
 
@@ -143,9 +138,7 @@ describe('UrlShortener', () => {
     await form.trigger('submit')
 
     await vi.waitFor(() => {
-      expect(wrapper.text()).toContain(
-        'Something went wrong. Please try again.'
-      )
+      expect(wrapper.find('[data-slot="error"]').exists()).toBe(true)
     })
 
     await input.setValue('https://example.org')

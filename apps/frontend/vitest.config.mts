@@ -27,7 +27,7 @@ export default defineConfig({
           environment: 'nuxt',
 
           include: [
-            'app/tests/unit/UrlShortener.test.ts'
+            'app/tests/unit/HeroUrlShortener.test.ts'
           ],
 
           exclude: [
