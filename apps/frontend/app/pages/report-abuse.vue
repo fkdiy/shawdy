@@ -1,6 +1,5 @@
 <script setup lang="ts">
 const { page } = await usePageContent()
-console.log(page)
 </script>
 
 <template>
