@@ -105,8 +105,8 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         >
           <UInput
             id="targetUrl"
-            data-testid="target-url-input"
             v-model="state.url"
+            data-testid="target-url-input"
             size="xl"
             :placeholder="page.hero.urlShortener.placeholder"
             class="w-full"

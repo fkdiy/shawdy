@@ -118,7 +118,9 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
           required
         >
           <UInput
+            id="shortUrl"
             v-model="state.shortUrl"
+            data-testid="short-url-input"
             class="w-full"
             :placeholder="page.reportAbuseForm.shortUrlPlaceholder"
           />
@@ -134,7 +136,9 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
           required
         >
           <UInput
+            id="email"
             v-model="state.email"
+            data-testid="email-input"
             type="email"
             class="w-full"
             :placeholder="page.reportAbuseForm.contactEmailPlaceholder"
@@ -147,7 +151,9 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
           :label="page.reportAbuseForm.descriptionLabel"
         >
           <UTextarea
+            id="message"
             v-model="state.message"
+            data-testid="message-textarea"
             class="w-full"
             :rows="5"
             :placeholder="page.reportAbuseForm.descriptionPlaceholder"
@@ -159,6 +165,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         </p>
 
         <UButton
+          data-testid="abuse-report-submit"
           type="submit"
           size="xl"
           :loading="isLoading"
