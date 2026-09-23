@@ -24,7 +24,7 @@ final class ShortUrlDeleter
                     'shortCode' => $shortCode,
                 ]);
 
-                if ($shortUrl !== null) {
+                if (null !== $shortUrl) {
                     $this->entityManager->remove($shortUrl);
                     $this->entityManager->flush();
                 }
@@ -33,7 +33,7 @@ final class ShortUrlDeleter
                     new ShortUrlDeleted($shortCode)
                 );
 
-                return $shortUrl !== null;
+                return null !== $shortUrl;
             }
         );
     }

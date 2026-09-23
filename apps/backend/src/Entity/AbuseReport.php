@@ -4,8 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Post;
-use App\Repository\AbuseReportRepository;
 use App\Dto\AbuseReportInput;
+use App\Repository\AbuseReportRepository;
 use App\State\AbuseReportProcessor;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;

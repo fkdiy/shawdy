@@ -23,7 +23,7 @@ final class SendAbuseReportNotificationEmail
             $message->getAbuseReportId()
         );
 
-        if ($report === null) {
+        if (null === $report) {
             return;
         }
 

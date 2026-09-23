@@ -9,7 +9,7 @@ class AbuseReportInput
 {
     #[Assert\NotBlank]
     #[Assert\Url(requireTld: false)]
-    #[ShawdyAssert\ValidShortUrl]
+    #[ShawdyAssert\ShortUrl]
     private ?string $shortUrl = null;
 
     #[Assert\NotBlank]

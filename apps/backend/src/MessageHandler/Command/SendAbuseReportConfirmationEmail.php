@@ -23,7 +23,7 @@ final class SendAbuseReportConfirmationEmail
             $message->getAbuseReportId()
         );
 
-        if ($report === null) {
+        if (null === $report) {
             return;
         }
 
@@ -39,8 +39,8 @@ final class SendAbuseReportConfirmationEmail
                     ."c/o Impressumservice Dein-Impressum\n"
                     ."Stettiner Str. 41\n"
                     ."35410 Hungen\n\n"
-                    ."Telefon: +49 15679 311106\n"  
-                    ."E-Mail: contact@shawdy.de";
+                    ."Telefon: +49 15679 311106\n"
+                    .'E-Mail: contact@shawdy.de';
                 break;
 
             case 'en':
@@ -54,15 +54,12 @@ final class SendAbuseReportConfirmationEmail
                     ."c/o Impressumservice Dein-Impressum\n"
                     ."Stettiner Str. 41\n"
                     ."35410 Hungen\n\n"
-                    ."Phone: +49 15679 311106\n"  
-                    ."Email: contact@shawdy.de";
+                    ."Phone: +49 15679 311106\n"
+                    .'Email: contact@shawdy.de';
                 break;
 
             default:
-                throw new \LogicException(sprintf(
-                    'Unsupported abuse report locale "%s".',
-                    $report->getLocale(),
-                ));
+                throw new \LogicException(sprintf('Unsupported abuse report locale "%s".', $report->getLocale()));
         }
 
         $email = (new Email())

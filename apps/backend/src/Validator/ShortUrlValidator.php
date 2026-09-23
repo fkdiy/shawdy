@@ -8,9 +8,8 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
-use App\Validator\ValidShortUrl;
 
-class ValidShortUrlValidator extends ConstraintValidator
+class ShortUrlValidator extends ConstraintValidator
 {
     public function __construct(
         private ShortUrlRepository $shortUrlRepository,
@@ -21,15 +20,12 @@ class ValidShortUrlValidator extends ConstraintValidator
 
     public function validate(mixed $shortUrl, Constraint $constraint): void
     {
-        if (!$constraint instanceof ValidShortUrl) {
-            throw new UnexpectedTypeException(
-                $constraint,
-                ValidShortUrl::class
-            );
+        if (!$constraint instanceof ShortUrl) {
+            throw new UnexpectedTypeException($constraint, ShortUrl::class);
         }
 
         // Let NotBlank / NotNull handle empty values.
-        if ($shortUrl === null || $shortUrl === '') {
+        if (null === $shortUrl || '' === $shortUrl) {
             return;
         }
 
@@ -55,7 +51,7 @@ class ValidShortUrlValidator extends ConstraintValidator
         $shortCode = trim($path, '/');
 
         if (
-            $shortCode === ''
+            '' === $shortCode
             || str_contains($shortCode, '/')
             || !preg_match('/^[a-zA-Z0-9]+$/', $shortCode)
         ) {
@@ -73,7 +69,7 @@ class ValidShortUrlValidator extends ConstraintValidator
 
     private function isAllowedHost(string $host): bool
     {
-        if ($host === 'shawdy.de') {
+        if ('shawdy.de' === $host) {
             return true;
         }
 
@@ -82,7 +78,7 @@ class ValidShortUrlValidator extends ConstraintValidator
     }
 
     private function addViolation(
-        ValidShortUrl $constraint,
+        ShortUrl $constraint,
         string $shortUrl,
     ): void {
         $this->context
