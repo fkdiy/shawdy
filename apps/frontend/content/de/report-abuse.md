@@ -45,5 +45,5 @@ Hass gegen Teile der Bevölkerung aufstacheln, oder die Menschenwürde
 anderer verletzen.
 
 **Betrug und Täuschung:**{.text-highlighted} Das Verschleiern betrügerischer
-Absichten, oder die Vortäuschung der Identität anderer Dienste, 
+Absichten, oder die Vortäuschung der Identität anderer Dienste,
 Unternehmen oder Behörden.
