@@ -105,6 +105,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         >
           <UInput
             id="targetUrl"
+            data-testid="target-url-input"
             v-model="state.url"
             size="xl"
             :placeholder="page.hero.urlShortener.placeholder"
@@ -118,6 +119,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
           size="xl"
           :label="page.hero.urlShortener.buttonLabel"
           class="shrink-0 w-30 justify-center"
+          data-testid="target-url-submit"
         />
       </div>
     </UForm>

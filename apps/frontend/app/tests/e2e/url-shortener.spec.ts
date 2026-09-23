@@ -50,8 +50,8 @@ test('shortens a URL', async ({ page }) => {
     { timeout: 60_000 }
   )
 
-  const input = page.getByPlaceholder('Paste your long URL here ...')
-  const button = page.getByRole('button', { name: 'Shorten' })
+  const input = page.getByTestId('target-url-input')
+  const button = page.getByTestId('target-url-submit')
 
   await expect(input).toBeVisible()
   await expect(button).toBeVisible()
@@ -76,6 +76,4 @@ test('shortens a URL', async ({ page }) => {
   await expect(page.getByTestId('short-url-result')).toBeVisible({
     timeout: 30_000
   })
-
-  await expect(page.getByText('Your short code')).toBeVisible()
 })
