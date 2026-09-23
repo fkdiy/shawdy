@@ -24,6 +24,7 @@ framework:
 
             # Route your messages to the transports
             App\Message\Event\ShortUrlCreated: async
+            App\Message\Event\ShortUrlDeleted: async
             App\Message\Event\AbuseReportReceived: async
 
             App\Message\Command\SendAbuseReportConfirmation: async

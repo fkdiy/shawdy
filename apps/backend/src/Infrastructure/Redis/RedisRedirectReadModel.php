@@ -20,4 +20,9 @@ final class RedisRedirectReadModel implements RedirectReadModel
             $targetUrl,
         );
     }
+
+    public function delete(string $shortCode): void
+    {
+        $this->redis->del('redirect:'.$shortCode);
+    }
 }
