@@ -2,6 +2,8 @@
 
 namespace App\Tests\Functional;
 
+use App\Entity\ShortUrl;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class ShortUrlTest extends WebTestCase
@@ -28,23 +30,21 @@ class ShortUrlTest extends WebTestCase
 
         self::assertNotEmpty($data['shortCode']);
 
-        $shortCode = $data['shortCode'];
-
-        $client->request(
-            'GET',
-            '/api/short_urls/'.$shortCode,
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = static::getContainer()->get(
+            EntityManagerInterface::class
         );
 
-        self::assertResponseIsSuccessful();
+        $stored = $entityManager
+            ->getRepository(ShortUrl::class)
+            ->findOneBy([
+                'shortCode' => $data['shortCode'],
+            ]);
 
-        $data = json_decode(
-            $client->getResponse()->getContent(),
-            true
-        );
-
+        self::assertNotNull($stored);
         self::assertSame(
             'https://example.com',
-            $data['targetUrl']
+            $stored->getTargetUrl()
         );
     }
 }

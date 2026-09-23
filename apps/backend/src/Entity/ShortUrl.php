@@ -4,12 +4,9 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
 use App\Repository\ShortUrlRepository;
 use App\State\ShortUrlProcessor;
-use App\State\ShortUrlProvider;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -17,16 +14,6 @@ use Doctrine\ORM\Mapping as ORM;
     operations: [
         new Post(
             processor: ShortUrlProcessor::class,
-        ),
-        new Get(
-            uriTemplate: '/short_urls/{shortCode}',
-            uriVariables: [
-                'shortCode' => new Link(
-                    fromClass: ShortUrl::class,
-                    identifiers: ['shortCode'],
-                ),
-            ],
-            provider: ShortUrlProvider::class,
         ),
     ],
 )]
