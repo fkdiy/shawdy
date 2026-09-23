@@ -8,6 +8,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
+use App\Validator\ValidShortUrl;
 
 class ValidShortUrlValidator extends ConstraintValidator
 {
@@ -77,7 +78,7 @@ class ValidShortUrlValidator extends ConstraintValidator
         }
 
         return in_array($this->environment, ['dev', 'test'], true)
-            && in_array($host, ['localhost', '127.0.0.1'], true);
+            && in_array($host, ['localhost', '127.0.0.1', 'frankenphp'], true);
     }
 
     private function addViolation(

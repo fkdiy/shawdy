@@ -25,7 +25,7 @@ mockNuxtImport('usePageContent', () => {
             cta: 'Shorten a URL',
             placeholder: 'Enter your URL',
             buttonLabel: 'Shorten',
-            resultTitle: 'Your short URL',
+            resultTitle: 'Your short URL'
           }
         }
       })
