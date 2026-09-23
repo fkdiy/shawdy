@@ -273,7 +273,7 @@ For security reasons and to protect the transmission of confidential
 content, such as orders or enquiries that you send to me as the website
 operator, this website uses SSL or TLS encryption. You can recognise an
 encrypted connection by the fact that the address line of the browser
-changes from "http://" to "https://" and by the lock symbol in your 
+changes from "http://" to "https://" and by the lock symbol in your
 browser's address bar.
 
 When SSL or TLS encryption is enabled, the data you transmit to me
