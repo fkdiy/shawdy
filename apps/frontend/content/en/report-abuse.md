@@ -12,7 +12,7 @@ pageHeader:
     them using the form below.
 
 reportAbuseForm:
-  requiredFieldsInfo: Fields marked with * are required
+  requiredFieldsInfo: Fields marked with * are required.
   shortUrlLabel: Shawdy Short URL to report
   shortUrlPlaceholder: Paste Shawdy Short-URL here ...
   contactEmailLabel: Contact email address

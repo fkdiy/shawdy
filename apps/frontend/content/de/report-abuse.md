@@ -13,7 +13,7 @@ pageHeader:
       folgende Formular.
 
 reportAbuseForm:
-    requiredFieldsInfo: Felder, die mit * markiert sind werden zwingend benötigt
+    requiredFieldsInfo: Felder, die mit * markiert sind werden zwingend benötigt.
     shortUrlLabel: Zu meldende Shawdy Short-URL
     shortUrlPlaceholder: Shawdy Short-URL hier einfügen ...
     contactEmailLabel: Kontakt-E-Mail-Adresse
