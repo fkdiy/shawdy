@@ -1,14 +1,16 @@
 {
   "navigation": {
-    "landing": "Landing Page",
-    "legal": "Legal Notice",
+    "landing": "Landing page",
+    "legal": "Legal notice",
     "privacy": "Privacy",
     "reportAbuse": "Report abuse"
   },
 
   "common": {
     "copyToClipboard": "Copy to clipboard",
-    "toc": "Table of contents"
+    "toc": "Table of contents",
+    "thankYou": "Thank you",
+    "messageSubmitted": "Your message was submitted."
   },
 
   "errors": {
@@ -18,6 +20,7 @@
       "url": "Please enter a valid URL.",
       "shawdyUrl": "Please enter a valid Shawdy short URL.",
       "email": "Please enter a vaild email address.",
+      "locale": "Unsupported locale.",
       "required": "This field is required."
     }
   }

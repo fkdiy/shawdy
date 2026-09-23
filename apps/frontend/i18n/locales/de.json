@@ -8,7 +8,9 @@
 
   "common": {
     "copyToClipboard": "In die Zwischenablage kopieren",
-    "toc": "Inhaltsverzeichnis"
+    "toc": "Inhaltsverzeichnis",
+    "thankYou": "Vielen Dank",
+    "messageSubmitted": "Deine Nachricht wurde versendet."
   },
 
   "errors": {
@@ -18,6 +20,7 @@
       "url": "Bitte gib eine gültige URL ein.",
       "shawdyUrl": "Bitte gib eine gültige Shawdy Short-URL ein.",
       "email": "Bitte gib eine gültige E-Mail-Adresse ein.",
+      "locale": "Diese Sprache/Region wird nicht unterstützt.",
       "required": "Dies ist ein Pflichtfeld."
     }
   }
