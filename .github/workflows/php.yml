@@ -40,6 +40,7 @@ jobs:
       DATABASE_PASSWORD: dev_only_password
       REDIS_HOST: 127.0.0.1
       REDIS_PORT: 6379
+      TRUSTED_PROXIES: 172.19.0.0/16
 
     services:
       mariadb:

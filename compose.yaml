@@ -33,6 +33,7 @@ services:
       DATABASE_NAME: ${DATABASE_NAME:-shawdy_app}
       DATABASE_USER: ${DATABASE_USER:-app}
       DATABASE_PASSWORD: ${DATABASE_PASSWORD:-dev_only_password}
+      TRUSTED_PROXIES: 172.19.0.0/16
       MAILER_DSN: "smtp://mailpit:1025"
     networks:
       - shawdy-net
@@ -77,6 +78,7 @@ services:
       DATABASE_NAME: ${DATABASE_NAME:-shawdy_app}
       DATABASE_USER: ${DATABASE_USER:-app}
       DATABASE_PASSWORD: ${DATABASE_PASSWORD:-dev_only_password}
+      TRUSTED_PROXIES: 172.19.0.0/16
       MAILER_DSN: "smtp://mailpit:1025"
     networks:
       - shawdy-net
