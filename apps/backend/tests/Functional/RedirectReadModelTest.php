@@ -3,9 +3,8 @@
 namespace App\Tests\Functional;
 
 use Doctrine\DBAL\Connection;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class RedirectReadModelTest extends WebTestCase
+class RedirectReadModelTest extends FunctionalTestCase
 {
     public function testCreatingShortUrlQueuesRedirectReadModelMessage(): void
     {

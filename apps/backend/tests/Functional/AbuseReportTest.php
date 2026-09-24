@@ -4,9 +4,8 @@ namespace App\Tests\Functional;
 
 use App\Entity\ShortUrl;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class AbuseReportTest extends WebTestCase
+class AbuseReportTest extends FunctionalTestCase
 {
     public function testAbuseReportCanBeCreatedThroughApi(): void
     {

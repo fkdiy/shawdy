@@ -4,9 +4,8 @@ namespace App\Tests\Functional;
 
 use App\Entity\ShortUrl;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class ShortUrlTest extends WebTestCase
+class ShortUrlTest extends FunctionalTestCase
 {
     public function testShortUrlCanBeCreatedThroughApi(): void
     {
