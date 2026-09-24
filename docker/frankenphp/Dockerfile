@@ -1,11 +1,38 @@
+ARG PHP_VERSION=8.5
+ARG FRANKENPHP_VERSION=1.12.7
+ARG COMPOSER_VERSION=2.10.2
+
 # Composer
 
-FROM composer:2.10.2 AS composer
+FROM composer:${COMPOSER_VERSION} AS composer
+
+
+# Build custom FrankenPHP binary with caddy-ratelimit
+
+FROM dunglas/frankenphp:${FRANKENPHP_VERSION}-builder-php${PHP_VERSION} AS builder
+
+COPY --from=caddy:builder /usr/bin/xcaddy /usr/bin/xcaddy
+
+RUN CGO_ENABLED=1 \
+    XCADDY_SETCAP=1 \
+    XCADDY_GO_BUILD_FLAGS="-ldflags='-w -s' -tags=nobadger,nomysql,nopgx" \
+    CGO_CFLAGS=$(php-config --includes) \
+    CGO_LDFLAGS="$(php-config --ldflags) $(php-config --libs)" \
+    xcaddy build \
+        --output /usr/local/bin/frankenphp \
+        --with github.com/dunglas/frankenphp=./ \
+        --with github.com/dunglas/frankenphp/caddy=./caddy/ \
+        --with github.com/dunglas/caddy-cbrotli \
+        --with github.com/mholt/caddy-ratelimit
 
 
 # Shared FrankenPHP base
 
-FROM dunglas/frankenphp:1.12.7-php8.5 AS base
+FROM dunglas/frankenphp:${FRANKENPHP_VERSION}-php${PHP_VERSION} AS base
+
+ENV TRUSTED_PROXIES=127.0.0.1
+
+COPY --from=builder /usr/local/bin/frankenphp /usr/local/bin/frankenphp
 
 RUN install-php-extensions \
     pdo_mysql \
@@ -23,6 +50,7 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 
 
 # Development
+
 FROM base AS development
 
 ENV APP_ENV=dev
@@ -39,6 +67,7 @@ CMD ["frankenphp", "run", "--config", "/etc/frankenphp/Caddyfile"]
 
 
 # CI
+
 FROM base AS ci
 
 ENV APP_ENV=dev
@@ -67,6 +96,7 @@ CMD ["frankenphp", "run", "--config", "/etc/frankenphp/Caddyfile"]
 
 
 # Production
+
 FROM base AS production
 
 ENV APP_ENV=prod

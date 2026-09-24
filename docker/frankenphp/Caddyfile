@@ -96,7 +96,33 @@
 # Dev:  SERVER_NAME=http://localhost
 # Prod: SERVER_NAME=https://shawdy.de
 
-{$SERVER_NAME:http:localhost} {
+{$SERVER_NAME:http://localhost} {
+    rate_limit {
+        zone short_url_creation {
+            match {
+                method POST
+                path /api/short_urls
+            }
+
+            key         {remote_host}
+            events      {$RATE_LIMIT_SHORT_URL_EVENTS:60}
+            window      {$RATE_LIMIT_SHORT_URL_WINDOW:1m}
+            ipv6_prefix 64
+        }
+
+        zone abuse_report_submission {
+            match {
+                method POST
+                path /api/abuse_reports
+            }
+
+            key         {remote_host}
+            events      {$RATE_LIMIT_ABUSE_REPORT_EVENTS:20}
+            window      {$RATE_LIMIT_ABUSE_REPORT_WINDOW:1m}
+            ipv6_prefix 64
+        }
+    }
+
     import app_routes
 }
 
