@@ -9,6 +9,7 @@ use App\Repository\ShortUrlRepository;
 use App\State\ShortUrlProcessor;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
     operations: [
@@ -26,7 +27,12 @@ class ShortUrl
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Assert\NotBlank]
+    #[Assert\Url(
+        protocols: ['http', 'https'],
+    )]
+    #[Assert\Length(max: 2048)]
+    #[ORM\Column(type: Types::TEXT)]
     private ?string $targetUrl = null;
 
     #[ApiProperty(identifier: true, writable: false)]
