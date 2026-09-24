@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "../../../.."
+		}
+    ],
+    "settings": {
+        "files.associations": {
+            "*.css": "tailwindcss"
+        },
+        "tailwindCSS.classAttributes": [
+            "class",
+            "ui"
+        ],
+        "tailwindCSS.classFunctions": [
+            "defineAppConfig"
+        ]
+    }
+}
