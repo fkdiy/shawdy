@@ -2,9 +2,7 @@
 
 namespace App\Tests\Functional;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-
-class ClientIpTest extends WebTestCase
+class ClientIpTest extends FunctionalTestCase
 {
     public function testClientIpIsResolvedFromForwardedHeaders(): void
     {
