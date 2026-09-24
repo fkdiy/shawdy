@@ -27,6 +27,7 @@ services:
       DATABASE_NAME: ${DATABASE_NAME:-shawdy_app}
       DATABASE_USER: ${DATABASE_USER:-app}
       DATABASE_PASSWORD: ${DATABASE_PASSWORD:-dev_only_password}
+      TRUSTED_PROXIES: 172.19.0.0/16
     networks:
       - shawdy-net
     healthcheck:
@@ -54,6 +55,7 @@ services:
       DATABASE_NAME: ${DATABASE_NAME:-shawdy_app}
       DATABASE_USER: ${DATABASE_USER:-app}
       DATABASE_PASSWORD: ${DATABASE_PASSWORD:-dev_only_password}
+      TRUSTED_PROXIES: 172.19.0.0/16
     networks:
       - shawdy-net
     healthcheck:

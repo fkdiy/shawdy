@@ -25,6 +25,7 @@ services:
       SERVER_NAME: "http://localhost"
       APP_ENV: "prod"
       APP_DEBUG: "0"
+      TRUSTED_PROXIES: 172.19.0.0/16
     networks:
       - shawdy-net
     healthcheck:
@@ -60,6 +61,7 @@ services:
       DATABASE_NAME: ${DATABASE_NAME:-shawdy_app}
       DATABASE_USER: ${DATABASE_USER:-app}
       DATABASE_PASSWORD: ${DATABASE_PASSWORD:-dev_only_password}
+      TRUSTED_PROXIES: 172.19.0.0/16
     command: php bin/console messenger:consume async --time-limit=3600
     entrypoint: []
 
