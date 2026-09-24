@@ -15,6 +15,7 @@
 
   "errors": {
     "generic": "Something went wrong. Please try again.",
+    "rateLimited": "Too many requests. Please wait a moment and try again.",
 
     "validation": {
       "url": "Please enter a valid URL.",

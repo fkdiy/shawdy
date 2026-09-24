@@ -15,6 +15,7 @@
 
   "errors": {
     "generic": "Etwas ist schief gegangen. Bitte versuche es erneut.",
+    "rateLimited": "Zu viele Anfragen. Bitte warte einen Moment und versuche es erneut.",
 
     "validation": {
       "url": "Bitte gib eine gültige URL ein.",
