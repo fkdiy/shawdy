@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { useAbuseReportsApi } from '~/composables/api/useAbuseReportsApi'
 import { isValidShawdyShortUrl } from '~/utils/urlValidation'
 import { getApiValidationErrors } from '~/utils/apiValidation'
+import { isRateLimitError } from '~/utils/apiError'
 
 const { page } = await usePageContent()
 
@@ -40,6 +41,7 @@ const state = reactive<Schema>({
 
 const form = useTemplateRef('form')
 const isLoading = ref(false)
+const submitError = ref('')
 const toast = useToast()
 
 // Dependencies
@@ -49,6 +51,7 @@ const requestUrl = useRequestURL()
 // Form submission
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   isLoading.value = true
+  submitError.value = ''
   form.value?.clear()
 
   try {
@@ -74,19 +77,14 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   } catch (error) {
     const validationErrors = getApiValidationErrors(error, t)
 
-    console.log(validationErrors)
-
     if (validationErrors.length > 0) {
       form.value?.setErrors(validationErrors)
       return
     }
 
-    form.value?.setErrors([
-      {
-        name: 'shortUrl',
-        message: t('errors.generic')
-      }
-    ])
+    submitError.value = isRateLimitError(error)
+      ? t('errors.rateLimited')
+      : t('errors.generic')
   } finally {
     isLoading.value = false
   }
@@ -163,6 +161,14 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         <p class="text-sm text-muted">
           {{ page.reportAbuseForm.requiredFieldsInfo }}
         </p>
+
+        <UAlert
+          v-if="submitError"
+          data-testid="submit-error"
+          color="error"
+          variant="subtle"
+          :description="submitError"
+        />
 
         <UButton
           data-testid="abuse-report-submit"

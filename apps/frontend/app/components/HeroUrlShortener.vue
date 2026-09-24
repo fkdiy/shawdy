@@ -3,6 +3,7 @@ import type { FormSubmitEvent } from '@nuxt/ui'
 import { z } from 'zod'
 import { useShortUrlsApi } from '~/composables/api/useShortUrlsApi'
 import { isValidUrl } from '~/utils/urlValidation'
+import { isRateLimitError } from '~/utils/apiError'
 
 const { page } = await usePageContent()
 
@@ -58,14 +59,16 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
     shortCode.value = response.shortCode
     hasResult.value = true
-  } catch {
+  } catch (error) {
     shortCode.value = ''
     hasResult.value = false
 
     form.value?.setErrors([
       {
         name: 'url',
-        message: t('errors.generic') ?? ''
+        message: isRateLimitError(error)
+          ? t('errors.rateLimited')
+          : t('errors.generic')
       }
     ])
   } finally {

@@ -200,7 +200,7 @@ describe('ReportAbuseForm', () => {
     await form.trigger('submit')
 
     await vi.waitFor(() => {
-      expect(wrapper.find('[data-slot="error"]').exists()).toBe(true)
+      expect(wrapper.find('[data-testid="submit-error"]').exists()).toBe(true)
     })
   })
 })
