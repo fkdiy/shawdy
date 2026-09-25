@@ -43,6 +43,8 @@ RUN install-php-extensions \
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
+COPY docker/frankenphp/errors /srv/errors
+
 COPY docker/frankenphp/Caddyfile /etc/frankenphp/Caddyfile
 COPY docker/frankenphp/entrypoint.sh /usr/local/bin/entrypoint.sh
 
