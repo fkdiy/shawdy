@@ -86,7 +86,12 @@
             @redirectError status 404 500 502 503
 
             handle_response @redirectError {
-                error {rp.status_code}
+                root * /srv/errors
+                rewrite * /{rp.status_code}.html
+
+                file_server {
+                    status {rp.status_code}
+                }
             }
         }
     }
@@ -164,4 +169,5 @@
 
 :8080 {
     import app_routes
+    import error_pages
 }
