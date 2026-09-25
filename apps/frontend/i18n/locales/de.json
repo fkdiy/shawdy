@@ -23,6 +23,16 @@
       "email": "Bitte gib eine gültige E-Mail-Adresse ein.",
       "locale": "Diese Sprache/Region wird nicht unterstützt.",
       "required": "Dies ist ein Pflichtfeld."
+    },
+
+    "http": {
+      "headline": "Oh oh, etwas ist schief gegangen",
+      "returnHome": "Zurück zur Startseite",
+      "404": "Die Seite, die du öffnen wolltest ist nicht verfügbar oder existiert nicht.",
+      "500": "Shawdy hat technische Probleme und kann die Seite gerade nicht anzeigen.",
+      "502": "Shawdys Server reagiert gerade nicht. Bitte probier es in einem kurzen Moment erneut.",
+      "503": "Shawdys Server ist gerade überlastet. Bitte probier es in einem kurzen Moment erneut.",
+      "generic": "Es liegt ein unerwartetes technisches Problem vor.  Bitte probier es in einem kurzen Moment erneut."
     }
   }
 }

@@ -23,6 +23,16 @@
       "email": "Please enter a vaild email address.",
       "locale": "Unsupported locale.",
       "required": "This field is required."
+    },
+
+    "http": {
+      "headline": "Oh oh, looks like something went wrong",
+      "returnHome": "Return home",
+      "404": "The page you tried to open isn't available or doesn't exist.",
+      "500": "Shawdy is experiencing a technical glitch and can't load this page right now.",
+      "502": "Shawdy's server is temporarily unresponsive. Please try refreshing in a few moments.",
+      "503": "Shawdy's server is temporarily overwhelmed. Please try refreshing in a few moments.",
+      "generic": "An unexpected technical error occurred. Please try refreshing in a few moments."
     }
   }
 }

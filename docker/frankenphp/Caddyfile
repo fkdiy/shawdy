@@ -66,7 +66,6 @@
             /en/* \
             /legal \
             /privacy \
-            /legal \
             /report-abuse \
             /favicon.ico \
             /favicon.svg \
@@ -83,12 +82,45 @@
     }
 
     handle @redirect {
-        reverse_proxy redirector:8081
+        reverse_proxy redirector:8081 {
+            @redirectError status 404 500 502 503
+
+            handle_response @redirectError {
+                error {rp.status_code}
+            }
+        }
+    }
+
+    @errorAssets {
+        path /errors/*
+    }
+
+    handle @errorAssets {
+        root * /srv
+        file_server
     }
 
     # Reject all unknown nested paths.
     handle {
-        respond "Not Found" 404
+        error 404
+    }
+}
+
+(error_pages) {
+    handle_errors {
+        root * /srv/errors
+
+        @customError file /{err.status_code}.html
+
+        handle @customError {
+            rewrite * /{err.status_code}.html
+            file_server
+        }
+
+        handle {
+            rewrite * /500.html
+            file_server
+        }
     }
 }
 
@@ -124,6 +156,7 @@
     }
 
     import app_routes
+    import error_pages
 }
 
 # Endpoint for communication inside the Docker network
