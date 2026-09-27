@@ -16,28 +16,19 @@ class ShortUrlRepository extends ServiceEntityRepository
         parent::__construct($registry, ShortUrl::class);
     }
 
-    //    /**
-    //     * @return ShortUrl[] Returns an array of ShortUrl objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('s')
-    //            ->andWhere('s.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('s.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?ShortUrl
-    //    {
-    //        return $this->createQueryBuilder('s')
-    //            ->andWhere('s.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    /**
+     * @return list<ShortUrl>
+     */
+    public function findBatchAfterId(
+        int $lastId,
+        int $limit,
+    ): array {
+        return $this->createQueryBuilder('shortUrl')
+            ->andWhere('shortUrl.id > :lastId')
+            ->setParameter('lastId', $lastId)
+            ->orderBy('shortUrl.id', 'ASC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
 }
