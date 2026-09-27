@@ -4,14 +4,11 @@ namespace App\Tests\Integration;
 
 use App\Entity\ShortUrl;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class ShortUrlTest extends KernelTestCase
+class ShortUrlTest extends IntegrationTestCase
 {
     public function testShortUrlCanBePersisted(): void
     {
-        self::bootKernel();
-
         /** @var EntityManagerInterface $entityManager */
         $entityManager = static::getContainer()->get(EntityManagerInterface::class);
 

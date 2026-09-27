@@ -4,14 +4,11 @@ namespace App\Tests\Integration;
 
 use App\Entity\AbuseReport;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class AbuseReportTest extends KernelTestCase
+class AbuseReportTest extends IntegrationTestCase
 {
     public function testAbuseReportCanBePersisted(): void
     {
-        self::bootKernel();
-
         /** @var EntityManagerInterface $entityManager */
         $entityManager = static::getContainer()->get(EntityManagerInterface::class);
 
