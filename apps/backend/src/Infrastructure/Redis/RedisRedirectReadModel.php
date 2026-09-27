@@ -15,6 +15,13 @@ final class RedisRedirectReadModel implements RedirectReadModel
     ) {
     }
 
+    public function isInitialized(): bool
+    {
+        return '1' === $this->redis->get(
+            self::INITIALIZED_KEY
+        );
+    }
+
     public function store(
         string $shortCode,
         string $targetUrl,

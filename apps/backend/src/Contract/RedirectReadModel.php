@@ -4,6 +4,8 @@ namespace App\Contract;
 
 interface RedirectReadModel
 {
+    public function isInitialized(): bool;
+
     public function store(
         string $shortCode,
         string $targetUrl,
