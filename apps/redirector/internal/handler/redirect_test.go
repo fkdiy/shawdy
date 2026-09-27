@@ -7,8 +7,9 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/fkdiy/shawdy/apps/redirector/internal/metrics"
+	redirectmetrics "github.com/fkdiy/shawdy/apps/redirector/internal/metrics"
 	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/testutil"
 	"github.com/redis/go-redis/v9"
 )
 
@@ -30,8 +31,7 @@ func TestRedirectHandlerRedirectsResolvedShortCode(t *testing.T) {
 	}
 
 	registry := prometheus.NewRegistry()
-
-	m := metrics.NewRedirectMetrics(registry)
+	m := redirectmetrics.NewRedirectMetrics(registry)
 
 	h := NewRedirectHandler(r, m)
 
@@ -62,6 +62,14 @@ func TestRedirectHandlerRedirectsResolvedShortCode(t *testing.T) {
 			location,
 		)
 	}
+
+	assertMetrics(
+		t,
+		m,
+		1,
+		0,
+		0,
+	)
 }
 
 func TestRedirectHandlerReturnsNotFoundForUnknownShortCode(t *testing.T) {
@@ -70,8 +78,7 @@ func TestRedirectHandlerReturnsNotFoundForUnknownShortCode(t *testing.T) {
 	}
 
 	registry := prometheus.NewRegistry()
-
-	m := metrics.NewRedirectMetrics(registry)
+	m := redirectmetrics.NewRedirectMetrics(registry)
 
 	h := NewRedirectHandler(r, m)
 
@@ -94,6 +101,14 @@ func TestRedirectHandlerReturnsNotFoundForUnknownShortCode(t *testing.T) {
 			response.Code,
 		)
 	}
+
+	assertMetrics(
+		t,
+		m,
+		1,
+		1,
+		0,
+	)
 }
 
 func TestRedirectHandlerReturnsServiceUnavailableOnResolverError(t *testing.T) {
@@ -102,8 +117,7 @@ func TestRedirectHandlerReturnsServiceUnavailableOnResolverError(t *testing.T) {
 	}
 
 	registry := prometheus.NewRegistry()
-
-	m := metrics.NewRedirectMetrics(registry)
+	m := redirectmetrics.NewRedirectMetrics(registry)
 
 	h := NewRedirectHandler(r, m)
 
@@ -124,6 +138,48 @@ func TestRedirectHandlerReturnsServiceUnavailableOnResolverError(t *testing.T) {
 			"expected status %d, got %d",
 			http.StatusServiceUnavailable,
 			response.Code,
+		)
+	}
+
+	assertMetrics(
+		t,
+		m,
+		1,
+		0,
+		1,
+	)
+}
+
+func assertMetrics(
+	t *testing.T,
+	m *redirectmetrics.RedirectMetrics,
+	requests float64,
+	misses float64,
+	redisErrors float64,
+) {
+	t.Helper()
+
+	if got := testutil.ToFloat64(m.Requests); got != requests {
+		t.Fatalf(
+			"expected requests metric to be %f, got %f",
+			requests,
+			got,
+		)
+	}
+
+	if got := testutil.ToFloat64(m.Misses); got != misses {
+		t.Fatalf(
+			"expected misses metric to be %f, got %f",
+			misses,
+			got,
+		)
+	}
+
+	if got := testutil.ToFloat64(m.RedisErrors); got != redisErrors {
+		t.Fatalf(
+			"expected Redis errors metric to be %f, got %f",
+			redisErrors,
+			got,
 		)
 	}
 }
