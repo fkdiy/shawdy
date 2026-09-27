@@ -10,4 +10,8 @@ interface RedirectReadModel
     ): void;
 
     public function delete(string $shortCode): void;
+
+    public function clear(): void;
+
+    public function markInitialized(\DateTimeImmutable $rebuiltAt): void;
 }
