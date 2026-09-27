@@ -62,14 +62,16 @@ final class RedisRedirectReadModel implements RedirectReadModel
     public function markInitialized(
         \DateTimeImmutable $rebuiltAt,
     ): void {
-        $this->redis->set(
-            self::INITIALIZED_KEY,
-            '1',
-        );
-
-        $this->redis->set(
-            self::LAST_REBUILD_KEY,
-            $rebuiltAt->format(\DateTimeInterface::ATOM),
-        );
+        $this->redis
+            ->multi()
+            ->set(
+                self::LAST_REBUILD_KEY,
+                $rebuiltAt->format(\DateTimeInterface::ATOM),
+            )
+            ->set(
+                self::INITIALIZED_KEY,
+                '1',
+            )
+            ->exec();
     }
 }
