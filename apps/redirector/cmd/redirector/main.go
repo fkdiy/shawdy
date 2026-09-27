@@ -7,7 +7,10 @@ import (
 
 	"github.com/fkdiy/shawdy/apps/redirector/internal/config"
 	"github.com/fkdiy/shawdy/apps/redirector/internal/handler"
+	"github.com/fkdiy/shawdy/apps/redirector/internal/metrics"
 	"github.com/fkdiy/shawdy/apps/redirector/internal/resolver"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/redis/go-redis/v9"
 )
 
@@ -22,7 +25,8 @@ func main() {
 	})
 
 	redirectResolver := resolver.New(redisClient)
-	redirectHandler := handler.NewRedirectHandler(redirectResolver)
+	redirectMetrics := metrics.NewRedirectMetrics(prometheus.DefaultRegisterer)
+	redirectHandler := handler.NewRedirectHandler(redirectResolver, redirectMetrics)
 
 	mux := newMux(redirectHandler)
 
@@ -47,6 +51,11 @@ func newMux(
 	mux.HandleFunc(
 		"GET /healthz",
 		handler.Health,
+	)
+
+	mux.Handle(
+		"GET /metrics",
+		promhttp.Handler(),
 	)
 
 	return mux

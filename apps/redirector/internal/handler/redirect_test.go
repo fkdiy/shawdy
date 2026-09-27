@@ -7,6 +7,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/fkdiy/shawdy/apps/redirector/internal/metrics"
+	"github.com/prometheus/client_golang/prometheus"
 	"github.com/redis/go-redis/v9"
 )
 
@@ -27,7 +29,11 @@ func TestRedirectHandlerRedirectsResolvedShortCode(t *testing.T) {
 		targetURL: "https://example.com",
 	}
 
-	h := NewRedirectHandler(r)
+	registry := prometheus.NewRegistry()
+
+	m := metrics.NewRedirectMetrics(registry)
+
+	h := NewRedirectHandler(r, m)
 
 	req := httptest.NewRequest(
 		http.MethodGet,
@@ -63,7 +69,11 @@ func TestRedirectHandlerReturnsNotFoundForUnknownShortCode(t *testing.T) {
 		err: redis.Nil,
 	}
 
-	h := NewRedirectHandler(r)
+	registry := prometheus.NewRegistry()
+
+	m := metrics.NewRedirectMetrics(registry)
+
+	h := NewRedirectHandler(r, m)
 
 	req := httptest.NewRequest(
 		http.MethodGet,
@@ -91,7 +101,11 @@ func TestRedirectHandlerReturnsServiceUnavailableOnResolverError(t *testing.T) {
 		err: errors.New("redis unavailable"),
 	}
 
-	h := NewRedirectHandler(r)
+	registry := prometheus.NewRegistry()
+
+	m := metrics.NewRedirectMetrics(registry)
+
+	h := NewRedirectHandler(r, m)
 
 	req := httptest.NewRequest(
 		http.MethodGet,
