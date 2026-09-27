@@ -33,4 +33,7 @@ if [ "$APP_ENV" = "dev" ]; then
         --no-interaction
 fi
 
+# Ensure the Redis is initialized.
+php bin/console app:redirect-read-model:rebuild --if-uninitialized
+
 exec "$@"
