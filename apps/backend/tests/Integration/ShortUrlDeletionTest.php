@@ -6,16 +6,13 @@ use App\Entity\ShortUrl;
 use App\Message\Event\ShortUrlDeleted;
 use App\Service\ShortUrlDeleter;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-class ShortUrlDeletionTest extends KernelTestCase
+class ShortUrlDeletionTest extends IntegrationTestCase
 {
     public function testDeletesShortUrlAndDispatchesEvent(): void
     {
-        self::bootKernel();
-
         /** @var EntityManagerInterface $entityManager */
         $entityManager = static::getContainer()->get(
             EntityManagerInterface::class
@@ -65,8 +62,6 @@ class ShortUrlDeletionTest extends KernelTestCase
 
     public function testDispatchesDeleteEventWhenShortUrlDoesNotExist(): void
     {
-        self::bootKernel();
-
         /** @var EntityManagerInterface $entityManager */
         $entityManager = static::getContainer()->get(
             EntityManagerInterface::class

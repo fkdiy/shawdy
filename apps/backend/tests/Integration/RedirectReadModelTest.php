@@ -3,9 +3,8 @@
 namespace App\Tests\Integration;
 
 use App\Infrastructure\Redis\RedisRedirectReadModel;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class RedirectReadModelTest extends KernelTestCase
+class RedirectReadModelTest extends IntegrationTestCase
 {
     public function testStoresRedirectMappingInRedis(): void
     {
