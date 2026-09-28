@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { scrollMotion } from '~/utils/motion'
+import { scrollMotion, staggerMotion } from '~/utils/motion'
 
 const { page } = await usePageContent()
 </script>
@@ -17,43 +17,43 @@ const { page } = await usePageContent()
   >
     <template #headline>
       <Motion
-        v-if="page.pageSection"
+        v-if="page.landingEcosystem"
         as="span"
         v-bind="scrollMotion()"
         class="inline-block"
       >
-        {{ page.pageSection.headline }}
+        {{ page.landingEcosystem.headline }}
       </Motion>
     </template>
 
     <template #title>
       <Motion
-        v-if="page.pageSection"
+        v-if="page.landingEcosystem"
         as="span"
         v-bind="scrollMotion(0.1)"
         class="inline-block"
       >
-        {{ page.pageSection.title }}
+        {{ page.landingEcosystem.title }}
       </Motion>
     </template>
 
     <template #description>
       <Motion
-        v-if="page.pageSection"
+        v-if="page.landingEcosystem"
         as="span"
         v-bind="scrollMotion(0.2)"
         class="inline-block"
       >
-        {{ page.pageSection.description }}
+        {{ page.landingEcosystem.description }}
       </Motion>
     </template>
 
     <div
-      v-if="page.pageSection"
+      v-if="page.landingEcosystem"
       class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
     >
       <Motion
-        v-for="(service, index) in page.pageSection.items"
+        v-for="(service, index) in page.landingEcosystem.items"
         :key="service.title"
         v-bind="staggerMotion(index)"
       >

@@ -41,7 +41,7 @@ const createPageHeaderSchema = () => z.object({
   description: z.string().nonempty()
 })
 
-const createPageSectionSchema = () => z.object({
+const createLandingEcosystemSchema = () => z.object({
   headline: z.string().optional(),
   title: z.string().nonempty(),
   description: z.string().nonempty(),
@@ -69,7 +69,7 @@ const commonSchema = z.object({
   seo: createSeoSchema(),
   hero: createHeroSchema().optional(),
   pageHeader: createPageHeaderSchema(),
-  pageSection: createPageSectionSchema().optional(),
+  landingEcosystem: createLandingEcosystemSchema().optional(),
   reportAbuseForm: createReportAbuseFormSchema().optional()
 })
 

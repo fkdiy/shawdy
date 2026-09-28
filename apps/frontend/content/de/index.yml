@@ -25,7 +25,7 @@ hero:
     buttonLabel: Kürzen
     resultTitle: Deine Short-URL
 
-pageSection:
+landingEcosystem:
   headline: Das Ökosystem
   title: "Basierend auf einem modernen Stack"
   description: Shawdy kombiniert spezialisierte, komplett containerisierte Dienste, damit jeder Teil der App das genau das macht, was er am Besten kann.
