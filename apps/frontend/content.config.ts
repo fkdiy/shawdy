@@ -52,6 +52,17 @@ const createLandingEcosystemSchema = () => z.object({
   })).optional()
 })
 
+const createLandingFeaturePreviewSchema = () => z.object({
+  headline: z.string().optional(),
+  title: z.string().nonempty(),
+  description: z.string().nonempty(),
+  items: z.array(z.object({
+    icon: z.string(),
+    title: z.string().nonempty(),
+    description: z.string().nonempty()
+  })).optional()
+})
+
 const createReportAbuseFormSchema = () => z.object({
   requiredFieldsInfo: z.string().nonempty(),
   shortUrlLabel: z.string().nonempty(),
@@ -70,6 +81,7 @@ const commonSchema = z.object({
   hero: createHeroSchema().optional(),
   pageHeader: createPageHeaderSchema(),
   landingEcosystem: createLandingEcosystemSchema().optional(),
+  landingFeaturePreview: createLandingFeaturePreviewSchema().optional(),
   reportAbuseForm: createReportAbuseFormSchema().optional()
 })
 
