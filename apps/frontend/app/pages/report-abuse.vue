@@ -7,8 +7,9 @@ const { page } = await usePageContent()
 
   <div class="px-4 sm:px-6 lg:px-8 mt-16">
     <UPage
-      class="w-full max-w-4xl mx-auto mb-16"
+      class="w-full max-w-4xl mx-auto mb-15"
       :ui="{
+        root: 'lg:gap-16',
         center: 'lg:col-span-5',
         right: 'lg:col-span-5'
       }"

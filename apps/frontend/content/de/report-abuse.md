@@ -8,8 +8,8 @@ pageHeader:
   title: Missbrauch melden
   description: >-
       Die missbräuchliche Nutzung von Shawdy ist ausdrücklich nicht
-      gestattet. Falls Sie festellen, dass mit Shawdy Short-URLs
-      Missbrauch getrieben wird, melden Sie dies bitte über über das
+      gestattet. Falls du feststellst, dass mit Shawdy Short-URLs
+      Missbrauch getrieben wird, melde dies bitte über über das
       folgende Formular.
 
 reportAbuseForm:
