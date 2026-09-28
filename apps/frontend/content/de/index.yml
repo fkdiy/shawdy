@@ -48,3 +48,27 @@ landingEcosystem:
     - icon: i-lucide-rabbit
       title: Go Redirector
       description: Löst Shortcodes über Redis auf und führt Weitrleitungen auf einem latenzarmen Request-Path aus.
+
+landingFeaturePreview:
+  headline: Geplante Features
+  title: "Das Beste kommt noch"
+  description: Shawdy steht erst ganz am Anfang. In den kommenden Versionen werden die folgenden Features und mehr implementiert.
+  items:
+    - icon: i-lucide-users
+      title: Eigener Userbereich
+      description: Erstelle, speichere und verwalte deine eigenen Short-Codes, empfange Nachrichten und mehr.
+    - icon: i-lucide-chart-line
+      title: Statistiken & Analysen
+      description: Erfahre, wie häufig, wann, aus welcher Region und womit deine Short-URLs aufgerufen wurden.
+    - icon: i-lucide-snail
+      title: Eigene Slugs
+      description: Personalisiere deine Short-URLs durch eigene Slugs im Format shawdy.de/deinslug/code.
+    - icon: i-lucide-qr-code
+      title: QR-Codes
+      description: Generiere QR-Codes für deine Short-URLs zur Verwendung im Web oder in Printmedien.
+    - icon: i-lucide-houses
+      title: Eigene Domains
+      description: Füge deine eigenen Domains zu Shawdy hinzu und erstelle noch persönlichere Short-URLs.
+    - icon: i-lucide-cable
+      title: API-Unterstützung
+      description: Lies, erstelle oder lösche deine Short-URLs von wo auch immer du möchtest.
