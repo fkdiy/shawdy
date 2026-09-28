@@ -1,4 +1,4 @@
 <template>
   <LandingHero />
-  <PageSection />
+  <LandingEcosystem />
 </template>
