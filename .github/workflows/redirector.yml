@@ -53,5 +53,5 @@ jobs:
       - name: Static code analysis via go vet
         run: go vet ./...
 
-      - name: Unit tests via Go testing package
+      - name: Execute Go tests
         run: go test ./...
