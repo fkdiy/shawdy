@@ -30,6 +30,8 @@ Each pull request should:
 - clearly describe the implemented changes
 - remain focused on a single task
 
+A pull request should only be merged after all CI workflows triggered by the change have completed successfully.
+
 ## Merge Strategy
 
 Shawdy uses a rebase and merge strategy to preserve a linear, easy-to-follow project history while keeping the individual commits that document the development of a feature. Merge commits and squash merges are intentionally avoided to preserve both a linear history and the individual development steps.
@@ -40,12 +42,9 @@ The commit history of development branches can be freely rewritten before a pull
 
 ## Continuous Integration
 
-Shawdy uses GitHub Actions to validate changes before they are merged into
-`main` and again when relevant changes are pushed to `main`.
+Shawdy uses GitHub Actions to validate changes before they are merged into `main` and again when relevant changes are pushed to `main`.
 
-The CI setup is split into separate workflows for documentation, the Symfony
-backend, the Nuxt frontend, and the Go redirect service. Path filters ensure
-that workflows only run when affected parts of the repository change.
+The CI setup is split into separate workflows for documentation, the Symfony backend, the Nuxt frontend, and the Go redirect service. Path filters ensure that workflows only run when affected parts of the repository change.
 
 ### Documentation
 
@@ -101,8 +100,22 @@ It provisions Redis and performs the following checks:
 - performs static analysis with `go vet`
 - executes the Go test suite
 
-### Pull Requests
+## Continuous Deployment
 
-A pull request should only be merged after all CI workflows triggered by the change have completed successfully.
+Production releases are deployed through a separate GitHub Actions workflow.
 
-The workflows are intentionally separated by application responsibility so that unrelated checks do not need to run for every change while integration tests can still exercise the complete Shawdy stack where required.
+Merging changes into `main` does not automatically deploy them. A deployment is triggered explicitly by creating and pushing a semantic version tag such as `v0.1.0`. This allows multiple changes to be integrated into `main` before a new production release is created.
+
+The deployment workflow builds the production container images on a GitHub Actions runner and publishes the versioned images to the GitHub Container Registry. The production server does not build application images itself.
+
+The workflow then connects to the provisioned production server using a dedicated deployment account. The server pulls the images belonging to the release and starts them using the production Docker Compose configuration.
+
+Database migrations and other required deployment operations are executed as part of the deployment process. After the application has been started, health checks verify that the deployed services are available.
+
+Application test suites are not repeated during deployment. Changes have already passed the relevant CI workflows before being merged into `main`. The deployment workflow instead performs checks that are specific to the deployment and fails if the release cannot be deployed successfully.
+
+Production secrets and environment-specific configuration are kept outside the application repository and container images. Persistent production configuration is provisioned separately on the server.
+
+Server provisioning, hardening, and monitoring are maintained independently in the Shawdy infrastructure project and are not part of regular application deployments.
+
+The architectural decisions behind this release process are documented in [ADR-0013 – Define production deployment strategy](decisions/ADR-0013-production-deployment-strategy.md).
