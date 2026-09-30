@@ -14,9 +14,9 @@ We avoid changing established patterns just to be different. Every architectural
 
 Documentation focuses on the reasoning behind decisions rather than repeating what is already obvious from the source code.
 
-## Architecture follows requirements
+### Architecture follows requirements
 
-We choose technologies and patterns based on actual project needs, not trends or unnecessary complexity.
+We choose technologies and patterns based on actual project needs, not trends or unnecessary complexity. As Shawdy is also a learning project, learning objectives are considered legitimate project requirements. Additional technologies may therefore be introduced when they provide meaningful experience, even if a simpler solution would be sufficient for the product itself.
 
 ## Simplicity beats cleverness
 
