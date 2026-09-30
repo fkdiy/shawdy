@@ -38,15 +38,71 @@ Shawdy uses a rebase and merge strategy to preserve a linear, easy-to-follow pro
 
 The commit history of development branches can be freely rewritten before a pull request is submitted for review to create a clean development timeline when they are pulled into the `main` branch. The history of `main` branch itself must not be rewritten.
 
-## Documentation CI
+## Continuous Integration
 
-Shawdy uses GitHub Actions to automatically validate its Markdown documentation.
+Shawdy uses GitHub Actions to validate changes before they are merged into
+`main` and again when relevant changes are pushed to `main`.
 
-The documentation workflow runs on every pull request and whenever changes are pushed to `main`.
+The CI setup is split into separate workflows for documentation, the Symfony
+backend, the Nuxt frontend, and the Go redirect service. Path filters ensure
+that workflows only run when affected parts of the repository change.
+
+### Documentation
+
+The documentation workflow validates Markdown documentation.
 
 It performs the following checks:
 
 - `markdownlint-cli2` validates Markdown files against the project's Markdown rules.
 - `Lychee` checks links in Markdown files for broken or unreachable targets.
 
-A failed documentation check causes the workflow to fail and must be resolved before the pull request can be merged.
+### Symfony Backend
+
+The backend workflow runs for relevant changes under `apps/backend`.
+
+It provisions MariaDB and Redis services and performs the following checks:
+
+- installs Composer dependencies
+- scans PHP dependencies for known security vulnerabilities
+- validates coding standards with PHP CS Fixer
+- warms the Symfony container used by static analysis
+- validates the Symfony dependency injection container
+- performs static analysis with PHPStan
+- creates the test database
+- validates Doctrine mappings
+- prepares the test database schema
+- executes the PHPUnit test suite
+
+### Nuxt Frontend
+
+The frontend workflow runs for relevant frontend changes and for changes that affect the complete application stack used by end-to-end tests.
+
+It performs the following checks:
+
+- installs frontend dependencies using `pnpm`
+- scans frontend dependencies for known security vulnerabilities
+- validates JavaScript and TypeScript code with ESLint
+- runs the Nuxt type checker
+- executes unit and component tests with Vitest
+- verifies that the Nuxt application can be built successfully
+- executes end-to-end tests with Playwright
+
+The Playwright job builds and starts the complete application stack using the CI Docker Compose configuration. This includes the Nuxt frontend, Symfony backend, Messenger worker, MariaDB, Redis, Caddy / FrankenPHP, and the Go redirect service.
+
+Before the browser tests run, the workflow verifies that the application and frontend services are reachable. Docker logs and the Playwright report are preserved when required for debugging failed runs.
+
+### Go Redirect Service
+
+The redirector workflow runs for changes under `apps/redirector`.
+
+It provisions Redis and performs the following checks:
+
+- validates formatting with `gofmt`
+- performs static analysis with `go vet`
+- executes the Go test suite
+
+### Pull Requests
+
+A pull request should only be merged after all CI workflows triggered by the change have completed successfully.
+
+The workflows are intentionally separated by application responsibility so that unrelated checks do not need to run for every change while integration tests can still exercise the complete Shawdy stack where required.
