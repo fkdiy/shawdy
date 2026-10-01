@@ -1,3 +1,27 @@
+x-backend-environment: &backend-environment
+  APP_ENV: "prod"
+  APP_DEBUG: "0"
+
+  APP_SECRET: ${APP_SECRET:?APP_SECRET must be set}
+  DEFAULT_URI: ${DEFAULT_URI:?DEFAULT_URI must be set}
+
+  DATABASE_HOST: "db"
+  DATABASE_PORT: "3306"
+  DATABASE_NAME: ${DATABASE_NAME:?DATABASE_NAME must be set}
+  DATABASE_USER: ${DATABASE_USER:?DATABASE_USER must be set}
+  DATABASE_PASSWORD: ${DATABASE_PASSWORD:?DATABASE_PASSWORD must be set}
+
+  REDIS_HOST: "redis"
+  REDIS_PORT: "6379"
+
+  MESSENGER_TRANSPORT_DSN: "doctrine://default?auto_setup=0"
+
+  MAILER_DSN: ${MAILER_DSN:?MAILER_DSN must be set}
+
+  CORS_ALLOW_ORIGIN: ${CORS_ALLOW_ORIGIN:?CORS_ALLOW_ORIGIN must be set}
+
+  TRUSTED_PROXIES: "172.19.0.0/16"
+
 services:
   frankenphp:
     container_name: shawdy-frankenphp
@@ -12,20 +36,20 @@ services:
         condition: service_healthy
       node:
         condition: service_healthy
+      redirector:
+        condition: service_healthy
     ports:
-      - "80:80" # HTTP
-      - "443:443" # HTTPS
-      - "443:443/udp" # HTTP/3
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
     expose:
       - "8080"
     volumes:
       - caddy_data:/data
       - caddy_config:/config
     environment:
-      SERVER_NAME: "http://localhost"
-      APP_ENV: "prod"
-      APP_DEBUG: "0"
-      TRUSTED_PROXIES: 172.19.0.0/16
+      <<: *backend-environment
+      SERVER_NAME: ${SERVER_NAME:?SERVER_NAME must be set}
     networks:
       - shawdy-net
     healthcheck:
@@ -34,11 +58,10 @@ services:
       timeout: 5s
       retries: 10
       start_period: 30s
-    pull_policy: build
 
   messenger-worker:
     container_name: shawdy-messenger-worker
-    image: frankenphp-shawdy
+    image: frankenphp-shawdy:production
     build:
       context: .
       dockerfile: docker/frankenphp/Dockerfile
@@ -49,19 +72,10 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-      redirector:
-        condition: service_healthy
-    volumes:
-      - ./apps/backend:/app
     environment:
-      APP_ENV: "dev"
-      SERVER_NAME: "http://localhost"
-      DATABASE_HOST: ${DATABASE_HOST:-db}
-      DATABASE_PORT: ${DATABASE_PORT:-3306}
-      DATABASE_NAME: ${DATABASE_NAME:-shawdy_app}
-      DATABASE_USER: ${DATABASE_USER:-app}
-      DATABASE_PASSWORD: ${DATABASE_PASSWORD:-dev_only_password}
-      TRUSTED_PROXIES: 172.19.0.0/16
+      <<: *backend-environment
+    networks:
+      - shawdy-net
     command: php bin/console messenger:consume async --time-limit=3600
     entrypoint: []
 
@@ -81,15 +95,17 @@ services:
       NITRO_PORT: "3000"
       NUXT_API_BASE_INTERNAL: "http://frankenphp:8080/api"
       NUXT_PUBLIC_API_BASE: "/api"
+    networks:
+      - shawdy-net
     healthcheck:
       test: [ "CMD", "nc", "-z", "127.0.0.1", "3000" ]
       interval: 5s
       timeout: 5s
       retries: 10
       start_period: 20s
-    pull_policy: build
 
   redirector:
+    container_name: shawdy-redirector
     image: shawdy-redirector:production
     build:
       context: ./apps/redirector
@@ -103,26 +119,29 @@ services:
       REDIRECTOR_ADDR: ":8081"
       REDIS_HOST: "redis"
       REDIS_PORT: "6379"
+    networks:
+      - shawdy-net
+      - monitoring-net
     healthcheck:
       test: [ "CMD", "wget", "-q", "--spider", "http://127.0.0.1:8081/healthz" ]
       interval: 5s
       timeout: 5s
       retries: 10
       start_period: 10s
-    pull_policy: build
 
   db:
     container_name: shawdy-db
     image: mariadb:12.3
+    restart: unless-stopped
     volumes:
       - mariadb_data:/var/lib/mysql
-      - ./docker/mariadb/init:/docker-entrypoint-initdb.d:ro
     environment:
-      MYSQL_ROOT_PASSWORD: ${DATABASE_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${DATABASE_NAME}
-      MYSQL_USER: ${DATABASE_USER}
-      MYSQL_PASSWORD: ${DATABASE_PASSWORD}
-      DATABASE_NAME: ${DATABASE_NAME}
+      MYSQL_ROOT_PASSWORD: ${DATABASE_ROOT_PASSWORD:?DATABASE_ROOT_PASSWORD must be set}
+      MYSQL_DATABASE: ${DATABASE_NAME:?DATABASE_NAME must be set}
+      MYSQL_USER: ${DATABASE_USER:?DATABASE_USER must be set}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD:?DATABASE_PASSWORD must be set}
+    networks:
+      - shawdy-net
     healthcheck:
       test: [ "CMD", "healthcheck.sh", "--connect", "--innodb_initialized" ]
       interval: 5s
@@ -134,6 +153,8 @@ services:
     container_name: shawdy-redis
     image: redis:8.10.1-alpine
     restart: unless-stopped
+    networks:
+      - shawdy-net
     healthcheck:
       test: [ "CMD", "redis-cli", "ping" ]
       interval: 5s
@@ -146,7 +167,10 @@ volumes:
   caddy_data:
   caddy_config:
 
-
 networks:
   shawdy-net:
     name: shawdy-network
+
+  monitoring-net:
+    external: true
+    name: monitoring-network
