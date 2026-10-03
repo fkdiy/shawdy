@@ -44,7 +44,7 @@ const heroTitle = computed(() => {
         >
         <span
           v-if="heroTitle.secondary"
-          class="text-primary"
+          class="text-primary-light"
         >
           {{ heroTitle.secondary }}
         </span>
