@@ -1,0 +1,13 @@
+{% extends 'email/base.txt.twig' %}
+
+{% block contact_label %}Contact{% endblock %}
+{% block legal_label %}Legal notice{% endblock %}
+{% block privacy_label %}Privacy policy{% endblock %}
+
+{% block content %}
+Thank you for your report.
+
+I have received your report and will review it promptly.
+
+Reported short URL: {{ shortUrl }}
+{% endblock %}

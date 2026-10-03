@@ -4,9 +4,11 @@ namespace App\MessageHandler\Command;
 
 use App\Message\Command\SendAbuseReportConfirmation;
 use App\Repository\AbuseReportRepository;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
-use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Address;
 
 #[AsMessageHandler]
 final class SendAbuseReportConfirmationEmail
@@ -14,6 +16,12 @@ final class SendAbuseReportConfirmationEmail
     public function __construct(
         private AbuseReportRepository $abuseReportRepository,
         private MailerInterface $mailer,
+
+        #[Autowire('%env(MAIL_FROM)%')]
+        private string $mailFrom,
+
+        #[Autowire('%env(DEFAULT_URI)%')]
+        private string $baseUrl,
     ) {
     }
 
@@ -27,46 +35,39 @@ final class SendAbuseReportConfirmationEmail
             return;
         }
 
-        switch ($report->getLocale()) {
-            case 'de':
-                $subject = 'Ihre Missbrauchsmeldung ist eingegangen';
-                $text =
-                    "Vielen Dank für Ihre Meldung.\n\n"
-                    ."Ich habe Ihre Meldung erhalten und werde sie zeitnah prüfen.\n\n"
-                    ."Gemeldete Short-URL: https://shawdy.de/{$report->getShortCode()}\n\n"
-                    ."-----\n\n"
-                    ."Fabian König\n"
-                    ."c/o Impressumservice Dein-Impressum\n"
-                    ."Stettiner Str. 41\n"
-                    ."35410 Hungen\n\n"
-                    ."Telefon: +49 15679 311106\n"
-                    .'E-Mail: contact@shawdy.de';
-                break;
+        $baseUrl = rtrim($this->baseUrl, '/');
 
-            case 'en':
-                $subject = 'Abuse report received';
-                $text =
-                    "Thank you for your report.\n\n"
-                    ."We have received your report and will review it promptly.\n\n"
-                    ."Reported short URL: https://shawdy.de/{$report->getShortCode()}\n\n"
-                    ."-----\n\n"
-                    ."Fabian König\n"
-                    ."c/o Impressumservice Dein-Impressum\n"
-                    ."Stettiner Str. 41\n"
-                    ."35410 Hungen\n\n"
-                    ."Phone: +49 15679 311106\n"
-                    .'Email: contact@shawdy.de';
-                break;
+        $shortUrl = sprintf(
+            '%s/%s',
+            $baseUrl,
+            $report->getShortCode(),
+        );
 
-            default:
-                throw new \LogicException(sprintf('Unsupported abuse report locale "%s".', $report->getLocale()));
-        }
+        [$subject, $htmlTemplate, $textTemplate] = match ($report->getLocale()) {
+            'de' => [
+                'Ihre Missbrauchsmeldung ist eingegangen',
+                'email/abuse-report/confirmation.de.html.twig',
+                'email/abuse-report/confirmation.de.txt.twig',
+            ],
+            'en' => [
+                'Abuse report received',
+                'email/abuse-report/confirmation.en.html.twig',
+                'email/abuse-report/confirmation.en.txt.twig',
+            ],
+            default => throw new \LogicException(sprintf('Unsupported abuse report locale "%s".', $report->getLocale())),
+        };
 
-        $email = (new Email())
-            ->from('noreply@shawdy.de')
+        $email = (new TemplatedEmail())
+            ->from(new Address($this->mailFrom, 'Shawdy'))
             ->to($report->getEmail())
             ->subject($subject)
-            ->text($text);
+            ->htmlTemplate($htmlTemplate)
+            ->textTemplate($textTemplate)
+            ->context([
+                'baseUrl' => $baseUrl,
+                'shortUrl' => $shortUrl,
+                'report' => $report,
+            ]);
 
         $this->mailer->send($email);
     }

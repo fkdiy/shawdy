@@ -22,6 +22,9 @@ x-backend-environment: &backend-environment
 
   TRUSTED_PROXIES: "172.19.0.0/16"
 
+  MAIL_FROM: ${MAIL_FROM:?MAIL_FROM must be set}
+  ABUSE_REPORT_RECIPIENT: ${ABUSE_REPORT_RECIPIENT:?ABUSE_REPORT_RECIPIENT must be set}
+
 services:
   frankenphp:
     container_name: shawdy-frankenphp
