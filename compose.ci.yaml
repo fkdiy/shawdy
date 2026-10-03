@@ -21,6 +21,9 @@ x-backend-environment: &backend-environment
 
   TRUSTED_PROXIES: ${TRUSTED_PROXIES:-172.19.0.0/16}
 
+  MAIL_FROM: ${MAIL_FROM:-noreply@shawdy.de}
+  ABUSE_REPORT_RECIPIENT: ${ABUSE_REPORT_RECIPIENT:-contact@shawdy.de}
+
 services:
   frankenphp:
     container_name: shawdy-frankenphp

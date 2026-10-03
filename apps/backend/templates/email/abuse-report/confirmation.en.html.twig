@@ -1,0 +1,33 @@
+{% extends 'email/base.html.twig' %}
+
+{% block language %}en{% endblock %}
+
+{% block contact_label %}Contact{% endblock %}
+{% block legal_label %}Legal notice{% endblock %}
+{% block privacy_label %}Privacy policy{% endblock %}
+
+{% block title %}
+    Abuse report received
+{% endblock %}
+
+{% block content %}
+    <h1 style="
+        color: #111712;
+        margin: 0 0 24px;
+        font-size: 24px;
+        line-height: 1.3;
+    ">
+        Thank you for your report
+    </h1>
+
+    <p style="color: #3d5240; margin: 0 0 16px; line-height: 1.6;">
+        I have received your report and will review it promptly.
+    </p>
+
+    <p style="margin: 0; line-height: 1.6;">
+        <strong style="color: #111712;">Reported short URL:</strong>
+        <a href="{{ shortUrl }}" style="color: #7fcd00; text-decoration:none;">
+            {{ shortUrl }}
+        </a>
+    </p>
+{% endblock %}

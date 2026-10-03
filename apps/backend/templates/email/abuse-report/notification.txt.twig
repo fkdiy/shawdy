@@ -1,0 +1,20 @@
+{% extends 'email/base.txt.twig' %}
+
+{% block contact_label %}Contact{% endblock %}
+{% block legal_label %}Legal notice{% endblock %}
+{% block privacy_label %}Privacy policy{% endblock %}
+
+{% block content %}
+New abuse report
+
+A new abuse report was submitted through Shawdy.
+
+Short URL:
+{{ shortUrl }}
+
+Reporter:
+{{ report.email }}
+
+Message:
+{{ report.message }}
+{% endblock %}
