@@ -42,9 +42,18 @@
     color: var(--color-shawdy-brand-650);
   }
 
+  .text-primary-light {
+    color: var(--ui-color-primary-600);
+  }
+
   .dark .text-primary {
     color: var(--color-shawdy-brand-500);
   }
+
+  .dark .text-primary-light {
+    color: var(--color-shawdy-brand-500);
+  }
+
 }
 
 @layer base {
