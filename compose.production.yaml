@@ -68,6 +68,7 @@ services:
       SERVER_NAME: ${SERVER_NAME:?SERVER_NAME must be set}
       CADDY_HTTP_PORT: "8080"
       CADDY_HTTPS_PORT: "8443"
+      FRANKENPHP_WORKERS: "4"
     networks:
       - shawdy-net
     healthcheck:

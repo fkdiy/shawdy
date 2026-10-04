@@ -1,13 +1,9 @@
 <?php
 
-use Symfony\Component\Dotenv\Dotenv;
+declare(strict_types=1);
 
 require dirname(__DIR__).'/vendor/autoload.php';
 
-if (method_exists(Dotenv::class, 'bootEnv')) {
-    (new Dotenv())->bootEnv(dirname(__DIR__).'/.env');
-}
-
-if ($_SERVER['APP_DEBUG']) {
+if (($_SERVER['APP_DEBUG'] ?? '0') === '1') {
     umask(0000);
 }

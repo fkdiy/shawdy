@@ -4,38 +4,66 @@
     http_port {$CADDY_HTTP_PORT:80}
     https_port {$CADDY_HTTPS_PORT:443}
 
-    frankenphp
+    frankenphp {
+        worker {
+            file /app/public/index.php
+            num {$FRANKENPHP_WORKERS:4}
+            name shawdy
+        }
+    }
 }
 
 (app_routes) {
     encode zstd br gzip
-
-    # Health check
-    @health {
-        path /healthz
-    }
-
-    handle @health {
-        respond "OK" 200
-    }
 
     # Symfony backend
     @backend {
         path \
             /api \
             /api/* \
-            /_wdt \
-            /_wdt/* \
-            /_profiler \
-            /_profiler/*
+            /healthz \
     }
 
     handle @backend {
         root * /app/public
 
         php_server {
-            worker /app/public/index.php
+            file_server off
+            try_files index.php
         }
+    }
+
+    # Symfony development tools
+    @debugDev {
+        path \
+            /_wdt \
+            /_wdt/* \
+            /_profiler \
+            /_profiler/*
+
+        expression {env.APP_ENV} == "dev"
+    }
+
+    handle @debugDev {
+        root * /app/public
+
+        php_server {
+            file_server off
+            try_files index.php
+        }
+    }
+
+    # Never let disabled debug routes fall through to the redirector.
+    @debugRoutes {
+        path \
+            /_wdt \
+            /_wdt/* \
+            /_profiler \
+            /_profiler/*
+    }
+
+    handle @debugRoutes {
+        error 404
     }
 
     # Symfony static assets
@@ -172,7 +200,7 @@
 # Endpoint for communication inside the Docker network
 # HTTP only
 
-:8082 {
+http://:8082 {
     import app_routes
     import error_pages
 }
