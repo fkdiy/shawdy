@@ -40,7 +40,7 @@ services:
       redirector:
         condition: service_healthy
     expose:
-      - "8080"
+      - "8082"
     volumes:
       - caddy_data:/data
       - caddy_config:/config
@@ -50,7 +50,7 @@ services:
     networks:
       - shawdy-net
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8080/healthz" ]
+      test: [ "CMD", "curl", "-f", "http://localhost:8082/healthz" ]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -89,16 +89,20 @@ services:
       - node_modules:/app/node_modules
     environment:
       NODE_ENV: "development"
-      NUXT_API_BASE_INTERNAL: "http://frankenphp:8080/api"
+      NUXT_API_BASE_INTERNAL: "http://frankenphp:8082/api"
       NUXT_PUBLIC_API_BASE: "/api"
     networks:
       - shawdy-net
     healthcheck:
-      test: [ "CMD", "nc", "-z", "127.0.0.1", "3000" ]
+      test:
+        - "CMD"
+        - "node"
+        - "-e"
+        - "fetch('http://127.0.0.1:3000/healthz').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"
       interval: 5s
       timeout: 5s
       retries: 10
-      start_period: 60s
+      start_period: 20s
     command: pnpm dev --host 0.0.0.0 --port 3000
     working_dir: /app
 
@@ -169,9 +173,10 @@ services:
     volumes:
       - ./apps/frontend:/app
       - playwright_node_modules:/app/node_modules
+      - playwright_nuxt:/app/.nuxt
     environment:
       CI: "true"
-      PLAYWRIGHT_BASE_URL: "http://frankenphp:8080"
+      PLAYWRIGHT_BASE_URL: "http://frankenphp:8082"
     networks:
       - shawdy-net
     command: >
@@ -188,6 +193,7 @@ services:
 volumes:
   node_modules:
   playwright_node_modules:
+  playwright_nuxt:
   mariadb_data:
   caddy_data:
   caddy_config:

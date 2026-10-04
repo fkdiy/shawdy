@@ -30,11 +30,17 @@ RUN CGO_ENABLED=0 go build \
 
 FROM alpine:3.23 AS production
 
+# hadolint ignore=DL3018
 RUN apk add --no-cache \
-    ca-certificates=20260611-r0 \
-    wget=1.25.0-r2
+    ca-certificates \
+    wget \
+    && addgroup -S redirector \
+    && adduser -S -D -H -G redirector redirector
 
 COPY --from=builder /redirector /usr/local/bin/redirector
+
+# hadolint ignore=DL3002
+USER redirector
 
 EXPOSE 8081
 

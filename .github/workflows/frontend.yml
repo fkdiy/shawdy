@@ -167,7 +167,7 @@ jobs:
         working-directory: .
         run: |
           docker compose exec -T frankenphp \
-            curl --fail --show-error http://localhost:8080/healthz
+            curl --fail --show-error http://localhost:8082/healthz
 
           docker compose exec -T frankenphp \
             curl --fail --show-error http://node:3000/ > /dev/null

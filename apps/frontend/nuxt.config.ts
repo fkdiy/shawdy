@@ -9,6 +9,15 @@ export default defineNuxtConfig({
     'motion-v/nuxt'
   ],
 
+  $production: {
+    content: {
+      database: {
+        type: 'sqlite',
+        filename: ':memory:'
+      }
+    }
+  },
+
   devtools: {
     enabled: true
   },
@@ -30,7 +39,7 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    apiBaseInternal: 'http://frankenphp:8080/api',
+    apiBaseInternal: 'http://frankenphp:8082/api',
 
     public: {
       apiBase: '/api'

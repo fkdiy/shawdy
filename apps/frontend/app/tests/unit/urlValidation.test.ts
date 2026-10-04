@@ -21,7 +21,7 @@ describe('isValidUrl', () => {
   })
 
   it('accepts URLs with port', () => {
-    expect(isValidUrl('http://example.com:8080')).toBe(true)
+    expect(isValidUrl('http://example.com:8082')).toBe(true)
   })
 
   it('accepts HTTPS URLs', () => {
