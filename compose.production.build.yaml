@@ -1,0 +1,18 @@
+services:
+  frankenphp:
+    build:
+      context: .
+      dockerfile: docker/frankenphp/Dockerfile
+      target: production
+
+  node:
+    build:
+      context: .
+      dockerfile: docker/node/Dockerfile
+      target: production
+
+  redirector:
+    build:
+      context: ./apps/redirector
+      dockerfile: ../../docker/redirector/Dockerfile
+      target: production

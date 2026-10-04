@@ -41,11 +41,7 @@ services:
   frankenphp:
     <<: *app-security
     container_name: shawdy-frankenphp
-    image: frankenphp-shawdy:production
-    build:
-      context: .
-      dockerfile: docker/frankenphp/Dockerfile
-      target: production
+    image: ghcr.io/fkdiy/shawdy-backend:${SHAWDY_VERSION:?SHAWDY_VERSION must be set}
     restart: unless-stopped
     depends_on:
       db:
@@ -86,11 +82,7 @@ services:
   messenger-worker:
     <<: *app-security
     container_name: shawdy-messenger-worker
-    image: frankenphp-shawdy:production
-    build:
-      context: .
-      dockerfile: docker/frankenphp/Dockerfile
-      target: production
+    image: ghcr.io/fkdiy/shawdy-backend:${SHAWDY_VERSION:?SHAWDY_VERSION must be set}
     restart: unless-stopped
     depends_on:
       db:
@@ -113,11 +105,7 @@ services:
   node:
     <<: *app-security
     container_name: shawdy-node
-    image: shawdy-node:production
-    build:
-      context: .
-      dockerfile: docker/node/Dockerfile
-      target: production
+    image: ghcr.io/fkdiy/shawdy-frontend:${SHAWDY_VERSION:?SHAWDY_VERSION must be set}
     restart: unless-stopped
     expose:
       - "3000"
@@ -127,6 +115,7 @@ services:
       NITRO_PORT: "3000"
       NUXT_API_BASE_INTERNAL: "http://frankenphp:8082/api"
       NUXT_PUBLIC_API_BASE: "/api"
+      NUXT_PUBLIC_APP_VERSION: ${SHAWDY_VERSION:?SHAWDY_VERSION must be set}
     networks:
       - shawdy-net
     healthcheck:
@@ -145,11 +134,7 @@ services:
   redirector:
     <<: *app-security
     container_name: shawdy-redirector
-    image: shawdy-redirector:production
-    build:
-      context: ./apps/redirector
-      dockerfile: ../../docker/redirector/Dockerfile
-      target: production
+    image: ghcr.io/fkdiy/shawdy-redirector:${SHAWDY_VERSION:?SHAWDY_VERSION must be set}
     restart: unless-stopped
     depends_on:
       redis:
