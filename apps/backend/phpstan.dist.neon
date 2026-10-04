@@ -20,9 +20,3 @@ parameters:
         -
             identifier: method.unused
             path: src/Kernel.php
-
-        # EDGE CASE: Symfony's public/index.php or tests/bootstrap.php uses method_exists() defensively.
-        # PHPStan evaluates this against the current vendor state where the method always exists.
-        -
-            identifier: function.alreadyNarrowedType
-            message: '#method_exists.*Dotenv.*bootEnv.*always evaluate to true#'
