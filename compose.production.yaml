@@ -1,3 +1,15 @@
+x-app-security: &app-security
+  security_opt:
+    - no-new-privileges:true
+  cap_drop:
+    - ALL
+
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
 x-backend-environment: &backend-environment
   APP_ENV: "prod"
   APP_DEBUG: "0"
@@ -27,6 +39,7 @@ x-backend-environment: &backend-environment
 
 services:
   frankenphp:
+    <<: *app-security
     container_name: shawdy-frankenphp
     image: frankenphp-shawdy:production
     build:
@@ -42,27 +55,35 @@ services:
       redirector:
         condition: service_healthy
     ports:
-      - "80:80"
-      - "443:443"
-      - "443:443/udp"
+      - "80:8080"
+      - "443:8443"
+      - "443:8443/udp"
     expose:
-      - "8080"
+      - "8082"
     volumes:
       - caddy_data:/data
       - caddy_config:/config
     environment:
       <<: *backend-environment
       SERVER_NAME: ${SERVER_NAME:?SERVER_NAME must be set}
+      CADDY_HTTP_PORT: "8080"
+      CADDY_HTTPS_PORT: "8443"
     networks:
       - shawdy-net
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8080/healthz" ]
+      test: [ "CMD", "curl", "-f", "http://localhost:8082/healthz" ]
       interval: 5s
       timeout: 5s
       retries: 10
       start_period: 30s
+    logging: *default-logging
+    read_only: true
+    tmpfs:
+      - /app/var:uid=1000,gid=1000,mode=0755
+      - /tmp:uid=1000,gid=1000,mode=1777
 
   messenger-worker:
+    <<: *app-security
     container_name: shawdy-messenger-worker
     image: frankenphp-shawdy:production
     build:
@@ -79,10 +100,17 @@ services:
       <<: *backend-environment
     networks:
       - shawdy-net
+    healthcheck:
+      disable: true
     command: php bin/console messenger:consume async --time-limit=3600
-    entrypoint: []
+    logging: *default-logging
+    read_only: true
+    tmpfs:
+      - /app/var:uid=1000,gid=1000,mode=0755
+      - /tmp:uid=1000,gid=1000,mode=1777
 
   node:
+    <<: *app-security
     container_name: shawdy-node
     image: shawdy-node:production
     build:
@@ -96,18 +124,25 @@ services:
       NODE_ENV: "production"
       NITRO_HOST: "0.0.0.0"
       NITRO_PORT: "3000"
-      NUXT_API_BASE_INTERNAL: "http://frankenphp:8080/api"
+      NUXT_API_BASE_INTERNAL: "http://frankenphp:8082/api"
       NUXT_PUBLIC_API_BASE: "/api"
     networks:
       - shawdy-net
     healthcheck:
-      test: [ "CMD", "nc", "-z", "127.0.0.1", "3000" ]
+      test:
+        - "CMD"
+        - "node"
+        - "-e"
+        - "fetch('http://127.0.0.1:3000/healthz').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"
       interval: 5s
       timeout: 5s
       retries: 10
       start_period: 20s
+    logging: *default-logging
+    read_only: true
 
   redirector:
+    <<: *app-security
     container_name: shawdy-redirector
     image: shawdy-redirector:production
     build:
@@ -131,6 +166,8 @@ services:
       timeout: 5s
       retries: 10
       start_period: 10s
+    logging: *default-logging
+    read_only: true
 
   db:
     container_name: shawdy-db
@@ -151,11 +188,14 @@ services:
       timeout: 5s
       retries: 10
       start_period: 10s
+    logging: *default-logging
 
   redis:
     container_name: shawdy-redis
     image: redis:8.10.1-alpine
     restart: unless-stopped
+    volumes:
+      - redis_data:/data
     networks:
       - shawdy-net
     healthcheck:
@@ -164,11 +204,14 @@ services:
       timeout: 5s
       retries: 10
       start_period: 5s
+    logging: *default-logging
+    read_only: true
 
 volumes:
-  mariadb_data:
   caddy_data:
   caddy_config:
+  mariadb_data:
+  redis_data:
 
 networks:
   shawdy-net:

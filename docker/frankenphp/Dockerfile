@@ -2,6 +2,7 @@ ARG PHP_VERSION=8.5
 ARG FRANKENPHP_VERSION=1.12.7
 ARG COMPOSER_VERSION=2.10.2
 
+
 # Composer
 
 FROM composer:${COMPOSER_VERSION} AS composer
@@ -9,7 +10,7 @@ FROM composer:${COMPOSER_VERSION} AS composer
 
 # Build custom FrankenPHP binary with caddy-ratelimit
 
-FROM dunglas/frankenphp:${FRANKENPHP_VERSION}-builder-php${PHP_VERSION} AS builder
+FROM dunglas/frankenphp:${FRANKENPHP_VERSION}-builder-php${PHP_VERSION} AS frankenphp-builder
 
 COPY --from=caddy:builder /usr/bin/xcaddy /usr/bin/xcaddy
 
@@ -26,13 +27,15 @@ RUN CGO_ENABLED=1 \
         --with github.com/mholt/caddy-ratelimit
 
 
-# Shared FrankenPHP base
+# Shared FrankenPHP runtime base
 
 FROM dunglas/frankenphp:${FRANKENPHP_VERSION}-php${PHP_VERSION} AS base
 
 ENV TRUSTED_PROXIES=127.0.0.1
 
-COPY --from=builder /usr/local/bin/frankenphp /usr/local/bin/frankenphp
+COPY --from=frankenphp-builder \
+    /usr/local/bin/frankenphp \
+    /usr/local/bin/frankenphp
 
 RUN install-php-extensions \
     pdo_mysql \
@@ -40,8 +43,6 @@ RUN install-php-extensions \
     zip \
     redis \
     opcache
-
-COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 COPY docker/frankenphp/errors /srv/errors
 
@@ -57,6 +58,8 @@ FROM base AS development
 
 ENV APP_ENV=dev
 ENV COMPOSER_ALLOW_SUPERUSER=1
+
+COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 RUN install-php-extensions xdebug
 
@@ -78,6 +81,8 @@ ENV SKIP_DEV_SETUP=1
 
 WORKDIR /app
 
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+
 COPY apps/backend/composer.json apps/backend/composer.lock ./
 
 RUN composer install \
@@ -97,16 +102,17 @@ ENTRYPOINT ["entrypoint.sh"]
 CMD ["frankenphp", "run", "--config", "/etc/frankenphp/Caddyfile"]
 
 
-# Production
+# Build production application
 
-FROM base AS production
+FROM base AS production-builder
 
 ENV APP_ENV=prod
 ENV APP_DEBUG=0
+ENV COMPOSER_ALLOW_SUPERUSER=1
 
 WORKDIR /app
 
-RUN cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 COPY apps/backend/ .
 
@@ -117,12 +123,37 @@ RUN composer install \
     --prefer-dist \
     --optimize-autoloader \
     --classmap-authoritative \
+    --no-scripts \
     && php bin/console importmap:install \
     && php bin/console asset-map:compile
+
+
+# Production runtime
+
+FROM base AS production
+
+ENV APP_ENV=prod
+ENV APP_DEBUG=0
+
+WORKDIR /app
+
+ARG USER=appuser
+
+RUN cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+
+COPY --from=production-builder /app /app
 
 COPY docker/frankenphp/php.production.ini \
     /usr/local/etc/php/conf.d/99-shawdy.ini
 
-ENTRYPOINT ["entrypoint.sh"]
+RUN <<-EOF
+	useradd ${USER}
+    setcap -r /usr/local/bin/frankenphp
+    mkdir -p /app/var
+    chown -R ${USER}:${USER} /config/caddy /data/caddy /app/var
+    chmod -R u=rwX,go=rX /app/var
+EOF
+
+USER ${USER}
 
 CMD ["frankenphp", "run", "--config", "/etc/frankenphp/Caddyfile"]

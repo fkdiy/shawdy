@@ -52,7 +52,7 @@ test('submits an abuse report', async ({ page, request }) => {
 
   // Create valid short code
   const shortUrlResponse = await request.post(
-    'http://frankenphp:8080/api/short_urls',
+    'http://frankenphp:8082/api/short_urls',
     {
       headers: {
         'Content-Type': 'application/ld+json'

@@ -5,7 +5,7 @@ WORKDIR /app
 RUN npm install --global pnpm@12.4.1
 
 
-# Devlopment
+# Development
 
 FROM base AS development
 
@@ -22,7 +22,11 @@ ENTRYPOINT ["entrypoint.sh"]
 
 FROM base AS builder
 
-COPY apps/frontend/package.json apps/frontend/pnpm-lock.yaml ./
+COPY \
+    apps/frontend/package.json \
+    apps/frontend/pnpm-lock.yaml \
+    apps/frontend/pnpm-workspace.yaml \
+    ./
 
 RUN pnpm install --frozen-lockfile
 
@@ -31,9 +35,11 @@ COPY apps/frontend/ ./
 RUN pnpm build
 
 
-# Run the compiled Nuxt/Nitro application
+# Production runtime
 
-FROM base AS production
+FROM node:26.7.0-alpine3.24 AS production
+
+WORKDIR /app
 
 ENV NODE_ENV=production
 ENV NITRO_HOST=0.0.0.0
@@ -41,7 +47,8 @@ ENV NITRO_PORT=3000
 
 COPY --from=builder --chown=node:node /app/.output/ ./.output
 
-USER 1000:1000
+# hadolint ignore=DL3002
+USER node
 
 EXPOSE 3000
 

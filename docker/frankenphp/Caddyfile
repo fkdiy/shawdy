@@ -1,6 +1,9 @@
 {
     skip_install_trust
 
+    http_port {$CADDY_HTTP_PORT:80}
+    https_port {$CADDY_HTTPS_PORT:443}
+
     frankenphp
 }
 
@@ -52,6 +55,8 @@
     @frontend {
         path \
             / \
+            /_i18n \
+            /_i18n/* \
             /_nuxt \
             /_nuxt/* \
             /__nuxt_content/ \
@@ -167,7 +172,7 @@
 # Endpoint for communication inside the Docker network
 # HTTP only
 
-:8080 {
+:8082 {
     import app_routes
     import error_pages
 }
