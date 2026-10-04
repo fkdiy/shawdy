@@ -91,6 +91,7 @@ services:
       NODE_ENV: "development"
       NUXT_API_BASE_INTERNAL: "http://frankenphp:8082/api"
       NUXT_PUBLIC_API_BASE: "/api"
+      NUXT_PUBLIC_APP_VERSION: ${SHAWDY_VERSION:-v0.0.0}
     networks:
       - shawdy-net
     healthcheck:

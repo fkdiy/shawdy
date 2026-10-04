@@ -42,7 +42,8 @@ export default defineNuxtConfig({
     apiBaseInternal: 'http://frankenphp:8082/api',
 
     public: {
-      apiBase: '/api'
+      apiBase: '/api',
+      appVersion: ''
     }
   },
 

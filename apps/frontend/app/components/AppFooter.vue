@@ -2,6 +2,7 @@
 import { de, en } from '@nuxt/ui/locale'
 
 const { locale, setLocale, t } = useI18n()
+const config = useRuntimeConfig()
 
 async function onLocaleChange(value: string): Promise<void> {
   if (value !== 'de' && value !== 'en') {
@@ -59,7 +60,7 @@ const links = computed(() => [
 
     <template #left>
       <p class="text-sm text-muted">
-        Made with code and coffee by Fabian König · © {{ new Date().getFullYear() }}
+        Shawdy {{ config.public.appVersion }} · Made with code and coffee by Fabian König
       </p>
     </template>
   </UFooter>
