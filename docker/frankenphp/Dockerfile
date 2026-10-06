@@ -78,6 +78,7 @@ FROM base AS ci
 ENV APP_ENV=dev
 ENV COMPOSER_ALLOW_SUPERUSER=1
 ENV SKIP_DEV_SETUP=1
+ENV DEFAULT_URI=http://localhost
 
 WORKDIR /app
 
@@ -109,6 +110,7 @@ FROM base AS production-builder
 ENV APP_ENV=prod
 ENV APP_DEBUG=0
 ENV COMPOSER_ALLOW_SUPERUSER=1
+ENV DEFAULT_URI=http://localhost
 
 WORKDIR /app
 
