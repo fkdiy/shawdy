@@ -47,7 +47,7 @@ ENV NITRO_PORT=3000
 
 COPY --from=builder --chown=node:node /app/.output/ ./.output
 
-# hadolint ignore=DL3002
+# hadolint ignore=DL3066
 USER node
 
 EXPOSE 3000
