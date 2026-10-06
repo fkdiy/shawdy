@@ -8,3 +8,16 @@ allowBuilds:
 
 overrides:
   esbuild: '>=0.28.1'
+
+audit:
+  ignore:
+    # Nuxt DevTools currently depends on simple-git 3.x.
+    # Upgrading to the patched 4.x release is a breaking dependency change.
+    - GHSA-v5rq-49vh-5v5c
+    - GHSA-x6jw-m9v5-85vh
+    - GHSA-g4wm-2vf7-vfgr
+    - GHSA-858h-whjf-mvg5
+
+    # No patched upstream versions are currently available.
+    - GHSA-86w9-cpqp-85rv
+    - GHSA-vfj7-8cjw-p6xm
