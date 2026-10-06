@@ -60,7 +60,7 @@ const links = computed(() => [
 
     <template #left>
       <p class="text-sm text-muted">
-        Shawdy {{ config.public.appVersion }} · Made with code and coffee by Fabian König
+        Shawdy {{ config.public.appVersion }} · {{ t('footerMessage') }}
       </p>
     </template>
   </UFooter>
