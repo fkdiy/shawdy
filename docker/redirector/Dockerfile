@@ -39,7 +39,7 @@ RUN apk add --no-cache \
 
 COPY --from=builder /redirector /usr/local/bin/redirector
 
-# hadolint ignore=DL3002
+# hadolint ignore=DL3066
 USER redirector
 
 EXPOSE 8081

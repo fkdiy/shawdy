@@ -33,14 +33,27 @@ jobs:
 
     env:
       APP_ENV: test
+      APP_DEBUG: 1
+      APP_SECRET: test_only_secret
+      DEFAULT_URI: http://localhost
+
       DATABASE_HOST: 127.0.0.1
       DATABASE_PORT: 3306
       DATABASE_NAME: shawdy_app
       DATABASE_USER: app
       DATABASE_PASSWORD: dev_only_password
+
       REDIS_HOST: 127.0.0.1
       REDIS_PORT: 6379
+
+      MESSENGER_TRANSPORT_DSN: doctrine://default?auto_setup=0
+      MAILER_DSN: null://null
+
+      CORS_ALLOW_ORIGIN: '^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$'
       TRUSTED_PROXIES: 172.19.0.0/16
+
+      MAIL_FROM: noreply@shawdy.test
+      ABUSE_REPORT_RECIPIENT: abuse@shawdy.test
 
     services:
       mariadb:
