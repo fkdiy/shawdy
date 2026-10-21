@@ -99,6 +99,8 @@ jobs:
             org.opencontainers.image.version=${{ github.ref_name }}
           cache-from: type=gha,scope=${{ matrix.name }}
           cache-to: type=gha,mode=max,scope=${{ matrix.name }}
+          pull: true
+          no-cache: ${{ matrix.name == 'backend' && vars.BACKEND_BUILD_NO_CACHE == 'true' }}
 
   deploy:
     name: Deploy to production
